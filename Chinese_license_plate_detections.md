@@ -1,6 +1,6 @@
 # 1. 数据集
 
-首先数据集的选用我选择的是CCPD (Chinese City Parking Dataset），数据来源：kaggle。
+首先数据集的选用我选择的是CCPD2019 (Chinese City Parking Dataset），数据来源：kaggle。
 #### （1）训练\Val\Test分段
 
 拆分文件在“split/”文件夹下。
@@ -35,4 +35,8 @@ yolo格式：label x y w h  pt1x pt1y pt2x pt2y pt3x pt3y pt4x pt4y
 
 # 2. 环境配置
 
-代码来自于github开源项目，
+代码来自于github开源项目：(https://github.com/we0091234/Chinese_license_plate_detection_recognition)，下载后conda创建一个新的环境，使用:
+```
+pip install -r requirement.txt
+```
+快速配置环境即可，
