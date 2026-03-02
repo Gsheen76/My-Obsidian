@@ -34,4 +34,5 @@ yolo格式：label x y w h  pt1x pt1y pt2x pt2y pt3x pt3y pt4x pt4y
 ---
 
 # 2. 环境配置
-da
+
+代码来自于github开源项目，
