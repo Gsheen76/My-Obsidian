@@ -39,4 +39,8 @@ yolo格式：label x y w h  pt1x pt1y pt2x pt2y pt3x pt3y pt4x pt4y
 ```
 pip install -r requirement.txt
 ```
-快速配置环境即可，
+快速配置环境即可，注意选择以下版本，不然会有冲突：
+- Python >= 3.6
+- numpy 1.26.4
+- torch 2.1.0 
+- torchvision 0.16.0 
