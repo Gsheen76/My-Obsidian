@@ -1,5 +1,8 @@
 {
   "promptDelete": false,
   "useMarkdownLinks": true,
-  "newLinkFormat": "relative"
+  "newLinkFormat": "relative",
+  "showLineNumber": true,
+  "showInlineTitle": true,
+  "readableLineLength": true
 }
