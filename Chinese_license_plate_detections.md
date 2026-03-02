@@ -43,4 +43,7 @@ pip install -r requirement.txt
 - Python >= 3.6
 - numpy 1.26.4
 - torch 2.1.0 
-- torchvision 0.16.0 
+- torchvision 0.16.0 （requirements里未提及，需要额外pip一下）
+
+
+---
