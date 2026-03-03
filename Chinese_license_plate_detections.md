@@ -34,6 +34,8 @@ yolo格式：label x y w h  pt1x pt1y pt2x pt2y pt3x pt3y pt4x pt4y
 ![531](assets/Chinese_license_plate_detections/file-20260303104405716.png)
 
 
+---
+
 # 2. 环境配置
 
 代码来自于github开源项目：(https://github.com/we0091234/Chinese_license_plate_detection_recognition)，下载后conda创建一个新的环境，使用:
