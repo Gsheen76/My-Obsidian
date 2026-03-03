@@ -31,7 +31,7 @@ ads = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'J', 'K', 'L', 'M', 'N', 'P', 'Q'
 该数据集并不适配我代码使用的yolov5检测模型的配置，所以要对数据集加以处理，来适配yolo格式，这里采用一个python脚本进行格式转换。
 yolo格式：label x y w h  pt1x pt1y pt2x pt2y pt3x pt3y pt4x pt4y
 **ccpd-to-yolo**：
-![531](assets/Chinese_license_plate_detections/file-20260303104405716.png)
+
 
 
 ---
