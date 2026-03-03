@@ -45,5 +45,4 @@ pip install -r requirement.txt
 - torch 2.1.0 
 - torchvision 0.16.0 （requirements里未提及，需要额外pip一下）
 
-
 ---
