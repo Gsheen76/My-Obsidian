@@ -1,6 +1,6 @@
 # 1. 数据集
 
-首先数据集的选用我选择的是CCPD2019 (Chinese City Parking Dataset），数据来源：kaggle。
+首先数据集的选用我选择的是CCPD2019 (Chinese City Parking Dataset）选取其中一部分与 ，数据来源：kaggle。
 #### （1）训练\Val\Test分段
 
 拆分文件在“split/”文件夹下。
@@ -31,7 +31,7 @@ ads = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'J', 'K', 'L', 'M', 'N', 'P', 'Q'
 该数据集并不适配我代码使用的yolov5检测模型的配置，所以要对数据集加以处理，来适配yolo格式，这里采用一个python脚本进行格式转换。
 yolo格式：label x y w h  pt1x pt1y pt2x pt2y pt3x pt3y pt4x pt4y
 ![644](assets/Chinese_license_plate_detections/file-20260303133614755.png)
-原来数据集有train：100000张（来自ccpd-base）；val：99996
+原来数据集有train：100000张（来自ccpd-base）；val：99996张
 **ccpd-to-yolo**：
 
 
