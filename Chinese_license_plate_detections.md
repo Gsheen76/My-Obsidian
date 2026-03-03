@@ -33,7 +33,7 @@ yolo格式：label x y w h  pt1x pt1y pt2x pt2y pt3x pt3y pt4x pt4y
 ![644](assets/Chinese_license_plate_detections/file-20260303133614755.png)
 原来数据集有train：100000张（来自ccpd-base）；val：99996
 **ccpd-to-yolo**：
-![](assets/Chinese_license_plate_detections/file-20260303133327765.png)
+
 
 
 ---
