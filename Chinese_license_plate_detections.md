@@ -32,7 +32,7 @@ ads = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'J', 'K', 'L', 'M', 'N', 'P', 'Q'
 yolo格式：label x y w h  pt1x pt1y pt2x pt2y pt3x pt3y pt4x pt4y
 ![644](assets/Chinese_license_plate_detections/file-20260303133614755.png)
 原来数据集有train：100000张（来自ccpd-base）；val：99996张（来自ccpd-base）；
-test：
+test：141982张（来自各个子集）
 **ccpd-to-yolo**：
 
 
