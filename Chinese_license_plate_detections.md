@@ -43,6 +43,7 @@ test：141982张（来自各个子集）。
 
 # 2. 环境配置
 
+（1）ben'di
 代码来自于github开源项目：(https://github.com/we0091234/Chinese_license_plate_detection_recognition)，下载后conda创建一个新的环境，使用:
 ```bash
 pip install -r requirement.txt
@@ -52,6 +53,7 @@ pip install -r requirement.txt
 - numpy 1.26.4
 - torch 2.1.0 
 - torchvision 0.16.0 （requirements里未提及，需要额外pip一下）
+
 
 ---
 
@@ -65,7 +67,7 @@ python train.py --data data/widerface.yaml --cfg models/yolov5n-0.5.yaml --weigh
 #### （2）模型：
 
 采用yolov5n-0.5,车牌目标较小,在监控画面中车牌通常只占图像的1%-5%，车牌具有标准的宽高比，纹理特征明显，字符与背景对比度高， yolov5n-0.5 足够捕捉这些特征，无需大模型。
-推理速度对比
+**推理速度对比：**
 YOLOv5n-0.5: 0.6ms/张 (RTX 5090)  
 YOLOv5n:     1.2ms/张
 YOLOv5s:     2.5ms/张
@@ -77,6 +79,8 @@ YOLOv8n:     1.8ms/张
 | YOLOv5n         | ~1.73M      | ~2.1G       | ~7MB       |
 | YOLOv5s         | ~7.2M       | ~16.5G      | ~28MB      |
 | YOLOv8n         | ~3.2M       | ~8.7G       | ~12MB      |
+
+
 
 ![651](assets/Chinese_license_plate_detections/file-20260304153904734.png)
 
