@@ -51,3 +51,6 @@ pip install -r requirement.txt
 - torchvision 0.16.0 （requirements里未提及，需要额外pip一下）
 
 ---
+
+# 3. 训练
+![](assets/Chinese_license_plate_detections/file-20260304153904734.png)
