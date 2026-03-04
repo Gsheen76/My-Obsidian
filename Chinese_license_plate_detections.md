@@ -62,7 +62,7 @@ pip install -r requirement.txt
 python train.py --data data/widerface.yaml --cfg models/yolov5n-0.5.yaml --weights weights/plate_detect.pt --epoch 10
 ```
 
-#### （2）车牌检测模型：
+#### （2）模型：
 
 采用yolov5n-0.5,车牌目标较小,在监控画面中车牌通常只占图像的1%-5%，车牌具有标准的宽高比，纹理特征明显，字符与背景对比度高， yolov5n-0.5 足够捕捉这些特征，无需大模型。
 推理速度对比
