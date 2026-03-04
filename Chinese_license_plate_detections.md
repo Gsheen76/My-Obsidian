@@ -1,6 +1,6 @@
 # 1. 数据集
 
-首先数据集的选用我选择的是CCPD2019 (Chinese City Parking Dataset）选取其中一部分与 ，数据来源：kaggle。
+首先数据集的选用我选择的是CCPD2019 (Chinese City Parking Dataset），数据来源：kaggle。
 #### （1）训练\Val\Test分段
 
 拆分文件在“split/”文件夹下。
@@ -53,8 +53,8 @@ pip install -r requirement.txt
 ---
 
 # 3. 训练+测试
-训练
+训练：
 ![651](assets/Chinese_license_plate_detections/file-20260304153904734.png)
 
-
+测试：
 ![](assets/Chinese_license_plate_detections/file-20260304163857472.png)
