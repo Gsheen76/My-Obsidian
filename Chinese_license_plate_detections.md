@@ -57,7 +57,7 @@ pip install -r requirement.txt
 
 #### （2）云端算力部署：
 
-选用的是NVidia
+选用的是NVIDIA GeForce RTX 5090，配置环境
 
 
 ---
