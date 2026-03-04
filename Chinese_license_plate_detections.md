@@ -64,7 +64,7 @@ python train.py --data data/widerface.yaml --cfg models/yolov5n-0.5.yaml --weigh
 
 #### （2）车牌检测模型：
 
-采用
+采用yolov5n-0.5
 ![651](assets/Chinese_license_plate_detections/file-20260304153904734.png)
 
 测试：
