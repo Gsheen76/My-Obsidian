@@ -129,7 +129,7 @@ head:
 ```
 
 #### (3) 训练结果
-![697](assets/Chinese_license_plate_detections/file-20260304153904734.png)
+![](assets/Chinese_license_plate_detections/file-20260304221419708.png)
 
 测试：
 ![](assets/Chinese_license_plate_detections/file-20260304163857472.png)
