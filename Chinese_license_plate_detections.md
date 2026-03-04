@@ -64,7 +64,20 @@ python train.py --data data/widerface.yaml --cfg models/yolov5n-0.5.yaml --weigh
 
 #### （2）车牌检测模型：
 
-采用yolov5n-0.5
+采用yolov5n-0.5,车牌目标较小,在监控画面中车牌通常只占图像的1%-5%，车牌具有标准的宽高比，纹理特征明显，字符与背景对比度高， yolov5n-0.5 足够捕捉这些特征，无需大模型。
+推理速度对比
+YOLOv5n-0.5: 0.6ms/张 (RTX 5090)  
+YOLOv5n:     1.2ms/张
+YOLOv5s:     2.5ms/张
+YOLOv8n:     1.8ms/张
+
+| 对比模型            | 参数量         | 计算量(GFLOPs) | 模型大小       |
+| --------------- | ----------- | ----------- | ---------- |
+| **YOLOv5n-0.5** | **~0.45M**~ | **~0.57G**  | **~1.8MB** |
+| YOLOv5n         | ~1.73M      | ~2.1G       | ~7MB       |
+| YOLOv5s         | ~7.2M       | ~16.5G      | ~28MB      |
+| YOLOv8n         | ~3.2M       | ~8.7G       | ~12MB      |
+
 ![651](assets/Chinese_license_plate_detections/file-20260304153904734.png)
 
 测试：
