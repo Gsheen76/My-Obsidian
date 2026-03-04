@@ -53,7 +53,7 @@ pip install -r requirement.txt
 ---
 
 # 3. 训练+测试
-
+训练
 ![651](assets/Chinese_license_plate_detections/file-20260304153904734.png)
 
 
