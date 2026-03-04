@@ -44,7 +44,7 @@ test：141982张（来自各个子集）。
 # 2. 环境配置
 
 代码来自于github开源项目：(https://github.com/we0091234/Chinese_license_plate_detection_recognition)，下载后conda创建一个新的环境，使用:
-```
+```bash
 pip install -r requirement.txt
 ```
 快速配置环境即可，注意选择以下版本，不然会有冲突：
@@ -55,11 +55,12 @@ pip install -r requirement.txt
 
 ---
 
-# 3.样例测试
-
-
-# 4. 训练+测试
+# 3. 训练+测试
 训练：
+命令：
+```bash
+python train.py --data data/widerface.yaml --cfg models/yolov5n-0.5.yaml --weights weights/plate_detect.pt --epoch 10
+```
 ![651](assets/Chinese_license_plate_detections/file-20260304153904734.png)
 
 测试：
