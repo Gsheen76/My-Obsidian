@@ -57,7 +57,7 @@ pip install -r requirement.txt
 
 #### （2）云端算力部署：
 
-选用的是
+选用的是NVidia
 
 
 ---
