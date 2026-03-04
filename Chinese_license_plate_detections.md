@@ -57,7 +57,7 @@ pip install -r requirement.txt
 
 #### （2）云端算力部署：
 
-平台：Openbayes选用的是NVIDIA GeForce RTX 5090，上传数据集，配置环境。
+平台：OpenBayes，显卡：NVIDIA GeForce RTX 5090，上传数据集，配置环境。
 
 ---
 
@@ -70,7 +70,7 @@ python train.py --data data/widerface.yaml --cfg models/yolov5n-0.5.yaml --weigh
 
 #### （2）模型：
 
-采用yolov5n-0.5,车牌目标较小,在监控画面中车牌通常只占图像的1%-5%，车牌具有标准的宽高比，纹理特征明显，字符与背景对比度高， yolov5n-0.5 足够捕捉这些特征，无需大模型。
+采用**yolov5n-0.5**,车牌目标较小,在监控画面中车牌通常只占图像的1%-5%，车牌具有标准的宽高比，纹理特征明显，字符与背景对比度高， yolov5n-0.5 足够捕捉这些特征，无需大模型。
 **推理速度对比：**
 YOLOv5n-0.5: 0.6ms/张 (RTX 5090)  
 YOLOv5n:     1.2ms/张
@@ -83,7 +83,7 @@ YOLOv8n:     1.8ms/张
 | YOLOv5n         | ~1.73M      | ~2.1G       | ~7MB       |
 | YOLOv5s         | ~7.2M       | ~16.5G      | ~28MB      |
 | YOLOv8n         | ~3.2M       | ~8.7G       | ~12MB      |
-
+**推理速度对比：**
 
 
 ![651](assets/Chinese_license_plate_detections/file-20260304153904734.png)
