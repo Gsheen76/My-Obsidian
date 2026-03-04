@@ -55,12 +55,12 @@ pip install -r requirement.txt
 
 ---
 
-# 3. 训练+测试
-训练：
-命令：
+# 3. 训练
+**命令：**
 ```bash
 python train.py --data data/widerface.yaml --cfg models/yolov5n-0.5.yaml --weights weights/plate_detect.pt --epoch 10
 ```
+
 ![651](assets/Chinese_license_plate_detections/file-20260304153904734.png)
 
 测试：
