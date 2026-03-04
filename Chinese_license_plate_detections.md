@@ -43,7 +43,8 @@ test：141982张（来自各个子集）。
 
 # 2. 环境配置
 
-（1）ben'di
+#### （1）本地部署：
+
 代码来自于github开源项目：(https://github.com/we0091234/Chinese_license_plate_detection_recognition)，下载后conda创建一个新的环境，使用:
 ```bash
 pip install -r requirement.txt
@@ -54,6 +55,7 @@ pip install -r requirement.txt
 - torch 2.1.0 
 - torchvision 0.16.0 （requirements里未提及，需要额外pip一下）
 
+#### （2）
 
 ---
 
