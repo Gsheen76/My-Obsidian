@@ -79,7 +79,7 @@ python train.py --data data/widerface.yaml --cfg models/yolov5n-0.5.yaml --weigh
 | YOLOv5s         | ~7.2M       | ~16.5G      | ~28MB      |
 | YOLOv5m         | ~21.2M      | ~49.0G      | ~82MB      |
 | YOLOv5l         | ~46.5M      | ~109.1G     | ~178MB     |
-**模型配置：**
+- **模型配置：**
 ```python
 # parameters  
 nc: 1  # number of classes  
@@ -127,6 +127,7 @@ head:
    [[14, 17, 20], 1, Detect, [nc, anchors]],  # Detect(P3, P4, P5)  
   ]
 ```
+- **anchors**
 
 **width_multiple: 0.5** 正是这个模型叫 `yolov5n-0.5` 的原因，它将标准模型的通道数缩减为一半，实现极致轻量化。
 #### (3) 训练结果
