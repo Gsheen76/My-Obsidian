@@ -75,7 +75,7 @@ python train.py --data data/widerface.yaml --cfg models/yolov5n-0.5.yaml --weigh
 
 | 对比模型            | 参数量         | 计算量(GFLOPs) | 模型大小       |
 | --------------- | ----------- | ----------- | ---------- |
-| **YOLOv5n-0.5** | **~0.45M**~ | **~0.57G**  | **~1.8MB** |
+| YOLOv5n-0.5 | ~0.45M~ | ~0.57G  | ~1.8MB |
 | YOLOv5n         | ~1.73M      | ~2.1G       | ~7MB       |
 | YOLOv5s         | ~7.2M       | ~16.5G      | ~28MB      |
 | YOLOv5m         | ~21.2M      | ~49.0G      | ~82MB      |
@@ -128,9 +128,9 @@ head:
    [[14, 17, 20], 1, Detect, [nc, anchors]],  # Detect(P3, P4, P5)  
   ]
 ```
-**width_multiple: 0.5** 正是这个模型叫 `yolov5n-0.5` 的原因，它将标准模型的通道数缩减为一半，实现极致轻量化。
-
- - **anchors**
+- **width_multiple: 0.5** 
+正是这个模型叫 `yolov5n-0.5` 的原因，它将标准模型的通道数缩减为一半，实现极致轻量化。
+- **anchors**
 Anchors（锚框）是**预定义的初始边界框**，可以理解为"**先验框**"。在目标检测中，模型不是在原始图像上直接预测目标位置，而是在这些预定义的锚框基础上进行微调。
 ```yaml
 anchors:
