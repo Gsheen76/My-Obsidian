@@ -34,7 +34,8 @@ yolo格式：label x y w h  pt1x pt1y pt2x pt2y pt3x pt3y pt4x pt4y
 ![644](assets/Chinese_license_plate_detections/file-20260303133614755.png)
 原来数据集有train：100000张（来自ccpd-base）；val：99996张（来自ccpd-base）；
 test：141982张（来自各个子集）。
-- **ccpd-to-yolo**：将数据集转化成yolo格式，并在原来基础上进行随机抽样，选取2万张作为train，1万张作为val，1万张作为test。
+- **ccpd-to-yolo**：
+将数据集转化成yolo格式，并在原来基础上进行随机抽样，选取2万张作为train，1万张作为val，1万张作为test。
 ![](assets/Chinese_license_plate_detections/file-20260304193609677.png)
 - **lable格式如下：**
 ![](assets/Chinese_license_plate_detections/file-20260304192056340.png)
@@ -128,7 +129,8 @@ head:
   ]
 ```
 **width_multiple: 0.5** 正是这个模型叫 `yolov5n-0.5` 的原因，它将标准模型的通道数缩减为一半，实现极致轻量化。
-**anchors**
+
+ - **anchors**
 Anchors（锚框）是**预定义的初始边界框**，可以理解为"**先验框**"。在目标检测中，模型不是在原始图像上直接预测目标位置，而是在这些预定义的锚框基础上进行微调。
 ```yaml
 anchors:
