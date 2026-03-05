@@ -31,14 +31,14 @@ ads = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'J', 'K', 'L', 'M', 'N', 'P', 'Q'
 该数据集并不适配我代码使用的yolov5检测模型的配置，所以要对数据集加以处理，来适配yolo格式，这里采用一个python脚本进行格式转换。
 yolo格式：label x y w h  pt1x pt1y pt2x pt2y pt3x pt3y pt4x pt4y
 - **ccpd2019数据集：**
-![644](assets/Chinese_license_plate_detections/file-20260303133614755.png)
+![644](assets/CLPD（车牌检测）/file-20260303133614755.png)
 原来数据集有train：100000张（来自ccpd-base）；val：99996张（来自ccpd-base）；
 test：141982张（来自各个子集）。
 - **ccpd-to-yolo**：
 将数据集转化成yolo格式，并在原来基础上进行随机抽样，选取2万张作为train，1万张作为val，1万张作为test。
-![](assets/Chinese_license_plate_detections/file-20260304193609677.png)
+![](assets/CLPD（车牌检测）/file-20260304193609677.png)
 - **lable格式如下：**
-![](assets/Chinese_license_plate_detections/file-20260304192056340.png)
+![](assets/CLPD（车牌检测）/file-20260304192056340.png)
 
 ---
 
@@ -177,7 +177,7 @@ anchors:
 
 #### (3) 训练结果
 
-![](assets/Chinese_license_plate_detections/file-20260304221626628.png)
+![](assets/CLPD（车牌检测）/file-20260304221626628.png)
 
 
 
@@ -185,4 +185,4 @@ anchors:
 
 
 测试：
-![](assets/Chinese_license_plate_detections/file-20260304163857472.png)
+![](assets/CLPD（车牌检测）/file-20260304163857472.png)
