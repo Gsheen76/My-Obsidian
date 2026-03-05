@@ -80,7 +80,7 @@ python train.py --data data/widerface.yaml --cfg models/yolov5n-0.5.yaml --weigh
 | YOLOv5s     | ~7.2M   | ~16.5G      | ~28MB  |
 | YOLOv5m     | ~21.2M  | ~49.0G      | ~82MB  |
 | YOLOv5l     | ~46.5M  | ~109.1G     | ~178MB |
-- **模型配置：**
+##### 模型配置
 ```python
 # parameters  
 nc: 1  # number of classes  
@@ -130,7 +130,7 @@ head:
 ```
 - **width_multiple: 0.5** 
 正是这个模型叫 `yolov5n-0.5` 的原因，它将标准模型的通道数缩减为一半，实现极致轻量化。
-- **anchors**
+##### Anchors
 Anchors（锚框）是**预定义的初始边界框**，可以理解为"**先验框**"。在目标检测中，模型不是在原始图像上直接预测目标位置，而是在这些预定义的锚框基础上进行微调。
 ```yaml
 anchors:
@@ -164,7 +164,7 @@ anchors:
 
 总计候选框：19200 + 4800 + 1200 = 25200个初始锚框
 ```
-
+##### Backbone
 
 #### (3) 训练结果
 
