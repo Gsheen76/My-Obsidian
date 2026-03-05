@@ -80,6 +80,7 @@ python train.py --data data/widerface.yaml --cfg models/yolov5n-0.5.yaml --weigh
 | YOLOv5s     | ~7.2M   | ~16.5G      | ~28MB  |
 | YOLOv5m     | ~21.2M  | ~49.0G      | ~82MB  |
 | YOLOv5l     | ~46.5M  | ~109.1G     | ~178MB |
+ 
 ##### 模型配置
 ```python
 # parameters  
@@ -130,6 +131,7 @@ head:
 ```
 - **width_multiple: 0.5** 
 正是这个模型叫 `yolov5n-0.5` 的原因，它将标准模型的通道数缩减为一半，实现极致轻量化。
+
 ##### Anchors
 Anchors（锚框）是**预定义的初始边界框**，可以理解为"**先验框**"。在目标检测中，模型不是在原始图像上直接预测目标位置，而是在这些预定义的锚框基础上进行微调。
 ```yaml
@@ -165,8 +167,15 @@ anchors:
 总计候选框：19200 + 4800 + 1200 = 25200个初始锚框
 ```
 ##### Backbone
-
-
+```text
+层0: StemBlock(32,3,2)     # 输入3通道→32通道，步长2，下采样到320x320
+层1: ShuffleV2Block(128,2)  # 32→128通道，步长2，下采样到160x160 (P3/8)
+层2: ShuffleV2Block(128,1) ×3 # 128通道，步长1，保持尺寸
+层3: ShuffleV2Block(256,2)  # 128→256通道，步长2，下采样到80x80 (P4/16)
+层4: ShuffleV2Block(256,1) ×7 # 256通道，步长1，保持尺寸
+层5: ShuffleV2Block(512,2)  # 256→512通道，步长2，下采样到40x40 (P5/32)
+层6: ShuffleV2Block(512,1) ×3 # 512通道，步长1，保持尺寸
+```
 
 
 
