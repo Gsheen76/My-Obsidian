@@ -177,8 +177,20 @@ anchors:
 层5: ShuffleV2Block(512,2)  # 256→512通道，步长2，下采样到40x40 (P5/32)
 层6: ShuffleV2Block(512,1) ×3 # 512通道，步长1，保持尺寸
 ```
+-  **ShuffleV2Block的配置**
+```yaml
+# 层1: [-1, 1, ShuffleV2Block, [128, 2]]
+解释:
+- from: -1        # 输入来自上一层
+- number: 1       # 1个这样的模块
+- module: ShuffleV2Block
+- args: [128, 2]  # 输出128通道，步长2（下采样）
 
-
+# 层2: [-1, 3, ShuffleV2Block, [128, 1]]
+解释:
+- number: 3       # 连续3个ShuffleV2Block
+- args: [128, 1]  # 输出128通道，步长1（保持尺寸）
+```
 
 
 
