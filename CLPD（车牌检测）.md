@@ -292,4 +292,8 @@ python test.py \
 #### （2）测试结果
 
 
-![](assets/CLPD（车牌检测）/file-20260304163857472.png)
+![697](assets/CLPD（车牌检测）/file-20260304163857472.png)
+
+
+
+![697](assets/CLPD（车牌检测）/file-20260305160310685.jpg)
