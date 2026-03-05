@@ -43,7 +43,7 @@ test：141982张（来自各个子集）。
 
 # 2. 环境配置
 
-#### （1）本地部署：
+#### （1）本地部署
 
 代码来自于github开源项目：(https://github.com/we0091234/Chinese_license_plate_detection_recognition)，下载后conda创建一个新的环境，使用:
 ```bash
@@ -55,20 +55,20 @@ pip install -r requirement.txt
 - torch 2.1.0 
 - torchvision 0.16.0 （requirements里未提及，需要额外pip一下）
 
-#### （2）云端算力部署：
+#### （2）云端算力部署
 
 平台：OpenBayes，显卡：NVIDIA GeForce RTX 5090，上传数据集，配置环境。
 
 ---
 
 # 3. 训练
-#### （1）命令：
+#### （1）命令
 
 ```bash
 python train.py --data data/widerface.yaml --cfg models/yolov5n-0.5.yaml --weights weights/plate_detect.pt --epoch 10
 ```
 
-#### （2）模型：
+#### （2）模型
 
 采用**yolov5n-0.5**，车牌目标较小，在监控画面中车牌通常只占图像的1%-5%，车牌具有标准的宽高比，纹理特征明显，字符与背景对比度高，yolov5n-0.5 足够捕捉这些特征，无需大模型。
 
