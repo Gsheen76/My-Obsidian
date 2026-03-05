@@ -127,7 +127,7 @@ head:
    [[14, 17, 20], 1, Detect, [nc, anchors]],  # Detect(P3, P4, P5)  
   ]
 ```
-
+**width_multiple: 0.5** 正是这个模型叫 `yolov5n-0.5` 的原因，它将标准模型的通道数缩减为一半，实现极致轻量化。
 #### (3) 训练结果
 
 ![](assets/Chinese_license_plate_detections/file-20260304221626628.png)
