@@ -275,10 +275,21 @@ Neck（FPN-PAN）在模型中的核心作用是：
 
 # 4.测试
 #### （1）命令
+
 ```bash
-python test.py --weights runs/train/exp8/weights/best.pt --data data/widerface.yaml --batch-size 32 --img-size 640 --conf-thres 0.001 --iou-thres 0.6
+python test.py \
+  --weights runs/train/exp8/weights/best.pt \
+  --data data/widerface.yaml \
+  --batch-size 32 \
+  --img-size 640 \
+  --conf-thres 0.001 \
+  --iou-thres 0.6 \
+  --task test \
+  --project runs/test \
+  --name test_set_results
 ```
 
+#### （2）测试结果
 
 
 ![](assets/CLPD（车牌检测）/file-20260304163857472.png)
