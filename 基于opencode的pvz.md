@@ -1,3 +1,5 @@
+# 一、基础信息
+
 1. 存储位置：
 ```
 \\wsl.localhost\Ubuntu\home\sheen\pvz-game
