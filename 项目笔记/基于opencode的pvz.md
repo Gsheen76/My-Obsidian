@@ -41,7 +41,10 @@
 ![502](assets/基于opencode的pvz/file-20260311145315563.png)
 2. 战斗
 ![503](assets/基于opencode的pvz/file-20260311145352553.png)
-
+3. 花园
+![505](assets/基于opencode的pvz/file-20260311163649625.png)
+4. 商店
+![](assets/基于opencode的pvz/file-20260311163732754.png)
 ### version-2.0
 
 - **版本介绍**
