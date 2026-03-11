@@ -39,12 +39,12 @@
 - **局内展示**
 1. 界面
 ![502](assets/基于opencode的pvz/file-20260311145315563.png)
-2. 战斗
+2. 战斗系统
 ![503](assets/基于opencode的pvz/file-20260311145352553.png)
-3. 花园
+3. 花园系统
 ![505](assets/基于opencode的pvz/file-20260311163649625.png)
-4. 商店
-![](assets/基于opencode的pvz/file-20260311163732754.png)
+4. 商店系统
+![504](assets/基于opencode的pvz/file-20260311163732754.png)
 ### version-2.0
 
 - **版本介绍**
@@ -58,4 +58,4 @@
 
 - **局内展示**
 1. 关卡系统
-![567](assets/基于opencode的pvz/file-20260311163250586.png)
+![518](assets/基于opencode的pvz/file-20260311163250586.png)
