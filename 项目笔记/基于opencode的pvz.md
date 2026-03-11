@@ -8,7 +8,7 @@
 
 ### 2. 操作方式
 
-在vscode激活wsl后，使用opencode进行vibecoding
+在vscode激活wsl后，使用opencode进行vibecoding。
 
 ### 3. opencode对话记录
 
