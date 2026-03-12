@@ -65,3 +65,8 @@
 ![518](assets/基于opencode的pvz/file-20260311163250586.png)
 2. 战斗优化
 ![517](assets/基于opencode的pvz/file-20260311195504287.png)
+
+### version-3.0（最终版）
+
+- **局内展示**
+![](assets/基于opencode的pvz/file-20260312113750494.png)
