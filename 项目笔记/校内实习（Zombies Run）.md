@@ -74,6 +74,7 @@ bash -c "$(curl -fsSL http://cloud.iflow.cn/iflow-cli/install.sh)"
 ![505](assets/校内实习（Zombies%20Run）/file-20260311163649625.png)
 4. 商店系统
 ![504](assets/校内实习（Zombies%20Run）/file-20260311163732754.png)
+
 ### version-2.0
 
 - **版本介绍**
