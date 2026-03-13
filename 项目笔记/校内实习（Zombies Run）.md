@@ -1,4 +1,33 @@
-# 一、基础信息
+# 一、准备阶段
+
+### 1. 安装虚拟机Ubuntu
+
+先安装wsl，在wsl安装Ubuntu，使用wsl转Linux系统，登录：
+```bash
+wsl -d Ubuntu
+```
+账户：sheen         密码：1
+
+### 2. 安装opencode
+
+```bash
+curl -fsSL https://opencode.ai/install | bash
+```
+第一天的小任务，使用opencode的免费tokens完成一个页面计算器。
+
+### 3. 安装claudecode
+
+```bash
+curl -fsSL https://claude.ai/install.sh | bash
+```
+
+### 4.安装iFlow
+
+```bash
+bash -c "$(curl -fsSL http://cloud.iflow.cn/iflow-cli/install.sh)"
+```
+
+# 二、基础信息
 
 ### 1. 存储位置
 
@@ -23,7 +52,7 @@
   Continue  opencode -s ses_32916ff16ffe0xURI1pjmY3Jt6
 ```
 
-# 二、内容
+# 三、内容
 
 ### version-1.0
 
@@ -38,13 +67,13 @@
 
 - **局内展示**
 1. 界面
-![502](assets/基于opencode的pvz/file-20260311145315563.png)
+![502](assets/校内实习（Zombies%20Run）/file-20260311145315563.png)
 2. 战斗系统
-![503](assets/基于opencode的pvz/file-20260311145352553.png)
+![503](assets/校内实习（Zombies%20Run）/file-20260311145352553.png)
 3. 花园系统
-![505](assets/基于opencode的pvz/file-20260311163649625.png)
+![505](assets/校内实习（Zombies%20Run）/file-20260311163649625.png)
 4. 商店系统
-![504](assets/基于opencode的pvz/file-20260311163732754.png)
+![504](assets/校内实习（Zombies%20Run）/file-20260311163732754.png)
 ### version-2.0
 
 - **版本介绍**
@@ -62,9 +91,9 @@
 
 - **局内展示**
 1. 关卡系统
-![518](assets/基于opencode的pvz/file-20260311163250586.png)
+![518](assets/校内实习（Zombies%20Run）/file-20260311163250586.png)
 2. 战斗优化
-![517](assets/基于opencode的pvz/file-20260311195504287.png)
+![517](assets/校内实习（Zombies%20Run）/file-20260311195504287.png)
 
 ### version-3.0（最终版）
 
@@ -87,12 +116,12 @@
 
 - **局内展示**
 1. 战斗优化
-![697](assets/基于opencode的pvz/file-20260312113750494.png)
+![697](assets/校内实习（Zombies%20Run）/file-20260312113750494.png)
 2. 主界面
-![697](assets/基于opencode的pvz/file-20260312152858824.png)
+![697](assets/校内实习（Zombies%20Run）/file-20260312152858824.png)
 3. 花园
-![697](assets/基于opencode的pvz/file-20260312152920861.png)
+![697](assets/校内实习（Zombies%20Run）/file-20260312152920861.png)
 4. 商店
-![697](assets/基于opencode的pvz/file-20260312152951570.png)
+![697](assets/校内实习（Zombies%20Run）/file-20260312152951570.png)
 5. 图鉴
-![697](assets/基于opencode的pvz/file-20260312153022046.png)
+![697](assets/校内实习（Zombies%20Run）/file-20260312153022046.png)
