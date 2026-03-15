@@ -44,3 +44,33 @@ $$
 $$
 \left.( {1 \over 2} \right)
 $$
+
+
+
+
+# 基础符号
+$ + - = \times \div \pm \mp $
+
+# 上下标
+$x^2$ $x_n$ $x^{2n}$ $x_{ij}$
+
+# 分数
+$\frac{1}{2}$ ${1}/{2}$
+
+# 根号
+$\sqrt{2}$ $\sqrt[n]{2}$
+
+# 希腊字母
+$\alpha \beta \gamma \pi \omega$
+
+# 求和、积分、极限
+$\sum_{i=1}^n$ $\int_a^b$ $\lim_{x \to 0}$
+
+# 括号
+$\{ \}$ $[ ]$ $( )$ $\langle \rangle$
+
+# 矩阵
+$\begin{pmatrix} a & b \\ c & d \end{pmatrix}$
+
+# 多行公式
+$\begin{aligned} x &= 1 \\ y &= 2 \end{aligned}$
