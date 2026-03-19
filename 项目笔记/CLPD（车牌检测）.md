@@ -68,7 +68,7 @@ pip install -r requirement.txt
 #### （1）命令
 
 ```bash
-python train.py --data data/widerface.yaml --cfg models/yolov5n-0.5.yaml --weights weights/plate_detect.pt --epoch 10
+python train.py --data data/widerface.yaml --cfg models/yolov5n-0.5.yaml --weights weights/plate_detect.pt --epoch 10                     
 ```
 
 #### （2）模型
