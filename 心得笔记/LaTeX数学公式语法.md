@@ -57,7 +57,7 @@ $$
 
 
 # 基础符号
-$ + - = \times \div \pm \mp $
+$$ + - = \times \div \pm \mp $$
 
 # 上下标
 $x^2$ $x_n$ $x^{2n}$ $x_{ij}$
