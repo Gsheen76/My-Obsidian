@@ -70,7 +70,58 @@ $\sqrt{2}$ $\sqrt[n]{2}$
 
 # 希腊字母
 $\alpha \beta \gamma \pi \omega$
+$$
+\alpha
+\beta
+\gamma
+\delta
+\epsilon
+\varepsilon
+\zeta
+\eta
+\Gamma
+\Delta
+\Theta
+\varGamma
+\varDelta
+\varTheta
+\theta
+\vartheta
+\iota
+\kappa
+\lambda
+\mu
+\nu
+\xi
+\Lambda
+\Xi
+\Pi
+\varLambda
+\varXi
+\varPi
+\pi
+\varpi
+\rho
+\varrho
+\sigma
+\varsigma
+\tau
+\Sigma
+\Upsilon
+\Phi
+\varSigma
+\varUpsilon
+\varPhi
+\upsilon
+\phi
+\varphi
+\chi
+\psi
+\omega
+\varPsi
+\varOmega
 
+$$
 # 求和、积分、极限
 $\sum_{i=1}^n$ $\int_a^b$ $\lim_{x \to 0}$
 
