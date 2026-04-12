@@ -70,7 +70,7 @@ $\sqrt{2}$ $\sqrt[n]{2}$
 
 # 希腊字母
 
-| 符号            | LaTeX         |
+| 符号小写          | LaTeX         |
 | ------------- | ------------- |
 | $\alpha$      | `\alpha`      |
 | $\beta$       | `\beta`       |
@@ -93,18 +93,18 @@ $\sqrt{2}$ $\sqrt[n]{2}$
 | $\psi$        | `\psi`        |
 | $\omega$      | `\omega`      |
 
-| 符号        | LaTeX     | 常见含义   |
-| --------- | --------- | ------ |
-| $\Gamma$  | `\Gamma`  | 伽马函数   |
-| $\Delta$  | `\Delta`  | 变化量    |
-| $\Theta$  | `\Theta`  | 参数集合   |
-| $\Lambda$ | `\Lambda` | 特征值矩阵  |
-| $\Xi$     | `\Xi`     | 随机变量集合 |
-| $\Pi$     | `\Pi`     | 连乘符号   |
-| $\Sigma$  | `\Sigma`  | 求和     |
-| $\Phi$    | `\Phi`    | 分布函数   |
-| $\Psi$    | `\Psi`    | 波函数    |
-| $\Omega$  | `\Omega`  | 样本空间   |
+| 符号大写      | LaTeX     |
+| --------- | --------- |
+| $\Gamma$  | `\Gamma`  |
+| $\Delta$  | `\Delta`  |
+| $\Theta$  | `\Theta`  |
+| $\Lambda$ | `\Lambda` |
+| $\Xi$     | `\Xi`     |
+| $\Pi$     | `\Pi`     |
+| $\Sigma$  | `\Sigma`  |
+| $\Phi$    | `\Phi`    |
+| $\Psi$    | `\Psi`    |
+| $\Omega$  | `\Omega`  |
 
 # 求和、积分、极限
 $\sum_{i=1}^n$ $\int_a^b$ $\lim_{x \to 0}$
