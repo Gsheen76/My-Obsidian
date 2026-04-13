@@ -73,7 +73,7 @@ $$R(\rho,\theta)=2\sqrt{1-\rho^2}, \quad |\rho|\leq1$$
 
 # 习题3：图示
 
-![height:350px](assets/任务1/file-20260413123758246.png)
+![height:350px|288](assets/任务1/file-20260413123758246.png)
 
 ---
 
@@ -86,7 +86,7 @@ $$\tilde{R}(k,\theta)=\tilde{f}(k\cos\theta, k\sin\theta)$$
 
 **意义**：$\tilde{R}(k,\theta)$ 是原图傅里叶变换过原点沿 $\theta$ 方向的切片
 
-![bg right:40% height:280px](assets/任务1/file-20260413141349774.png)
+![bg right:40% height:280px|463](assets/任务1/file-20260413141349774.png)
 
 ---
 
