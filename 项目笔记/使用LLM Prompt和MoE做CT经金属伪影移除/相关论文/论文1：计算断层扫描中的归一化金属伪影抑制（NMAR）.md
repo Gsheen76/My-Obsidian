@@ -1,73 +1,41 @@
-# Normalized metal artifact reduction (NMAR) in computed tomography
-# 计算断层扫描中的归一化金属伪影抑制（NMAR）
+# Normalized metal artifact reduction （NMAR） in computed tomography
 
-Citation: Medical Physics 37, 5482 (2010); doi: 10.1118/1.3484090
-
-引用: Medical Physics 37, 5482 (2010); doi: 10.1118/1.3484090
+**归一化金属伪影抑制（NMAR）在计算机断层扫描中的应用**
 
 View online: [http://dx.doi.org/10.1118/1.3484090](http://dx.doi.org/10.1118/1.3484090)
 
-在线阅读：[http://dx.doi.org/10.1118/1.3484090](http://dx.doi.org/10.1118/1.3484090)
+# abstract 摘要
 
-View Table of Contents: [http://scitation.aip.org/content/aapm/journal/medphys/37/10?ver=pdfcov](http://scitation.aip.org/content/aapm/journal/medphys/37/10?ver=pdfcov)
+### Purpose:
 
-查看目录：[http://scitation.aip.org/content/aapm/journal/medphys/37/10?ver=pdfcov](http://scitation.aip.org/content/aapm/journal/medphys/37/10?ver=pdfcov)
+While modern clinical CT scanners under normal circumstances produce high quality images, severe artifacts degrade the image quality and the diagnostic value if metal prostheses or other metal objects are present in the field of measurement. Standard methods for metal artifact reduction MAR replace those parts of the projection data that are affected by metal the so-called metal trace or metal shadow by interpolation. However, while sinogram interpolation methods efficiently remove metal artifacts, new artifacts are often introduced, as interpolation cannot com pletely recover the information from the metal trace. The purpose of this work is to introduce a generalized normalization technique for MAR, allowing for efficient reduction of metal artifacts while adding almost no new ones. The method presented is compared to a standard MAR method, as well as MAR using simple length normalization. 
 
-Published by the American Association of Physicists in Medicine
+目的：虽然现代临床CT扫描仪在正常情况下能产生高质量的图像，但如果测量场中存在金属假体或其他金属物体，严重的伪影会降低图像质量和诊断价值。金属伪影抑制（MAR）的**标准方法**是用插值法替换受金属影响的投影数据部分（所谓的金属轨迹或金属阴影）。然而，虽然投影图插值法能有效地去除金属伪影，但由于插值法无法完全恢复金属轨迹中的信息，因此常常会引入新的伪影。本工作的目的是介绍一种通用的MAR归一化技术，能够有效抑制金属伪影，同时几乎不引入新的伪影。将所提出的方法与标准的MAR方法以及使用简单长度归一化的MAR方法进行了比较。
 
-由美国医学物理学家协会出版
+### Methods:
 
-Segmentation of artifacts and anatomy in CT metal artifact reduction Med. Phys. 39, 5857 (2012); 10.1118/1.4749931
-
-CT金属伪影减除中的伪影和解剖结构分割，《医学物理学报》39, 5857 (2012); 10.1118/1.4749931
-
-Frequency split metal artifact reduction (FSMAR) in computed tomography Med. Phys. 39, 1904 (2012); 10.1118/1.3691902
-
-计算断层成像中的频域分裂金属伪影抑制 (FSMAR) 物理医学杂志39, 1904 (2012); 10.1118/1.3691902
-
-An algorithm for efficient metal artifact reductions in permanent seed implants Med. Phys. 38, 47 (2011); 10.1118/1.3519988
-
-一种用于永久性籽植入物中金属伪影的高效算法 《医学物理学报》38, 47 (2011); 10.1118/1.3519988
-
-Metal artifact reduction in CT using tissue-class modeling and adaptive prefiltering Med. Phys. 33, 2852 (2006); 10.1118/1.2218062
-
-使用组织类别建模和自适应预滤波在 CT 中进行金属伪影去除 物理学报33, 2852 (2006); 10.1118/1.2218062
-
-Esther Meyera兲
-
-Esther Meyera兲
-
-Normalized metal artifact reduction „NMAR… in computed tomography
-
-归一化金属伪影还原„NMAR…在计算机断层扫描中的应用
-
-Institute of Medical Physics, University of Erlangen–Nürnberg, D-91052 Erlangen, Germany and Siemens Healthcare Forchheim, D-91301 Forchheim, Germany Rainer Raupach Siemens Healthcare Forchheim, D-91301 Forchheim, Germany Michael Lell Institute of Diagnostic Radiology, University of Erlangen–Nürnberg, D-91054 Erlangen, Germany Bernhard Schmidt Siemens Healthcare Forchheim, D-91301 Forchheim, Germany Marc Kachelrieß Institute of Medical Physics, University of Erlangen–Nürnberg, D-91052 Erlangen, Germany
-
-医学物理研究所，埃尔朗根-纽伦堡大学，D-91052埃尔朗根，德国，西门子医疗福希海姆，D-91301福希海姆，德国 Rainer Raupach 西门子医疗福希海姆，D-91301福希海姆，德国 Michael Lell 诊断放射学研究所，埃尔朗根-纽伦堡大学，D-91054埃尔朗根，德国 Bernhard Schmidt 西门子医疗福希海姆，D-91301福希海姆，德国 Marc Kachelrieß 医学物理研究所，埃尔朗根-纽伦堡大学，D-91052埃尔朗根，德国
-
-共Received 19 May 2010; revised 22 July 2010; accepted for publication 10 August 2010; published 28 September 2010兲
-
-收稿日期 2010年5月19日；修回日期 2010年7月22日；录用日期 2010年8月10日；在线发表日期 2010年9月28日
-
-Purpose: While modern clinical CT scanners under normal circumstances produce high quality images, severe artifacts degrade the image quality and the diagnostic value if metal prostheses or other metal objects are present in the ﬁeld of measurement. Standard methods for metal artifact reduction共MAR兲replace those parts of the projection data that are affected by metal共the so-called metal trace or metal shadow兲by interpolation. However, while sinogram interpolation methods efﬁciently remove metal artifacts, new artifacts are often introduced, as interpolation cannot completely recover the information from the metal trace. The purpose of this work is to introduce a generalized normalization technique for MAR, allowing for efﬁcient reduction of metal artifacts while adding almost no new ones. The method presented is compared to a standard MAR method, as well as MAR using simple length normalization.
-
-目的：虽然现代临床CT扫描仪在正常情况下能产生高质量的图像，但如果测量场中存在金属假体或其他金属物体，严重的伪影会降低图像质量和诊断价值。金属伪影抑制（MAR）的标准方法是用插值法替换受金属影响的投影数据部分（所谓的金属轨迹或金属阴影）。然而，虽然投影图插值法能有效地去除金属伪影，但由于插值法无法完全恢复金属轨迹中的信息，因此常常会引入新的伪影。本工作的目的是介绍一种通用的MAR归一化技术，能够有效抑制金属伪影，同时几乎不引入新的伪影。将所提出的方法与标准的MAR方法以及使用简单长度归一化的MAR方法进行了比较。
-
-Methods: In the ﬁrst step, metal is segmented in the image domain by thresholding. A 3D forward projection identiﬁes the metal trace in the original projections. Before interpolation, the projections are normalized based on a 3D forward projection of a prior image. This prior image is obtained, for example, by a multithreshold segmentation of the initial image. The original rawdata are divided by the projection data of the prior image and, after interpolation, denormalized again. Simulations and measurements are performed to compare normalized metal artifact reduction共NMAR兲to standard MAR with linear interpolation and MAR based on simple length normalization.
+In the first step, metal is segmented in the image domain by thresholding. A 3D forward projection identifies the metal trace in the original projections. Before interpolation, the projections are normalized based on a 3D forward projection of a prior image. This prior image is obtained, for example, by a multithreshold segmentation of the initial image. The original rawdata are divided by the projection data of the prior image and, after interpolation, denormalized again. Simulations and measurements are performed to compare normalized metal artifact reduction NMAR to standard MAR with linear interpolation and MAR based on simple length normalization.
 
 方法：在第一步中，通过阈值分割在图像域中分割金属。三维前向投影识别原始投影中的金属轨迹。在插值之前，基于先前图像的三维前向投影对投影进行归一化。该先前图像例如通过初始图像的多阈值分割获得。原始原始数据除以先前图像的投影数据，并在插值后再次反归一化。进行模拟和测量以比较归一化金属伪影校正（NMAR）与线性插值的标准MAR以及基于简单长度归一化的MAR。
 
-Results: Promising results for clinical spiral cone-beam data are presented in this work. Included are patients with hip prostheses, dental ﬁllings, and spine ﬁxation, which were scanned at pitch values ranging from 0.9 to 3.2. Image quality is improved considerably, particularly for metal implants within bone structures or in their proximity. The improvements are evaluated by comparing proﬁles through images and sinograms for the different methods and by inspecting ROIs. NMAR outperforms both other methods in all cases. It reduces metal artifacts to a minimum, even close to metal regions. Even for patients with dental ﬁllings, which cause most severe artifacts, satisfactory results are obtained with NMAR. In contrast to other methods, NMAR prevents the usual blurring of structures close to metal implants if the metal artifacts are moderate.
+### Results:
+
+Promising results for clinical spiral cone-beam data are presented in this work. Included are patients with hip prostheses, dental ﬁllings, and spine ﬁxation, which were scanned at pitch values ranging from 0.9 to 3.2. Image quality is improved considerably, particularly for metal implants within bone structures or in their proximity. The improvements are evaluated by comparing proﬁles through images and sinograms for the different methods and by inspecting ROIs. NMAR outperforms both other methods in all cases. It reduces metal artifacts to a minimum, even close to metal regions. Even for patients with dental ﬁllings, which cause most severe artifacts, satisfactory results are obtained with NMAR. In contrast to other methods, NMAR prevents the usual blurring of structures close to metal implants if the metal artifacts are moderate.
 
 结果：本研究展示了临床螺旋锥束数据的有希望的结果。其中包括带有髋关节假体、牙科填充物和脊柱固定器的患者，这些患者以 0.9 至 3.2 的螺距值进行扫描。图像质量得到了显著改善，特别是对于骨骼结构内或其附近的金属植入物。通过比较不同方法的图像和正弦图的剖面以及检查感兴趣区域 (ROI) 来评估改进。NMAR 在所有情况下均优于其他两种方法。它将金属伪影减少到最低限度，即使在靠近金属区域也是如此。即使对于引起最严重伪影的牙科填充物患者，使用 NMAR 也获得了满意的结果。与其他方法相比，如果金属伪影适中，NMAR 可以防止金属植入物附近结构的通常模糊。
 
-Conclusions: NMAR clearly outperforms the other methods for both moderate and severe artifacts. The proposed method reliably reduces metal artifacts from simulated as well as from clinical CT data. Computationally efﬁcient and inexpensive compared to iterative methods, NMAR can be used as an additional step in any conventional sinogram inpainting-based MAR method. © 2010 American Association of Physicists in Medicine.关DOI: 10.1118/1.3484090兴
+### Conclusions:
 
-结论：对于中度和重度伪影，NMAR 的性能明显优于其他方法。所提出的方法能够可靠地减少模拟 CT 数据和临床 CT 数据中的金属伪影。与迭代方法相比，NMAR 在计算上更有效且成本更低，可以作为任何传统投影图修复方法的附加步骤。© 2010 美国医学物理学家协会。DOI: 10.1118/1.3484090兴
+Conclusions: NMAR clearly outperforms the other methods for both moderate and severe artifacts. The proposed method reliably reduces metal artifacts from simulated as well as from clinical CT data. Computationally efficient and inexpensive compared to iterative methods, NMAR can be used as an additional step in any conventional sinogram inpainting-based MAR method. © 2010 Ameri can Association of Physicists in Medicine. 
 
-Key words: metal artifact reduction, metal artifact correction, metal artifacts, image quality, sinogram inpainting
+结论：对于中度和重度伪影，NMAR 的性能明显优于其他方法。所提出的方法能够可靠地减少模拟 CT 数据和临床 CT 数据中的金属伪影。与迭代方法相比，NMAR 在计算上更有效且成本更低，可以作为任何传统投影图修复方法的附加步骤。© 2010 美国医学物理学家协会。
+
+### Key words:
+
+metal artifact reduction, metal artifact correction, metal artifacts, image quality, sinogram inpainting
 
 关键词：金属伪影抑制，金属伪影校正，金属伪影，图像质量，投影数据修复
+
 
 I. INTRODUCTION
 
