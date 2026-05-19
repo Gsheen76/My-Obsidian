@@ -37,17 +37,13 @@ metal artifact reduction, metal artifact correction, metal artifacts, image qual
 关键词：金属伪影抑制，金属伪影校正，金属伪影，图像质量，投影数据修复
 
 
-I. INTRODUCTION
+# I. INTRODUCTION 引言
 
-引言
-
-I.A. Overview
-
-概述
+### I.A. Overview 概述
 
 Modern CT scanners are able to produce high quality images, and under ideal circumstances共a water cylinder in a well-calibrated scanner兲, CT values can reach an accuracy of 1 HU.1 However, if metal objects are present in the ﬁeld of measurement, severe artifacts with a magnitude of up to several hundred HU degrade the image quality and diagnostic value.
 
-现代CT扫描仪能够产生高质量的图像，在理想情况下（例如，在校准良好的扫描仪中对水体进行扫描），CT值可以达到1 HU的精度。1然而，如果测量场中存在金属物体，高达数百HU的严重伪影会降低图像质量和诊断价值。
+现代CT扫描仪能够产生高质量的图像，在理想情况下（例如，在校准良好的扫描仪中对水体进行扫描），CT值可以达到1 HU的精度。然而，如果测量场中存在金属物体，高达数百HU的严重伪影会降低图像质量和诊断价值。
 
 There are various effects that lead to the formation of artifacts in the presence of metal objects. Metals have much higher densities and higher atomic numbers compared to body tissue. Also, metal implants usually have sharply deﬁned boundaries. Because of these reasons, noise, beam hardening artifacts, scatter artifacts, and nonlinear partial volume artifacts are much more severe than in cases without metal. The term metal artifact is a generic term for all of these artifacts.
 
@@ -59,15 +55,13 @@ Low-contrast structures may be easily obscured by metal artifacts. Tumors in th
 
 Various types of metal artifact reduction共MAR兲methods have been proposed since the ﬁrst publications on MAR.2,3 They can be grouped into sinogram inpainting methods, iterative methods, statistical methods, and ﬁltering methods. To our knowledge, no commercially available CT scanner is currently providing metal artifact reduction software, and therefore, metal implants remain a major source of artifacts in computed tomography.
 
-自首次发表关于金属伪影减除（MAR）的文献以来，已提出了多种金属伪影减除（MAR）方法。2,3 这些方法可分为投影数据修复法、迭代法、统计法和滤波法。据我们所知，目前没有商用CT扫描仪提供金属伪影减除软件，因此，金属植入物仍然是计算机断层扫描中伪影的主要来源。
+自首次发表关于金属伪影减除（MAR）的文献以来，已提出了多种金属伪影减除（MAR）方法。这些方法可分为投影数据修复法、迭代法、统计法和滤波法。据我们所知，目前没有商用CT扫描仪提供金属伪影减除软件，因此，金属植入物仍然是计算机断层扫描中伪影的主要来源。
 
-Sinogram inpainting methods, which are most common MAR methods, use interpolation3–5 or forward projections6–8,24 to complete the sinogram, where metalaffected values are treated as missing data. Filtering methods try to make use of all the available information and not to replace parts of projections.9,10 Iterative methods provide a means of incorporating additional knowledge, as, for example, the physics behind the acquisition process or photon statistics.11–14 Statistical methods are less sensitive to noise than ﬁltered backprojection. As shown in Ref. 15, a combination of different methods can be advantageous. Another interesting approach that has been pursued is MAR with total variation minimization.16
+Sinogram inpainting methods, which are most common MAR methods, use interpolation3–5 or forward projections6–8to complete the sinogram, where metalaffected values are treated as missing data. Filtering methods try to make use of all the available information and not to replace parts of projections.9,10 Iterative methods provide a means of incorporating additional knowledge, as, for example, the physics behind the acquisition process or photon statistics.11–14 Statistical methods are less sensitive to noise than ﬁltered backprojection. As shown in Ref. 15, a combination of different methods can be advantageous. Another interesting approach that has been pursued is MAR with total variation minimization.16
 
-正弦图修复方法是最常用的金属伪影去除（MAR）方法，它们通过插值3–5或前向投影6–8,24来补全正弦图，其中将受金属影响的值视为缺失数据。滤波方法试图利用所有可用信息，而不是替换投影的一部分。9,10 迭代方法提供了一种结合额外知识的途径，例如，采集过程背后的物理原理或光子统计学。11–14 统计方法比滤波反投影对噪声的敏感度较低。如文献15所示，结合不同方法可能是有益的。另一种被追求的有趣方法是具有全变分最小化的金属伪影去除（MAR）。16
+正弦图修复方法是最常用的金属伪影去除（MAR）方法，它们通过插值或前向投影,来补全正弦图，其中将受金属影响的值视为缺失数据。滤波方法试图利用所有可用信息，而不是替换投影的一部分。迭代方法提供了一种结合额外知识的途径，例如，采集过程背后的物理原理或光子统计学。统计方法比滤波反投影对噪声的敏感度较低。如文献所示，结合不同方法可能是有益的。另一种被追求的有趣方法是具有全变分最小化的金属伪影去除（MAR）。
 
-I.B. Sinogram inpainting
-
-正弦图修复
+### I.B. Sinogram inpainting 正弦图修复
 
 Sinogram inpainting methods, which are most widely spread among MAR methods, treat those parts of the projection data that are affected by metal共the so-called metal trace or metal shadow兲as missing data. The underlying idea is to consider any sinogram values as completely unreliable if the corresponding rays have intersected metal objects.
 
