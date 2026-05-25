@@ -1,0 +1,145 @@
+本文档介绍如何使用 `XuGenPolyChromaticSgmFromJsonc` 程序生成多能谱下的正投影，进行图像重建，并对束硬化伪影进行矫正。
+
+# 1. 多能谱正投影
+
+### 1.1 配置文件
+
+`XuGenPolyChromaticSgmFromJsonc` 程序的输入是一个 `jsonc` 文件。文件夹中的 `config_multi_spectrum_fpj.jsonc` 是一个配置范例。
+模拟从材料基的系数出发，关键参数如下：
+```json
+{
+  "InputDir": "./phantom",                  // 材料基所在的文件夹
+  "ImgFileName": ["img_water","img_bone"],  // 材料基系数对应的文件名
+  "ImgMaterial": ["water","bone"],          // 材料基文件对应的材料
+  "Density": [1,1.92],                      // 材料的密度 (g/cm³)
+  "SpectrumFile": ["spec.txt"],             // 能谱文件，第一列是能量(keV)，第二列是权重
+  "OutputSgmFileName": ["sgm_output"],      // 输出文件名
+  "CountsPerPixel": 5e5                     // 每个像素上的入射光子数，用于模拟噪声
+}
+```
+`config_multi_spectrum_fpj.jsonc` 的其余参数和 `mgfpj` 正投影程序相同。
+
+### 1.2 观察材料基图像
+
+打开 `img_water.raw` 和 `img_bone.raw`（尺寸参考 `config_multi_spectrum_fpj.jsonc` 文件，`ImageDimension` 为 256），观察图像的数值。
+- `img_water`: 水的材料分数（0~1 范围）
+- `img_bone`: 骨的材料分数（0~1 范围）
+
+### 1.3 运行程序
+
+在 MATLAB 中输入如下命令即可运行：
+```matlab
+XuGenPolyChromaticSgmFromJsonc('config_multi_spectrum_fpj.jsonc');
+```
+正确运行后会输出正弦图，存储在 `sgm/sgm_output.raw` 文件中。在 ImageJ 中读取这个文件（尺寸参考配置文件，`SinogramWidth` × `SinogramHeight` 为 1000×1000，32-bit float）。
+ 
+# 2. 图像重建
+
+利用 `mgfbp.exe` 程序重建 `sgm_output.raw` 文件。文件夹中已包含一个 `config_mgfbp.jsonc` 配置文件作为范例。
+```json
+{
+  "InputDir": "./sgm/",
+  "OutputDir": "./rec/",
+  "InputFiles": "sgm_.*.raw",
+  "OutputFileReplace": ["sgm_", "rec_"],
+  "ImageDimension": 512,
+  "SinogramWidth": 1000,
+  "SinogramHeight": 1000,
+  "Views": 1000,
+  "WaterMu": 0.0210        // 重建时自动转换为 HU
+}
+```
+重建后输出文件为 `rec/rec_output.raw`（512×512，32-bit float）。
+**注意**：默认参数下重建图像已转化为 **HU（Hounsfield Unit）**。
+
+# 3. 水的束硬化伪影矫正
+
+对 `sgm_output.raw` 做水的束硬化伪影矫正。方法参考之前的作业（三阶多项式校正）。
+
+### 3.1 计算校正系数
+
+用能谱和水的衰减系数拟合多项式：
+$$P_{true} = a_3 P^3 + a_2 P^2 + a_1 P + a_0$$
+其中 $P$ 为多能谱投影值，$P_{true}$ 为等效单能投影值。
+
+### 3.2 应用校正
+
+对正弦图逐像素应用多项式校正，得到 `sgm_corr.raw`。
+
+### 3.3 重建矫正后的正弦图
+
+用 `mgfbp.exe` 重建 `sgm_corr.raw`，得到 `rec_corr.raw`（即 `rec_water_corr`）。
+
+# 4. 骨头的束硬化伪影矫正（EBHC）
+
+参考 EBHC（Extended Beam Hardening Correction）论文进行骨头的束硬化伪影矫正。
+
+### 4.1 阈值分割
+
+首先对水矫正后的重建图 `rec_water_corr` 做阈值分割：
+- **大于 200 HU** 的部分 → **骨头** (`rec_bone`)
+- **小于 200 HU** 的部分 → **软组织** (`rec_water` / `rec_softtissue`)
+
+### 4.2 HU 转 μ
+
+如果分割后的图像值是 HU，需要转化为线性衰减系数 $\mu$。HU 和 $\mu$ 的关系如下：
+$$HU = \frac{\mu - \mu_{water}}{\mu_{water}} \times 1000$$
+其中 $\mu_{water} = 0.0210 \text{ mm}^{-1}$。
+
+### 4.3 对分割图像做正投影
+
+对分割所得的骨头和软组织图像做正投影，正投影参数同 `config_multi_spectrum_fpj.jsonc` 中的参数，得到：
+- `sgm_bone`：骨头的多能谱正投影
+- `sgm_softtissue`（`sgm_water`）：软组织的多能谱正投影
+
+### 4.4 Hadamard 乘积
+
+对这两张正弦图做 Hadamard（点对点）乘积操作：
+- $sgm_{bb} = sgm_{bone} \times sgm_{bone}$（骨²项）
+- $sgm_{bs} = sgm_{bone} \times sgm_{softtissue}$（骨×软组织项）
+
+### 4.5 重建乘积项
+
+重建 $sgm_{bb}$ 和 $sgm_{bs}$，重建参数同 `config_mgfbp.jsonc`，**但注意不要把图像转为 HU**（删除 `jsonc` 中的 `WaterMu` 项）。
+得到：
+- `rec_bb`
+- `rec_bs`
+
+### 4.6 线性组合（EBHC 校正公式）
+
+将 `rec_water_corr`（已转回 μ）、`rec_bb`、`rec_bs` 线性相加：  
+$$rec_{bone\_corr} = rec_{water\_corr,\mu} + a \times rec_{bb} + b \times rec_{bs}$$
+  系数 $a$、$b$ 需要经验性选取。在这个能谱下：
+- $a \approx 0.015$
+- $b \approx -0.01$
+
+### 4.7 转回 HU 并观察
+
+将 `rec_bone_corr` 转化为 HU 值：
+$$HU = \left(\frac{\mu}{\mu_{water}} - 1\right) \times 1000$$
+并用 **[-100, 100]** 的窗观察图像，与 `rec_water_corr`（仅水校正）做对比，观察骨束硬化伪影是否得到进一步抑制。
+
+  
+
+
+
+  
+# 附录：文件清单
+
+|文件|说明|尺寸|
+|---|---|---|
+|`phantom/img_water.raw`|水的材料基系数|256×256|
+|`phantom/img_bone.raw`|骨的材料基系数|256×256|
+|`sgm/sgm_output.raw`|多能谱正弦图（未校正）|1000×1000|
+|`sgm/sgm_corr.raw`|水束硬化校正后的正弦图|1000×1000|
+|`rec/rec_output.raw`|未校正重建图像（HU）|512×512|
+|`rec/rec_corr.raw`|水校正后重建图像（HU）|512×512|
+|`rec/segment/rec_bone.raw`|分割后的骨头图像（μ）|512×512|
+|`rec/segment/rec_water.raw`|分割后的软组织图像（μ）|512×512|
+|`sgm/segment/sgm_bone.raw`|骨头分割图的多能谱正投影|1000×1000|
+|`sgm/segment/sgm_water.raw`|软组织分割图的多能谱正投影|1000×1000|
+|`sgm/segment/sgm_bb.raw`|Hadamard 乘积（骨²）|1000×1000|
+|`sgm/segment/sgm_bw.raw`|Hadamard 乘积（骨×软组织）|1000×1000|
+|`rec/segment/rec_bb.raw`|重建骨²项（μ，不转HU）|512×512|
+|`rec/segment/rec_bw.raw`|重建骨×软组织项（μ，不转HU）|512×512|
+|`rec/rec_ebhc_final.raw`|EBHC 完全校正结果（HU）|512×512|
