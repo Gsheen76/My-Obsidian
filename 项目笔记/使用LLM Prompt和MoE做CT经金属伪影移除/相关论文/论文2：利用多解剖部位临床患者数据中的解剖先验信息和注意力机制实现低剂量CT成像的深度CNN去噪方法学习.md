@@ -77,13 +77,9 @@ $$
 
 # III. EXPERIMENTS 实验
 
-In this section, we conduct experiments to validate the effectiveness of our method. First, the patient data and training details are described. Second, we evaluate the performance of our method compared with that of several other DL-based methods. Last, the experimental results and ablation studies are described.
-
 在本节中，我们进行实验以验证我们方法的有效性。首先，描述了患者数据和训练细节。其次，我们将我们方法的性能与几种其他基于深度学习的方法的性能进行了比较评估。最后，描述了实验结果和消融研究。
 
-A. Clinical Patient Data and Details of Implementation
-
-A. 临床患者数据与实施细节
+### A. Clinical Patient Data and Details of Implementation 临床患者数据与实施细节
 
 With the research data support of Guizhou Provincial People’s Hospital (Guiyang, Guizhou, China), we are able to utilize clinical data collected from more than 200 patients, with an image size of 512 × 512. The age distribution for these patients ranges from 7 to 82. Among these patients, 55% of them are male and 45% are female. The total number of CT images exceeds 80,000; 10% of the data are utilized as validation data, and 10% of the data are utilized as test data. The remainder of the data are employed for network training. The dataset contains high-resolution NDCT images and their descriptions tagged by professional radiologists for 10 human body sites: sinus, neck, brain, breast, abdomen, knee, orbit, waist, pelvis (male) and pelvis (female). Considering the continuity of the whole body, the descriptions partially overlap, which increases the robustness of the proposed method. The dataset is acquired under a Semens CT scanner(SOMATOM Deﬁnition). As shown in Table II, the scan tube voltage is 120 kVp, and the thickness is set to 1 mm for the routine NDCT images. We conduct the simulation process to obtain LDCT images via the MRIT toolbox1 [39] implemented by Matlab 2017a. For the MIRT, the scanning parameters are ﬁxed, as shown in Table II, and the system projection matrix are calculated. With the aid of the projection matrix, we obtain sinogram data under 360 projection views as the referenced NDCT images. Via uniform sparse sampling, the LDCT sinogram data under 120, 150 and 180 projection views are gained. The simulated LDCT images are reconstructed using the FBP algorithm.
 
