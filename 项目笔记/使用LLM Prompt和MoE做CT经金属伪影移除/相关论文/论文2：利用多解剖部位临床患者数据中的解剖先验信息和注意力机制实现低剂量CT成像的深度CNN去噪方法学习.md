@@ -27,38 +27,24 @@ Image denosing, low-dose CT, anatomical prior information, attention mechanism.
 
 本文其余部分组织如下：方法在第二节中进行了描述。在本节中，将解释解剖学先验。接着，我们描述了网络架构，包括两个融合模块。在下一节，即第三节，将进行实验以验证我们提出的方法的有效性。此外，在本节中，我们提供了实现细节并展示了实验结果。讨论和结论在第四节中给出。
 
-![688](assets/论文2：利用多解剖部位临床患者数据中的解剖先验信息和注意力机制实现低剂量CT成像的深度CNN去噪方法学习/file-20260526161250572.png)
-
-> [!图2]
-> 图 2：三个解剖学示例在 32 灰度级别上的直方图分布：(a) 颅骨，(b) 腹部和 (c) 膝盖。
-
 # II. METHODS 方法
-
-In this section, we describe our methods. First, we introduce the anatomical prior. Second, the overview framework is elaborated. Last, two modules, the prior fusion module and the attention fusion module, are illuminated.
 
 本节中，我们描述我们的方法。首先，我们介绍了解剖学先验。其次，我们阐述了总体框架。最后，我们阐明了两个模块：先验融合模块和注意力融合模块。
 
-A. Anatomical Prior Information
+### A. Anatomical Prior Information 解剖先验信息
 
-A. 解剖先验信息
+通常，在不同人体部位之间会观察到大的解剖结构差异。如图2所示，我们计算了来自三个解剖部位的三个正常CT图像的数据分布。**该分布反映了不同解剖部位之间数据的巨大差异**。当扫描参数固定时，每个解剖部位的噪声分布似乎也不同。对于来自多个解剖部位的临床患者数据，当给出解剖部位时，这种差异有利于去噪性能。额外的解剖部位被视为LDCT图像的先验信息。
 
-Generally, large anatomical structural differences are observed among different human body sites. As shown in Figure 2, we calculate the data distribution for three normal CT images from three anatomical sites. The distribution reﬂects vast differences in the data among different anatomical sites. The noise distribution in each anatomical site also seems to differ when the scanning parameters are ﬁxed. For the clinical patient data from multiple anatomical sites, this difference avails the denoising performance when the anatomical site is given. The extra anatomical sites are considered the prior information for the LDCT images.
+![499](assets/论文2：利用多解剖部位临床患者数据中的解剖先验信息和注意力机制实现低剂量CT成像的深度CNN去噪方法学习/file-20260526161250572.png)
+> [!图2]
+> 图 2：三个解剖学示例在 32 灰度级别上的直方图分布：(a) 颅骨，(b) 腹部和 (c) 膝盖。
 
-通常，在不同人体部位之间会观察到大的解剖结构差异。如图2所示，我们计算了来自三个解剖部位的三个正常CT图像的数据分布。该分布反映了不同解剖部位之间数据的巨大差异。当扫描参数固定时，每个解剖部位的噪声分布似乎也不同。对于来自多个解剖部位的临床患者数据，当给出解剖部位时，这种差异有利于去噪性能。额外的解剖部位被视为LDCT图像的先验信息。
+在我们的实验中，我们采用了10个解剖部位的临床解剖学数据：鼻窦、颈部、大脑、乳房、腹部、膝盖、眼眶、腰部、骨盆（男性）和骨盆（女性）；这些部位如图1所示。首先，我们通过**独热编码**转换这些解剖学描述。因此，低剂量图像遵循一个解剖学向量，该向量是所提出方法的输入模式，输出是去噪后得到的高分辨率估计CT图像。
 
-In our experiments, we employ clinical anatomical data for 10 anatomical sites: sinus, neck, brain, breast, abdomen, knee, orbit, waist, pelvis (male) and pelvis (female); the sites are shown in Figure 1. First, we convert these anatomical descriptions via one-hot encoding. Thus, a low-dose image follows an anatomical vector, which is the input pattern for the proposed method, and the output is a high-resolution estimated CT image after denoising.
-
-在我们的实验中，我们采用了10个解剖部位的临床解剖学数据：鼻窦、颈部、大脑、乳房、腹部、膝盖、眼眶、腰部、骨盆（男性）和骨盆（女性）；这些部位如图1所示。首先，我们通过独热编码转换这些解剖学描述。因此，低剂量图像遵循一个解剖学向量，该向量是所提出方法的输入模式，输出是去噪后得到的高分辨率估计CT图像。
-
-B. Framework Overview
-
-B. 框架概述
-
-Our network employs two inputs, the LDCT image and its corresponding anatomical vector, as shown in Figure 3. We primarily employ one-hot encoding for the anatomical descriptions, and a weight prediction module follows the input anatomical vector. The anatomical prior information is fused in the prior fusion module. To take full advantage of the anatomy-fused information from the ﬁrst module, we cascade M attention fusion modules to deepen the network. Given the LDCT images x = {x1, x2, x3, · · · , xn} and the corresponding anatomical vectors a = {a1, a2, a3, · · · , an}, we estimate the normal-dose CT (NDCT) images y = {y1, y2, y3, · · · , yn} after the denoising process. This restoration process, using a mean-square error (MSE) cost function, can be formulated as follows:
+### B. Framework Overview 框架概述
 
 我们的网络采用低剂量CT（LDCT）图像及其对应的解剖向量作为两个输入，如图3所示。我们主要采用独热编码（one-hot encoding）来表示解剖描述，并且一个权重预测模块紧随输入解剖向量之后。解剖先验信息在先验融合模块中进行融合。为了充分利用第一模块的解剖融合信息，我们级联了M个注意力融合模块来加深网络。给定LDCT图像x = {x1, x2, x3, · · · , xn}和对应的解剖向量a = {a1, a2, a3, · · · , an}，我们在去噪过程后估计出常规剂量CT（NDCT）图像y = {y1, y2, y3, · · · , yn}。该恢复过程使用均方误差（MSE）成本函数，可以表述如下：
 
-where Θ denotes the network parameters and G(·) denotes the estimation function. Unlike several other denoising approaches, anatomical prior information, which is easily available for radiologists, is needed in our method.
 
 其中 Θ 表示网络参数，G(·) 表示估计函数。与几种其他去噪方法不同，我们的方法需要解剖学先验信息，而该信息对放射科医生来说很容易获得。
 
