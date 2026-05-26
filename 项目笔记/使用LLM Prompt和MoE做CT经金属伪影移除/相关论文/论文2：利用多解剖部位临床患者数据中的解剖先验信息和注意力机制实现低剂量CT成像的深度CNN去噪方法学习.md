@@ -2,7 +2,7 @@
 
 # Abstract 摘要
 
-在临床应用中，计算机断层扫描（CT）的剂量降低因其可降低辐射风险而备受关注。然而，较低的剂量会在低剂量计算机断层扫描（LDCT）图像中产生噪声。先前基于深度学习（DL）的工作已经研究了解决这一病态问题的方法，以提高诊断性能。然而，其中大多数在构建LDCT图像与其高分辨率常规剂量CT（NDCT）对应物之间的映射函数时，忽略了不同人体部位的解剖学差异。在本文中，我们提出了一种新颖的深度卷积神经网络（CNN）去噪方法，通过引入解剖学先验信息。我们采用统一的网络框架来处理解剖学信息，而不是为每个独立的人体解剖学部位设计多个网络。解剖学先验在解剖学先验融合模块中表示为从相应LDCT图像中提取的特征的权重模式。为了促进上下文信息的多样性，引入了空间注意力融合机制来捕获注意力融合模块中的许多局部感兴趣区域。尽管节省了许多网络参数，但实验结果表明，我们结合了解剖学先验信息的方法在去噪LDCT图像方面是有效的。此外，解剖学先验融合模块可以方便地集成到其他基于DL的方法中，并有助于在多个解剖学数据上提高性能。
+在临床应用中，计算机断层扫描（CT）的剂量降低因其可降低辐射风险而备受关注。然而，**较低的剂量会在低剂量计算机断层扫描（LDCT）图像中产生噪声**。先前基于深度学习（DL）的工作已经研究了解决这一病态问题的方法，以提高诊断性能。然而，其中大多数在构建LDCT图像与其**高分辨率常规剂量CT（NDCT）** 对应物之间的映射函数时，忽略了不同人体部位的解剖学差异。在本文中，我们提出了一种新颖的深度卷积神经网络（CNN）去噪方法，通过引入解剖学先验信息。我们采用统一的网络框架来处理解剖学信息，而不是为每个独立的人体解剖学部位设计多个网络。**解剖学先验**在解剖学先验融合模块中表示为从相应LDCT图像中提取的特征的权重模式。为了促进上下文信息的多样性，引入了空间注意力融合机制来捕获注意力融合模块中的许多局部感兴趣区域。尽管节省了许多网络参数，**但实验结果表明，我们结合了解剖学先验信息的方法在去噪LDCT图像方面是有效的**。此外，**解剖学先验融合模块**可以方便地集成到其他基于DL的方法中，并有助于在多个解剖学数据上提高性能。
 
 ### Index Terms 索引词
 
@@ -11,43 +11,28 @@ Image denosing, low-dose CT, anatomical prior information, attention mechanism.
 
 # I. INTRODUCTION 引言
 
-鉴于对高剂量X射线辐射健康风险的担忧，低剂量计算机断层扫描（LDCT）成像的研究已引起广泛关注[1]。与X射线（例如胸部X射线）相比，LDCT可显著提高肺癌诊断和评估的准确性，从而降低癌症死亡率[2]。降低辐射剂量的常用方法是减少X射线通量和投影视图的数量。然而，较低的剂量可能导致诊断性能下降，这通常表现为所得图像中的噪声和伪影[3]。
+鉴于对高剂量X射线辐射健康风险的担忧，低剂量计算机断层扫描（LDCT）成像的研究已引起广泛关注[1]。与X射线（例如胸部X射线）相比，LDCT可显著提高肺癌诊断和评估的准确性，从而降低癌症死亡率[2]。**降低辐射剂量的常用方法是减少X射线通量和投影视图的数量**。然而，较低的剂量可能导致诊断性能下降，这通常表现为所得图像中的噪声和伪影[3]。
 
-To address this problem, many methods have been proposed to improve the image quality in LDCT. Generally, these LDCT methods are divided into three sub-methods: sinogramdomain ﬁltering methods, iterative reconstruction methods and postprocessing methods. First, several works [4], [5] based on sinogram-domain ﬁltering have been proposed to process the raw data before image reconstruction. Although well-known noise distributions in the sinogram domain can be applied, these sinogram-domain methods may cause spatial resolution loss in the image domain. Specially, the restoration of highfrequency structural details for sinogram-domain methods, for instance, edges and textures, causes great challenges. Second, iterative reconstruction methods [6]–[12] became popular because they allowed several priors to be formulated, such as the total variation [13] and nonlocal means [14]. Although these methods have excellent output, they are limited in detail reconstruction and expensive to compute. In recent studies, deep learning (DL) postprocessing methods [15]–[34] have been promising, popular approaches in LDCT to estimate highdose computed tomography (CT) images via an end-to-end network. For example, Chen et. al [16] propose a residual autoencoder network for LDCT images, which achieves promising restoration results. Compared with traditional methods, DLbased methods are more suitable for recovering high-dose CT images because of their excellent feature extraction and representation capacity for uncertain noise models.
+为解决此问题，已提出多种方法来提高低剂量CT（LDCT）的图像质量。通常，这些LDCT方法可分为三种子方法：**投影域滤波方法、迭代重建方法和后处理方法**。首先，已提出几种基于投影域滤波的工作[4]、[5]，用于在图像重建之前处理原始数据。尽管可以应用投影域中已知的噪声分布，但这些投影域方法可能会导致图像域中的空间分辨率损失。特别是，对于投影域方法而言，恢复高频结构细节（例如，边缘和纹理）带来了巨大的挑战。其次，迭代重建方法[6]–[12]变得流行，因为它们允许构建多种先验，例如全变分[13]和非局部均值[14]。尽管这些方法产生了出色的输出，但它们在细节重建方面受到限制且计算成本高昂。在最近的研究中，**深度学习（DL）后处理方法**[15]–[34]已成为LDCT领域有前景、流行的方法，通过端到端网络来估计高剂量CT（CT）图像。例如，Chen等人[16]提出了一种用于LDCT图像的残差自编码器网络，该网络取得了有希望的恢复结果。与传统方法相比，基于DL的方法由于其**出色的特征提取和不确定噪声模型的表示能力**，更适合恢复高剂量CT图像。
 
-为解决此问题，已提出多种方法来提高低剂量CT（LDCT）的图像质量。通常，这些LDCT方法可分为三种子方法：投影域滤波方法、迭代重建方法和后处理方法。首先，已提出几种基于投影域滤波的工作[4]、[5]，用于在图像重建之前处理原始数据。尽管可以应用投影域中已知的噪声分布，但这些投影域方法可能会导致图像域中的空间分辨率损失。特别是，对于投影域方法而言，恢复高频结构细节（例如，边缘和纹理）带来了巨大的挑战。其次，迭代重建方法[6]–[12]变得流行，因为它们允许构建多种先验，例如全变分[13]和非局部均值[14]。尽管这些方法产生了出色的输出，但它们在细节重建方面受到限制且计算成本高昂。在最近的研究中，深度学习（DL）后处理方法[15]–[34]已成为LDCT领域有前景、流行的方法，通过端到端网络来估计高剂量CT（CT）图像。例如，Chen等人[16]提出了一种用于LDCT图像的残差自编码器网络，该网络取得了有希望的恢复结果。与传统方法相比，基于DL的方法由于其出色的特征提取和不确定噪声模型的表示能力，更适合恢复高剂量CT图像。
+![](assets/论文2：利用多解剖部位临床患者数据中的解剖先验信息和注意力机制实现低剂量CT成像的深度CNN去噪方法学习/file-20260526161025652.png)
+> [!图1]
+> 图 1：来自不同解剖部位的临床患者数据：（a）颅骨，（b）眼眶，（c）鼻窦，（d）颈部，（e）肺部，（f）腹部，（g）腰部，（h）男性骨盆，（i）女性骨盆和（j）膝盖。数据显示CT成像中不同解剖部位之间存在显著的解剖学差异。
 
-![](https://pdf2html.com/files/server/3131b92b865910fbd62e95d98109b36e.pdf/2/figures/fig.1.2.jpg?ver=1)
+尽管以往的研究在提高图像质量方面取得了很大进展，但大多数研究都忽略了低剂量CT（LDCT）图像的解剖先验信息。通常，这些信息在不同人体部位（如图1所示的鼻窦、颈部和颅骨）之间显示出巨大的解剖结构差异。另一方面，在实际应用中，**不同人体部位的扫描参数设置通常是不同的**。例如，腰部扫描剂量通常高于颅骨。**一个特定训练的深度网络模型通常适用于特定的解剖部位**。不同解剖部位的解剖差异和扫描设置导致训练数据中的数据分布复杂。LDCT图像的解剖信息可以被视为额外的先验信息，以提高LDCT成像中的去噪性能。
 
-Fig. 1: Clinical patient data from different anatomical sites: (a) cranium, (b) orbit, (c) sinus, (d) neck, (e) lung, (f) abdomen, (g) waist, (h) male pelvis, (i) female pelvis and (j) knee. The data show great anatomical differences among different anatomical sites in CT imaging.
-
-图 1：来自不同解剖部位的临床患者数据：（a）颅骨，（b）眼眶，（c）鼻窦，（d）颈部，（e）肺部，（f）腹部，（g）腰部，（h）男性骨盆，（i）女性骨盆和（j）膝盖。数据显示CT成像中不同解剖部位之间存在显著的解剖学差异。
-
-Although previous works have made great progress in improving image quality, most of them disregard the anatomical prior information of LDCT images. Generally, this information shows large anatomical structural differences among different human body sites, such as the sinus, neck and cranium shown in Figure 1. On the other hand, scan parameter settings are usually different for particular human body sites in practical applications. For instance, the scan dose for the waist site is often higher than that for the cranium. A speciﬁc trained deep network model is usually applicable to the speciﬁc anatomical site. The anatomical differences and scan settings for different anatomical sites lead to the complex data distribution in the training data. Anatomical information about LDCT images could be considered extra priors to improve the denoising performance in LDCT imaging.
-
-尽管以往的研究在提高图像质量方面取得了很大进展，但大多数研究都忽略了低剂量CT（LDCT）图像的解剖先验信息。通常，这些信息在不同人体部位（如图1所示的鼻窦、颈部和颅骨）之间显示出巨大的解剖结构差异。另一方面，在实际应用中，不同人体部位的扫描参数设置通常是不同的。例如，腰部扫描剂量通常高于颅骨。一个特定训练的深度网络模型通常适用于特定的解剖部位。不同解剖部位的解剖差异和扫描设置导致训练数据中的数据分布复杂。LDCT图像的解剖信息可以被视为额外的先验信息，以提高LDCT成像中的去噪性能。
-
-In this paper, we propose a deep convolutional neural network (CNN) denoising method by introducing an anatomical prior, which we refer to as the DeACNN, for noise reduction in LDCT imaging. Via an anatomical prior fusion module, the anatomical prior is fused with the features extracted from its corresponding LDCT image. Inspired by the attention mechanism [35]–[37], several spatial attention fusion modules are cascaded. To avoid information loss, we combine the original features extracted by convolution layers with attention features in these cascaded fusion modules. To reduce the network parameters, we employ several convolutions with a 1 × 1 kernel for the whole network framework.
-
-在本文中，我们提出了一种深度卷积神经网络（CNN）去噪方法，通过引入解剖学先验，我们称之为DeACNN，用于低剂量CT（LDCT）成像中的降噪。通过解剖学先验融合模块，将解剖学先验与从其对应的LDCT图像中提取的特征进行融合。受注意力机制[35]–[37]的启发，我们级联了几个空间注意力融合模块。为避免信息丢失，我们在这些级联融合模块中将卷积层提取的原始特征与注意力特征相结合。为减少网络参数，我们在整个网络框架中采用了几个具有1×1核的卷积。
-
-We make three main contributions: 1) Considering the obvious anatomical differences among different human body sites, we introduce an anatomical prior into image denoising in LDCT imaging. 2) Instead of designing multiple independent networks for each anatomical site, we address the anatomical prior information and LDCT images in a uniﬁed framework, which means that our proposed network could process CT images from different anatomical sites. 3) Inspired by the attention mechanism, the anatomical prior fusion module and spatial attention fusion module are designed. To reduce information loss, skip connection and concatenation are also employed. The anatomical prior fusion module could be considered embedded in other DL-based methods on multiple anatomical data to improve performance.
+在本文中，我们提出了一种**深度卷积神经网络（CNN）去噪方法**，通过引入解剖学先验，我们称之为**DeACNN**，用于低剂量CT（LDCT）成像中的降噪。通过**解剖学先验融合模块**，将解剖学先验与从其对应的LDCT图像中提取的特征进行融合。受注意力机制[35]–[37]的启发，我们级联了几个空间注意力融合模块。为避免信息丢失，我们在这些级联融合模块中将卷积层提取的原始特征与注意力特征相结合。为减少网络参数，我们在整个网络框架中采用了几个具有1×1核的卷积。
 
 我们提出了三项主要贡献：1）考虑到不同人体部位之间明显的解剖学差异，我们将解剖学生成先验引入低剂量CT（LDCT）成像的图像去噪。2）我们没有为每个解剖学部位设计多个独立的网络，而是在一个统一的框架内解决解剖学生成先验信息和LDCT图像的问题，这意味着我们提出的网络可以处理来自不同解剖学部位的CT图像。3）受注意力机制的启发，我们设计了解剖学生成先验融合模块和空间注意力融合模块。为了减少信息损失，还采用了跳跃连接和拼接。解剖学生成先验融合模块可以被嵌入到其他基于深度学习的方法中，用于处理多解剖学数据以提高性能。
 
-The remainder of this paper is organized as follows: the methods are described in Section II. In this section, the anatomical prior is explained. We then describe the network architecture, including the two fusion modules. In the next section, Section III, experiments are conducted to validate the effectiveness of our proposed method. Additionally, we provide the implementation details and show the experimental results in this section. The discussion and conclusion are given in Section IV.
-
 本文其余部分组织如下：方法在第二节中进行了描述。在本节中，将解释解剖学先验。接着，我们描述了网络架构，包括两个融合模块。在下一节，即第三节，将进行实验以验证我们提出的方法的有效性。此外，在本节中，我们提供了实现细节并展示了实验结果。讨论和结论在第四节中给出。
 
-![](https://pdf2html.com/files/server/3131b92b865910fbd62e95d98109b36e.pdf/3/figures/fig.2.3.jpg?ver=1)
+![688](assets/论文2：利用多解剖部位临床患者数据中的解剖先验信息和注意力机制实现低剂量CT成像的深度CNN去噪方法学习/file-20260526161250572.png)
 
-Fig. 2: Histogram distribution on 32 gray levels for three anatomical examples: (a) cranium, (b) abdomen and (c) knee.
+> [!图2]
+> 图 2：三个解剖学示例在 32 灰度级别上的直方图分布：(a) 颅骨，(b) 腹部和 (c) 膝盖。
 
-图 2：三个解剖学示例在 32 灰度级别上的直方图分布：(a) 颅骨，(b) 腹部和 (c) 膝盖。
-
-II. METHODS
-
-II. 方法
+# II. METHODS 方法
 
 In this section, we describe our methods. First, we introduce the anatomical prior. Second, the overview framework is elaborated. Last, two modules, the prior fusion module and the attention fusion module, are illuminated.
 
