@@ -65,24 +65,21 @@ $$
 
 ### D. Spatial Attention Fusion 空间注意力融合
 
-为了充分利用解剖融合信息，我们在级联模块架构设计的基础上加深了网络。与ResNet [38]类似，局部级联模块在级联模块中采用了下采样和上采样单元，其中下采样单元通过卷积操作实现，上采样单元通过反卷积操作实现。受[37]的启发，我们引入了空间注意力机制来获得感兴趣的局部区域（ROIs）。此外，卷积流提取的原始特征与空间注意力流提取的特征相结合。我们应用两个卷积层来提取原始特征，另外两个卷积层用于注意力提取。参数细节如表I所示。我们缩小和扩展通道数以减少参数量。在注意力提取过程中采用了滤波器大小为1×1的卷积层。第i个空间注意力融合模块的输出Fi可表示如下：
-
-
+为了充分利用解剖融合信息，我们在级联模块架构设计的基础上加深了网络。与ResNet [38]类似，局部级联模块在级联模块中采用了下采样和上采样单元，其中下**采样单元通过卷积操作实现**，**上采样单元通过反卷积操作实现**。受[37]的启发，我们引入了空间注意力机制来获得感兴趣的局部区域（**ROIs**）。此外，卷积流提取的原始特征与空间注意力流提取的特征相结合。**我们应用两个卷积层来提取原始特征，另外两个卷积层用于注意力提取**。参数细节如表I所示。我们缩小和扩展通道数以减少参数量。在注意力提取过程中采用了滤波器大小为1×1的卷积层。第i个空间注意力融合模块的输出Fi可表示如下：
+$$
+Fi=Conv3(Pcs(Fi−1),Pa(Fi−1)⊗Pcs(Fi−1))⊕Fi−1
+$$
 其中 Pa(·) 表示空间注意力掩码预测，Conv3 表示通过拼接对联合特征进行卷积操作。此外，“ ⊗ ”表示逐元素乘法运算，Pcs 表示使用两次卷积操作而不改变图像尺寸的特征提取过程。“ ⊕ ”表示逐元素加法运算。
 
-III. EXPERIMENTS
+![](assets/论文2：利用多解剖部位临床患者数据中的解剖先验信息和注意力机制实现低剂量CT成像的深度CNN去噪方法学习/file-20260526172355611.png)
+> [!表 I]
+> 表 I：空间注意力融合模块的参数设置。“Conv”表示卷积层，“Actv”表示使用的激活函数。
 
-III. 实验
+# III. EXPERIMENTS 实验
 
 In this section, we conduct experiments to validate the effectiveness of our method. First, the patient data and training details are described. Second, we evaluate the performance of our method compared with that of several other DL-based methods. Last, the experimental results and ablation studies are described.
 
 在本节中，我们进行实验以验证我们方法的有效性。首先，描述了患者数据和训练细节。其次，我们将我们方法的性能与几种其他基于深度学习的方法的性能进行了比较评估。最后，描述了实验结果和消融研究。
-
-TABLE I: Parameter settings for the spatial attention fusion module. ”Conv” denotes the convolutional layers, and ”Actv” denotes the used activation functions.
-
-表 I：空间注意力融合模块的参数设置。“Conv”表示卷积层，“Actv”表示使用的激活函数。
-
-![](https://pdf2html.com/files/server/3131b92b865910fbd62e95d98109b36e.pdf/4/figures/tablei.4.jpg?ver=1)
 
 A. Clinical Patient Data and Details of Implementation
 
