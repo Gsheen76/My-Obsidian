@@ -1,4 +1,4 @@
-# Learning a Deep CNN Denoising Approach Using Anatomical Prior Information Implemented with Attention Mechanism for Low-dose CT Imaging on Clinical Patient Data from Multiple Anatomical Sites
+**Learning a Deep CNN Denoising Approach Using Anatomical Prior Information Implemented with Attention Mechanism for Low-dose CT Imaging on Clinical Patient Data from Multiple Anatomical Sites**
 
 # Abstract 摘要
 
@@ -43,42 +43,30 @@ Image denosing, low-dose CT, anatomical prior information, attention mechanism.
 
 ### B. Framework Overview 框架概述
 
-我们的网络采用低剂量CT（LDCT）图像及其对应的解剖向量作为两个输入，如图3所示。我们主要采用独热编码（one-hot encoding）来表示解剖描述，并且一个权重预测模块紧随输入解剖向量之后。解剖先验信息在先验融合模块中进行融合。为了充分利用第一模块的解剖融合信息，我们级联了M个注意力融合模块来加深网络。给定LDCT图像x = {x1, x2, x3, · · · , xn}和对应的解剖向量a = {a1, a2, a3, · · · , an}，我们在去噪过程后估计出常规剂量CT（NDCT）图像y = {y1, y2, y3, · · · , yn}。该恢复过程使用均方误差（MSE）成本函数，可以表述如下：
-
-
+我们的网络采用低剂量CT（LDCT）图像及其对应的解剖向量作为两个输入，**如图3所示**。我们主要采用独热编码（one-hot encoding）来表示解剖描述，并且一个权重预测模块紧随输入解剖向量之后。解剖先验信息在先验融合模块中进行融合。为了充分利用第一模块的解剖融合信息，我们级联了M个注意力融合模块来加深网络。给定LDCT图像x = {x1, x2, x3, · · · , xn}和对应的解剖向量a = {a1, a2, a3, · · · , an}，在去噪过程后估计出常规剂量CT图（NDCT）y = {y1, y2, y3, · · · , yn}。该恢复过程使用均方误差（MSE）成本函数，可以表述如下：
+$$
+L= \frac{1}{n}\sum_{i=1}^n||G(x_i;a_i;Θ)−y_i||_2^2,
+$$
 其中 Θ 表示网络参数，G(·) 表示估计函数。与几种其他去噪方法不同，我们的方法需要解剖学先验信息，而该信息对放射科医生来说很容易获得。
 
-C. Anatomical Prior Fusion
+![](assets/论文2：利用多解剖部位临床患者数据中的解剖先验信息和注意力机制实现低剂量CT成像的深度CNN去噪方法学习/file-20260526170102148.png)
+> [!图3]
+> 图 3：**DeACNN框架概述**。整体网络包含先验融合模块和注意力融合模块两大部分，其中权重预测模块利用解剖学先验获得从LDCT图像提取的特征通道的权重掩码。
 
-C. 解剖先验融合
+### C. Anatomical Prior Fusion 解剖先验融合
 
-Considering the anatomical differences among human body sites, we introduce an anatomical prior during the denoising process. Instead of employing different networks for each anatomical site, the input anatomical vector is used to predict the channel weight mask in adapting to feature maps. With the weight pattern, the anatomical prior can be distinguished in the network. To avoid information loss, the original input features extracted from the original LDCT images are concatenated. For the weight prediction module, 7 convolution ﬁlters with 1 × 1 kernels are utilized (shown in Figure 3). Concatenation is utililized to combine feature maps to avoid information loss. Following the concatenation operation, a convolution layer with 1 × 1 kernels are employed to shrink the channel to 64, which is the input channel number of this module. The Sigmoid activation function helps to shrink the channel weight to 0 ∼ 1, which characterizes the inﬂuence of different anatomical sites on subsequent image features.
-
-考虑到人体不同部位的解剖学差异，我们在去噪过程中引入了解剖学先验。我们没有为每个解剖部位采用不同的网络，而是使用输入的解剖向量来预测通道权重掩码，以适应特征图。通过权重模式，可以在网络中区分解剖学先验。为了避免信息丢失，将从原始LDCT图像中提取的原始输入特征进行拼接。对于权重预测模块，使用了7个具有1×1卷积核的卷积滤波器（如图3所示）。拼接操作用于合并特征图以避免信息丢失。在拼接操作之后，使用具有1×1卷积核的卷积层将通道数缩小到64，这是该模块的输入通道数。Sigmoid激活函数有助于将通道权重缩小到0~1，这表征了不同解剖部位对后续图像特征的影响。
-
-The prior fusion module can be formulated as follows:
+考虑到人体不同部位的解剖学差异，我们在去噪过程中引入了**解剖学先验**。我们没有为每个解剖部位采用不同的网络，而是使用输入的解剖向量来预测通道权重掩码，以适应特征图。通过权重模式，可以在网络中区分解剖学先验。为了避免信息丢失，**将从原始LDCT图像中提取的原始输入特征进行拼接**。对于权重预测模块，使用了7个具有1×1卷积核的卷积滤波器（如图3所示）。**拼接操作用于合并特征图以避免信息丢失**。在拼接操作之后，使用具有1×1卷积核的卷积层将通道数缩小到64，这是该模块的输入通道数。**Sigmoid激活函数**有助于将通道权重缩小到0~1，这表征了不同解剖部位对后续图像特征的影响。
 
 先验融合模块可表述如下：
-
-where Pc(·) denotes the channel weight prediction and Conv1 and Conv2 denote convolution operations for the joint features via concatenation. In addition, “ ⊗ ” denotes the element-wise product operation, and Fo denotes the anatomy-fused outcome information. The kernel size of Conv1 and Conv2 are ﬁxed to 3 × 3 and 1 × 1, respectively.
-
+$$
+Fo =Conv2(Conv1(xi),Pc(ai) ⊗ Conv1(xi)),
+$$
 其中 Pc(·) 表示通道权重预测，Conv1 和 Conv2 表示通过拼接实现的联合特征的卷积操作。此外，“ ⊗ ”表示逐元素乘积运算，Fo 表示解剖融合结果信息。Conv1 和 Conv2 的核大小分别固定为 3 × 3 和 1 × 1。
 
-D. Spatial Attention Fusion
-
-D. 空间注意力融合
-
-To take full advantage of the anatomy-fused information, we deepen the network based on the design of the cascade module architecture. Similar to ResNet [38], the local cascade module adopts down-projection and up-projection units in the cascaded modules, where the down-projection unit is implemented with a convolution operation and the up-projection unit is implemented with a deconvolution operation. Inspired by [37], we introduce a spatial attention mechanism to obtain local regions of interest (ROIs). Furthermore, the original features obtained by the convolution stream are combined with the spatial attention stream. We apply two convolution layers to extract the original features and another two convolution layers for attention extraction. The parameter details are shown in Table. I. We shrink and expand the channel number to reduce the parameter counts. Convolution layers with a ﬁlter size of 1 × 1 are employed during the attention extraction process. The output Fi of the i-th spatial attention fusion module can be formulated as follows:
+### D. Spatial Attention Fusion 空间注意力融合
 
 为了充分利用解剖融合信息，我们在级联模块架构设计的基础上加深了网络。与ResNet [38]类似，局部级联模块在级联模块中采用了下采样和上采样单元，其中下采样单元通过卷积操作实现，上采样单元通过反卷积操作实现。受[37]的启发，我们引入了空间注意力机制来获得感兴趣的局部区域（ROIs）。此外，卷积流提取的原始特征与空间注意力流提取的特征相结合。我们应用两个卷积层来提取原始特征，另外两个卷积层用于注意力提取。参数细节如表I所示。我们缩小和扩展通道数以减少参数量。在注意力提取过程中采用了滤波器大小为1×1的卷积层。第i个空间注意力融合模块的输出Fi可表示如下：
 
-![](https://pdf2html.com/files/server/3131b92b865910fbd62e95d98109b36e.pdf/4/figures/fig.3.4.jpg?ver=1)
-
-Fig. 3: Overview of the framework of the DeACNN. The overall network consists of two main parts, the prior fusion module and attention fusion module, where the weight prediction module employs an anatomical prior to obtain a weight mask for the channel of features extracted from LDCT images.
-
-图 3：DeACNN框架概述。整体网络包含先验融合模块和注意力融合模块两大部分，其中权重预测模块利用解剖学先验获得从LDCT图像提取的特征通道的权重掩码。
-
-where Pa(·) denotes the spatial attention mask prediction and Conv3 denotes the convolution operations for the joint features via concatenation. In addition, “ ⊗ ” denotes the elementwise product operation, and Pcs denotes a feature extraction process that uses two convolution operations without changing the image size. “ ⊕ ” denotes the element-wise add operation.
 
 其中 Pa(·) 表示空间注意力掩码预测，Conv3 表示通过拼接对联合特征进行卷积操作。此外，“ ⊗ ”表示逐元素乘法运算，Pcs 表示使用两次卷积操作而不改变图像尺寸的特征提取过程。“ ⊕ ”表示逐元素加法运算。
 

@@ -1,4 +1,4 @@
-# Normalized metal artifact reduction （NMAR） in computed tomography
+**Normalized metal artifact reduction （NMAR） in computed tomography**
 
 View online: [http://dx.doi.org/10.1118/1.3484090](http://dx.doi.org/10.1118/1.3484090)
 
