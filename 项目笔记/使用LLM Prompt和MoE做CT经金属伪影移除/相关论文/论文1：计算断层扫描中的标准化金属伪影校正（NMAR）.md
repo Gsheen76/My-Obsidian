@@ -1,10 +1,8 @@
 # Normalized metal artifact reduction （NMAR） in computed tomography
 
-**归一化金属伪影抑制（NMAR）在计算机断层扫描中的应用**
-
 View online: [http://dx.doi.org/10.1118/1.3484090](http://dx.doi.org/10.1118/1.3484090)
 
-# abstract 摘要
+# Abstract 摘要
 
 ### Purpose:
 
