@@ -83,69 +83,19 @@ $$
 
 在贵州省人民医院（中国贵州省贵阳市）的研究数据支持下，我们能够利用从200多名患者收集的临床数据，图像尺寸为512×512。这些患者的年龄分布范围为7至82岁。在这些患者中，55%为男性，45%为女性。CT图像总数超过80,000张；10%的数据用作验证数据，10%的数据用作测试数据。其余数据用于网络训练。该数据集包含高分辨率NDCT图像及其由专业放射科医生标记的10个人体部位的描述：鼻窦、颈部、大脑、乳房、腹部、膝盖、眼眶、腰部、骨盆（男性）和骨盆（女性）。考虑到全身的连续性，这些描述存在部分重叠，这增加了所提出方法的鲁棒性。数据集是在西门子CT扫描仪（SOMATOM Definition）下采集的。如表II所示，对于常规NDCT图像，扫描管电压为120 kVp，层厚设置为1 mm。我们使用Matlab 2017a实现的MRIT工具箱1 [39]进行模拟过程以获得LDCT图像。对于MIRT，扫描参数固定，如表II所示，并计算系统投影矩阵。借助投影矩阵，我们获得了360个投影视角的正弦图数据，作为参考NDCT图像。通过均匀稀疏采样，获得了120、150和180个投影视角的LDCT正弦图数据。使用FBP算法重建模拟的LDCT图像。
 
-![](https://pdf2html.com/files/server/3131b92b865910fbd62e95d98109b36e.pdf/5/figures/fig.4.5.jpg?ver=1)
-
-Fig. 4: Three network models for image denoising in low-dose imaging: (a) Residual encoder-decoder CNN (REDCNN), (b) Deep cascade projection network with the down-to-up projection operation (DCPN-DU), (c) Our proposed network (DeACNN).
-
-图 4：低剂量成像中图像去噪的三种网络模型：(a) 残差编码器-解码器卷积神经网络 (REDCNN)，(b) 具有下-上投影操作的深度级联投影网络 (DCPN-DU)，(c) 本文提出的网络 (DeACNN)。
-
-For the input data, several data augmentations are adopted, such as random rotating and ﬂipping. To reduce the training time, we use patches with an image size of 64 × 64. The learning rate is set to 0.0001. The ADAM optimizer [40] is applied to minimize the cost function during the network training process. We implement our model in the PyTorch framework on Ubuntu 16.04 with a Titan 1080Ti GPU during the training and test process.
+![](assets/论文2：利用多解剖部位临床患者数据中的解剖先验信息和注意力机制实现低剂量CT成像的深度CNN去噪方法学习/file-20260527123352112.png)
+> [!表 II]
+> 表 II：西门子 CT 扫描仪常规高剂量 CT 图像的扫描参数设置。
 
 对于输入数据，采用了多种数据增强方法，例如随机旋转和翻转。为了减少训练时间，我们使用了图像尺寸为 64 × 64 的块。学习率设置为 0.0001。在网络训练过程中，应用 ADAM 优化器 [40] 来最小化成本函数。我们在 Ubuntu 16.04 的 PyTorch 框架中实现我们的模型，在训练和测试过程中使用 Titan 1080Ti GPU。
 
-We compare our method with several other methods, including the CNN [15], the residual encoder-decoder CNN
+我们将我们的方法与几种其他方法进行了比较，包括CNN [15]，残差编码器-解码器CNN（**REDCNN**）[16]以及一个名为具有下到上投影操作的深度级联投影网络（**DCPN-DU**）的基线模型。为了直观地描述网络模型架构，图4（a）和（b）分别展示了REDCNN和DCPN-DU。最明显的区别在于，与另外两种网络方法相比，我们引入了解剖学信息，而不是直接应用端到端网络。对于比较模型，我们根据[16]中的参数设置，对卷积层和反卷积层应用3×3的核大小。为了公平比较，这些模型在我们自己的训练和测试数据集上使用与我们的模型相同的设置进行了重新训练。此外，采用了流行的指标——峰值信噪比（PSNR）和结构相似性指数度量（SSIM）——来评估定性结果。如表III所示。我们比较了不同方法的每个测试示例的参数数量和运行时间。由于多次乘法运算和多分支数据处理，我们方法每个测试示例的运行时间与其他三种方法相比最慢。由于通道数量的减少和1×1滤波器尺寸的使用，我们方法的参数数量明显少于其他方法。
 
-我们将我们的方法与几种其他方法进行了比较，包括CNN [15]，残差编码器-解码器CNN
+![](assets/论文2：利用多解剖部位临床患者数据中的解剖先验信息和注意力机制实现低剂量CT成像的深度CNN去噪方法学习/file-20260527123959976.png)
+> [!图4]
+> 图 4：低剂量成像中图像去噪的三种网络模型：(a) 残差编码器-解码器卷积神经网络 (REDCNN)，(b) 具有下-上投影操作的深度级联投影网络 (DCPN-DU)，(c) 本文提出的网络 (DeACNN)。
 
-1The code is available at [https://web.eecs.umich.edu/ ˜fessler/code/](https://web.eecs.umich.edu/˜fessler/code/) TABLE II: Scanning parameter settings for routine high-dose CT images under a Semens CT scanner.
-
-1The code is available at [https://web.eecs.umich.edu/ ˜fessler/code/](https://web.eecs.umich.edu/˜fessler/code/) 表 II：西门子 CT 扫描仪下常规高剂量 CT 图像的扫描参数设置。
-
-![](https://pdf2html.com/files/server/3131b92b865910fbd62e95d98109b36e.pdf/5/figures/tableii.5.jpg?ver=1)
-
-TABLE III: Parameter counts and running times of each test example for different methods.
-
-表 III：不同方法对每个测试示例的参数计数和运行时间。
-
-![](https://pdf2html.com/files/server/3131b92b865910fbd62e95d98109b36e.pdf/5/figures/tableiii.5.jpg?ver=1)
-
-(REDCNN) [16] and a baseline model named the deep cascade projection network with the down-to-up projection operation (DCPN-DU). To visually describe the network model architecture, the REDCNN and DCPN-DU are shown in Fig. 4(a) and (b). The most obvious difference is that we introduce anatomical information instead of directly applying an endto-end network compared with another two network methods. For comparison models, we apply the kernel size 3 × 3 for convolution and deconvolution layers according to parameter settings following [16]. For a fair comparison, these models are retrained with the same settings as our model on our training and test datasets. Furthermore, popular metrics—the peak signal-to-noise ratio (PSNR) and structural similarity index measure (SSIM)—are adopted to evaluate the qualitative results. As shown in Table. III, we compare the parameter counts and running times of each test example for different methods. Due to multiple multiplication operations and multibranch data processing, the running time of our method for each test example is the slowest compared with the other three methods. Because of the reduction in the number of channels and the use of a ﬁlter size of 1 × 1, the parameter counts of our method are signiﬁcantly less than those of other methods.
-
-（REDCNN）[16]以及一个名为具有下到上投影操作的深度级联投影网络（DCPN-DU）的基线模型。为了直观地描述网络模型架构，图4（a）和（b）分别展示了REDCNN和DCPN-DU。最明显的区别在于，与另外两种网络方法相比，我们引入了解剖学信息，而不是直接应用端到端网络。对于比较模型，我们根据[16]中的参数设置，对卷积层和反卷积层应用3×3的核大小。为了公平比较，这些模型在我们自己的训练和测试数据集上使用与我们的模型相同的设置进行了重新训练。此外，采用了流行的指标——峰值信噪比（PSNR）和结构相似性指数度量（SSIM）——来评估定性结果。如表III所示。我们比较了不同方法的每个测试示例的参数数量和运行时间。由于多次乘法运算和多分支数据处理，我们方法每个测试示例的运行时间与其他三种方法相比最慢。由于通道数量的减少和1×1滤波器尺寸的使用，我们方法的参数数量明显少于其他方法。
-
-![](https://pdf2html.com/files/server/3131b92b865910fbd62e95d98109b36e.pdf/6/figures/fig.5.6.jpg?ver=1)
-
-Fig. 5: Knee results of 120 sparse projection views for different methods. ROIs are marked by red boxes. Several visual differences are marked by yellow arrows.
-
-图 5：不同方法下 120 个稀疏投影视图的膝部结果。感兴趣区域由红色框标出。几个视觉差异由黄色箭头标出。
-
-![](https://pdf2html.com/files/server/3131b92b865910fbd62e95d98109b36e.pdf/6/figures/fig.6.6.jpg?ver=1)
-
-Fig. 6: Cranium results of 120 sparse projection views for different methods. ROIs are marked by red boxes. Several visual differences are marked by yellow arrows.
-
-图 6：不同方法下 120 个稀疏投影视图的颅骨结果。感兴趣区域（ROIs）用红色框标出。几处视觉差异用黄色箭头标出。
-
-![](https://pdf2html.com/files/server/3131b92b865910fbd62e95d98109b36e.pdf/6/figures/fig.7.6.jpg?ver=1)
-
-Fig. 7: Waist results of 150 sparse projection views for different methods. ROIs are marked by red boxes. Several visual differences are marked by yellow arrows.
-
-图 7：150个稀疏投影视图在不同方法下的腰部结果。感兴趣区域（ROIs）用红色框标出。几个视觉差异用黄色箭头标出。
-
-![](https://pdf2html.com/files/server/3131b92b865910fbd62e95d98109b36e.pdf/6/figures/fig.8.6.jpg?ver=1)
-
-Fig. 8: Sinus results of 180 sparse projection views for different methods. ROIs are marked by red boxes. Several visual differences are marked by yellow arrows.
-
-图 8：不同方法下 180 个稀疏投影视图的正弦图结果。感兴趣区域（ROIs）用红色框标出。几个视觉差异用黄色箭头标出。
-
-![](https://pdf2html.com/files/server/3131b92b865910fbd62e95d98109b36e.pdf/6/figures/fig.9.6.jpg?ver=1)
-
-Fig. 9: Statistical results for different methods in terms of the PSNR for the whole images Figure 5, Figure 6, Figure 7 and Figure 8.
-
-图 9：不同方法在整个图 5、图 6、图 7 和图 8 图像上的 PSNR 统计结果。
-
-B. Quantitative and Qualitative Results on Multiple Anatomical Sites
-
-B. 多解剖部位的定量与定性结果
+### B. Quantitative and Qualitative Results on Multiple Anatomical Sites 多解剖部位的定量与定性结果
 
 The visual and quantitative results for different methods on multiple anatomical sites are given in this section. As shown in Figure 5, the boundary of the soft tissue marked by the yellow arrow is distinct in Figure 5 for the DeACNN, while the other results are blurred. In Figure 6, the results generated by the DeACNN are similar to the reference results, and there is no blurring of the corner bones. More visual results and qualitative results for 150 and 180 projection views are shown in Figure 7 and Figure 8, respectively, which also illustrates the superiority of our method. In particular, the connecting lines of the bones in our method can be clearly observed in Figure 8. We calculate the PSNR in Figure 9 for the whole images in Figure 5, Figure 6, Figure 7 and Figure 8. Note that our method, the DeACNN, gains over 1.5 dB improvement in the PSNR in 120 and 180 projection views for the sinus and cranium anatomical sites shown in Figure 6 and Figure 8.
 
