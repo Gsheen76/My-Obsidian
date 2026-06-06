@@ -1,82 +1,36 @@
-# FBPConvNet 低剂量CT图像恢复实验报告
-
-  
-
-## 1. 研究任务
-
-  
+# 1. 研究任务
 
 将低剂量CT图像（quarter_1mm）恢复为常规剂量CT图像（full_1mm）质量，在降低辐射剂量的同时保持图像诊断质量。
-
-  
-
 - **输入**：低剂量CT图像（含噪声和伪影）
-
 - **输出**：去噪恢复后的CT图像
-
 - **Ground Truth**：常规剂量CT图像
 
-  
-
-## 2. 方法
-
-  
+# 2. 方法
 
 ### 2.1 论文参考
-
-  
-
 - *Low-Dose CT with a Residual Encoder-Decoder Convolutional Neural Network* (Chen et al., 2017)
-
 - *Deep Convolutional Neural Network for Inverse Problems in Imaging* (Jin et al., 2017)
-
-  
 
 ### 2.2 网络结构
 
-  
-
 FBPConvNet 基于编码器-解码器（U-Net）架构，采用**残差学习**策略：
-
-  
-
 ```
-
 output = ReLU(x + net(x))
-
 ```
-
-  
-
 网络学习噪声/伪影（残差），而非直接学习全量映射，训练更高效。
 
-  
-
-| 模块 | 结构 | 通道数 |
-
-|------|------|--------|
-
-| Encoder 1 | Conv3×3→ReLU × 2 | 1 → 64 |
-
-| Encoder 2 | MaxPool + Conv×2 | 64 → 128 |
-
-| Encoder 3 | MaxPool + Conv×2 | 128 → 256 |
-
-| Encoder 4 | MaxPool + Conv×2 | 256 → 512 |
-
-| Bottleneck | Conv×2 | 512 → 1024 |
-
-| Decoder 4 | ConvTranspose + Skip + Conv×2 | 1024 → 512 |
-
-| Decoder 3 | ConvTranspose + Skip + Conv×2 | 512 → 256 |
-
-| Decoder 2 | ConvTranspose + Skip + Conv×2 | 256 → 128 |
-
-| Decoder 1 | ConvTranspose + Skip + Conv×2 | 128 → 64 |
-
-| Output Conv | Conv 1×1 | 64 → 1 |
-
-  
+|模块|结构|通道数|
+|---|---|---|
+|Encoder 1|Conv3×3→ReLU × 2|1 → 64|
+|Encoder 2|MaxPool + Conv×2|64 → 128|
+|Encoder 3|MaxPool + Conv×2|128 → 256|
+|Encoder 4|MaxPool + Conv×2|256 → 512|
+|Bottleneck|Conv×2|512 → 1024|
+|Decoder 4|ConvTranspose + Skip + Conv×2|1024 → 512|
+|Decoder 3|ConvTranspose + Skip + Conv×2|512 → 256|
+|Decoder 2|ConvTranspose + Skip + Conv×2|256 → 128|
+|Decoder 1|ConvTranspose + Skip + Conv×2|128 → 64|
+|Output Conv|Conv 1×1|64 → 1|
 
 **关键设计**：
 
