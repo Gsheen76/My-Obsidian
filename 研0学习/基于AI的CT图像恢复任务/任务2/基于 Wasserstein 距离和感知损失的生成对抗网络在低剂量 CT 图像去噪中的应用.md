@@ -17,7 +17,8 @@
     *   **感知损失 (Perceptual Loss) 的作用：** 在已建立的特征空间（VGG 网络）中比较去噪图像与真实图像的感知特征差异，旨在保留图像关键细节和结构信息，克服 MSE 造成的过平滑问题。
     *   通过将人类视觉感知知识转移到图像去噪任务中，在降低噪声水平的同时保留关键信息。
 
-**II. 方法 (Methods)**
+# II. 方法 (Methods)
+
 *   **A. 噪声抑制模型 (Noise Reduction Model)：**
     *   将 LDCT 去噪视为从 LDCT 图像分布向 NDCT 图像分布的转换。
     *   目标是找到一个函数 G，将 LDCT 图像 z 映射到 NDCT 图像 x。
@@ -50,7 +51,8 @@
     *   WGAN (无其他附加损失)
     *   原始 GAN
 
-**III. 实验 (Experiments)**
+# III. 实验 (Experiments)
+
 *   **A. 实验数据集 (Experimental Datasets)：**
     *   来自“2016 NIH-AAPM-Mayo Clinic 低剂量 CT 大挑战”的真实临床数据集。
     *   包含 10 名匿名患者的正常剂量腹部 CT 图像和模拟四分之一剂量 CT 图像。
