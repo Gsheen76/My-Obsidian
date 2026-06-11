@@ -103,7 +103,8 @@
     *   图 9 展示了全剂量和四分之一剂量图像的 VGG 特征图及其绝对差异。
     *   VGG 特征图强调了 CT 图像的边界、边缘或整体结构，表明 VGG 网络可以很好地作为 CT 图像的特征提取器。
 
-**IV. 讨论与结论 (Discussions and Conclusion)**
+# IV. 讨论与结论 (Discussions and Conclusion)
+
 *   **核心动机：** 尽可能接近金标准 NDCT 图像。
 *   **WGAN 和 VGG 损失的价值：**
     *   WGAN 结合 Wasserstein 距离和 VGG 损失具有可行性和优点。
