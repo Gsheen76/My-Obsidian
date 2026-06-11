@@ -1,13 +1,11 @@
-# Low-dose CT Image Denoising: WGAN-GP vs VGG Perceptual Loss
-
-## 1. 论文复现背景
+# 1. 论文复现背景
 
 复现论文 *"Low-dose CT image denoising using a generative adversarial network with Wasserstein distance and perceptual loss"* 中的两个核心任务：
 
 - **任务1**: 基于WGAN-GP的CT图像去噪（对抗训练）
 - **任务2**: 基于VGG感知损失的CT图像去噪（感知质量优化）
 
-## 2. 方法概述
+# 2. 方法概述
 
 ### 2.1 网络架构
 
@@ -28,7 +26,7 @@
 - $L_{VGG}$: VGG 5层特征MSE之和（输入经高斯平滑预处理）
 - Patch切分：Discriminator输入4×4 patch
 
-## 3. 数据集
+# 3. 数据集
 
 - **AAPM Low-Dose CT Challenge数据集**
 - quarter-dose (LDCT) ↔ full-dose (RDCT) 配对
@@ -36,7 +34,7 @@
 - 验证集: 1433对 (L096, L333)
 - 图像尺寸: 512×512, DICOM格式
 
-## 4. 训练配置
+# 4. 训练配置
 
 | 配置 | WGAN-GP | VGG Perceptual |
 |------|---------|---------------|
@@ -48,7 +46,7 @@
 | Max Epochs | 1000 | 100 |
 | Early Stopping | patience=50 | patience=20 |
 
-## 5. 训练结果
+# 5. 训练结果
 
 ### 5.1 定量指标
 
@@ -73,7 +71,7 @@
 - **收敛速度**: WGAN-GP在14 epoch达到最佳，VGG在37 epoch
 - **稳定性**: WGAN-GP验证损失波动较大，VGG更平稳
 
-## 6. 可视化结果
+# 6. 可视化结果
 
 - `loss_curves_mse.png`: 训练/验证MSE对比曲线
 - `ssim_curves.png`: 验证SSIM对比曲线
@@ -81,7 +79,7 @@
 - `denoising_comparison.png`: 3行×4列去噪效果对比
 - `denoising_sample_1/2/3.png`: 单样本详细对比
 
-## 7. 文件结构
+# 7. 文件结构
 
 ```
 基于AI的CT图形恢复任务/
