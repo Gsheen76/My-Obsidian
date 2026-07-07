@@ -1,3 +1,4 @@
+
 $$
 \renewcommand{\arraystretch}{1.1}
 \begin{array}{c c c c c c c c c c c}
