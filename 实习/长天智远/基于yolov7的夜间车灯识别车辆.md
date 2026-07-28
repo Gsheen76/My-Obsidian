@@ -14,13 +14,13 @@ updated: 2026-07-27
 
 本项目通过检测车辆车灯（前灯 head / 尾灯 tail）来识别车辆，基于 **YOLOv7** 目标检测框架实现。采用 **"训练 → 预标注 → 人工审核 → 扩充数据 → 再训练"** 的迭代式数据扩充策略，逐步提升模型精度。
 
-| 项目 | 说明 |
-|------|------|
-| 项目根目录 | `/data2/ai/yolov7-main-WFS` |
-| 数据集目录 | `/data2/ai/yolov7-main-WFS/dataset` |
-| 检测类别 | 2 类 —— `head`（前灯, class 0）、`tail`（尾灯, class 1） |
-| 标注工具 | labelImg（VOC XML 格式标注） |
-| 硬件环境 | 2 × NVIDIA A10（各 23GB 显存，被 vLLM 占用部分显存） |
+| 项目     | 说明                                                         |
+| ------ | ---------------------------------------------------------- |
+| 项目根目录  | `/data2/ai/yolov7-main-WFS`                                |
+| 数据集目录  | `/data2/ai/yolov7-main-WFS/dataset`                        |
+| 检测类别   | 2 类 —— `head`（前灯, class 0）、`tail`（尾灯, class 1）             |
+| 标注工具   | labelImg（VOC XML 格式标注）                                     |
+| 硬件环境   | 2 × NVIDIA A10（各 23GB 显存，被 vLLM 占用部分显存）                    |
 | 当前最佳模型 | `runs/train/yolo_light_exp7/weights/best.pt`（mAP@.5=0.880） |
 
 ---
