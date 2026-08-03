@@ -214,3 +214,15 @@ D:\Program Files\NetEase\MuMu Player 12\shell\adb.exe
 
 后续每批功能应尽量执行以下实际验收：安装最新 APK、启动游戏、截图记录入口、完成一次真实操作、强制结束后重新启动并确认 `superhero_local_save.json` 恢复。当前检查时 MuMu 服务在运行，但 ADB 设备列表未能及时返回，开始测试前需要先确认模拟器实例已启动并开放调试端口。
 
+
+### 2026-08-03 MuMu 连接确认
+
+已通过 MuMu 自带 ADB 连接成功：
+
+```text
+127.0.0.1:7555   device
+127.0.0.1:16384  device
+```
+
+两路实例均为 Android 12、1080x1920，当前已安装包名为 `com.kaiqigu.cjyx.kvsdk`。后续实际测试默认使用 `127.0.0.1:7555`，另一实例用于并行或重启恢复对照。
+
