@@ -226,3 +226,15 @@ D:\Program Files\NetEase\MuMu Player 12\shell\adb.exe
 
 两路实例均为 Android 12、1080x1920，当前已安装包名为 `com.kaiqigu.cjyx.kvsdk`。后续实际测试默认使用 `127.0.0.1:7555`，另一实例用于并行或重启恢复对照。
 
+
+### MuMu 自动化回归工具
+
+为减少手动点击，新增 `tools/mumu_smoke.py`。它使用 MuMu 自带 ADB 批量执行带名称的坐标步骤，每一步自动保存截图和 logcat，并检查 `FATAL EXCEPTION`、native 崩溃和本地请求失败标记。
+
+```powershell
+python original-mod/tools/mumu_smoke.py --scenario main-navigation
+python original-mod/tools/mumu_smoke.py --scenario warehouse-tabs
+```
+
+产物目录为 `original-mod/build/mumu-smoke/<scenario>/`。Lua/后端接口测试仍使用 `test_local_backend.py` 和 `test_all_routes.py`，两者共同构成协议层和 UI 层回归基线。
+
