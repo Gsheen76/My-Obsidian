@@ -203,3 +203,14 @@ python original-mod/tools/verify_apk.py original-mod/build/superhero-local-lates
 - 不恢复已经停服的真实联网请求，不接入第三方支付，不把本地存档上传到网络。
 - 新增功能必须同步补充回归测试和本项目文档。
 
+
+## 11. MuMu 实际验收环境
+
+MuMu Player 12 已安装，当前服务进程为 `MuMuPlayerService`，自带 ADB 位于：
+
+```text
+D:\Program Files\NetEase\MuMu Player 12\shell\adb.exe
+```
+
+后续每批功能应尽量执行以下实际验收：安装最新 APK、启动游戏、截图记录入口、完成一次真实操作、强制结束后重新启动并确认 `superhero_local_save.json` 恢复。当前检查时 MuMu 服务在运行，但 ADB 设备列表未能及时返回，开始测试前需要先确认模拟器实例已启动并开放调试端口。
+
