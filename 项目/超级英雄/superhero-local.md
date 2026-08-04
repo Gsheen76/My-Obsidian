@@ -238,3 +238,16 @@ python original-mod/tools/mumu_smoke.py --scenario warehouse-tabs
 
 产物目录为 `original-mod/build/mumu-smoke/<scenario>/`。Lua/后端接口测试仍使用 `test_local_backend.py` 和 `test_all_routes.py`，两者共同构成协议层和 UI 层回归基线。
 
+
+### 2026-08-03 仓库稳定性修复（进行中）
+
+- 新增初始仓库资产，并让旧存档在加载时自动补齐：两种碎片、两名伙伴和两件装备。
+- 修复客户端在仅加载道具页时以不完整仓库快照覆盖本地伙伴/装备的问题；现在按 `items/cards/equips/talismans` 分区合并，空分区保留持久化数据。
+- 给伙伴、装备渲染增加配置 ID 的字符串/数值兼容和空资源帧保护。此前该路径可触发 `CCSprite::setDisplayFrame(nil)`，MuMu 实测为 `SIGSEGV`；已消除该崩溃。
+- 已在 MuMu `127.0.0.1:16384` 用新角色完成登录、主城、道具仓库和伙伴/装备标签切换，v18 无 `FATAL EXCEPTION`、`SIGSEGV` 或本地请求失败。
+- 当前遗留问题：伙伴和装备仓库标签仍会出现空白渲染，虽然容量计数正常、切换不崩溃。下一轮应继续抓取运行时 `m_storeHouseData.cards/equips` 的实际字段形态，并对齐原始 UI 期望的数据结构；不要将该问题标记为已完成。
+
+当前候选包：`original-mod/build/superhero-local-v18.apk`
+
+- SHA-256：`ba29206c352c74d4c6c6914af116c9436caf1b56a54a1e10444c90d3cdb56145`
+- 已通过：`test_local_backend.py`、`test_all_routes.py`（1267 routes）、`check_lua.py`、`verify_apk.py`。
