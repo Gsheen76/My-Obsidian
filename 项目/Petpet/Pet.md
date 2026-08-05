@@ -8,10 +8,10 @@ source: D:\Agent_project\Petpet
 updated: 2026-08-05
 tags:
   - project/petpet
-  - python
   - pyqt5
   - desktop-pet
   - ai-companion
+  - python
 ---
 
 # Petpet 项目总档案
