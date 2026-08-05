@@ -1,3 +1,19 @@
+---
+tags:
+  - 医学影像
+  - CT
+  - Radon变换
+  - 图像重建
+title: 任务1 X射线CT图像重建原理
+type: experiment
+summary: 记录 CT 成像课程任务中的理论、操作步骤、参数和结果。
+updated: 2026-08-05
+migrated: 2026-08-05
+---
+
+> [!summary] Summary
+> 记录 CT 成像课程任务中的理论、操作步骤、参数和结果。
+
 这个试题将帮你入门断层成像（Computed Tomography，简称CT）图像重建算法的原理。
 
 # 1. Radon transform （拉东变换）
@@ -151,3 +167,20 @@ plt.title('Reconstructed image from Radon data')
 plt.show()
 ```
 ![362](assets/任务1%20X射线CT图像重建原理/file-20260413145410116.png)![331](assets/任务1%20X射线CT图像重建原理/file-20260413145410159.png)
+
+## 关键概念
+
+- 医学影像、CT、Radon变换、图像重建
+
+## 关联笔记
+
+- [[笔记/知识库/知识库索引]]
+- [[笔记/研0/笔记/医学图像重建入门]]
+
+## 规划
+
+- [ ] 补充或更新本笔记中的结果、限制与下一步工作。
+
+## 资料来源
+
+- [ ] 补充原始论文、官方文档或数据集链接。

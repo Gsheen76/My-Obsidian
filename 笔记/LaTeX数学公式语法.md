@@ -1,3 +1,18 @@
+---
+tags:
+  - 工具
+  - LaTeX
+  - 数学
+title: LaTeX数学公式语法
+type: note
+summary: 整理 LaTeX 数学公式的常用语法和可复制示例。
+updated: 2026-08-05
+migrated: 2026-08-05
+---
+
+> [!summary] Summary
+> 整理 LaTeX 数学公式的常用语法和可复制示例。
+
 # 一、 行内式与独立式
 ### 1. 行内式
 ```text
@@ -117,3 +132,11 @@ $\begin{pmatrix} a & b \\ c & d \end{pmatrix}$
 
 # 多行公式
 $\begin{aligned} x &= 1 \\ y &= 2 \end{aligned}$
+
+## 关键概念
+
+- 工具、LaTeX、数学
+
+## 关联笔记
+
+- [[笔记/知识库/知识库索引]]

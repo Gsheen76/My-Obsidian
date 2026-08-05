@@ -1,3 +1,19 @@
+---
+tags:
+  - 医学影像
+  - CT
+  - 深度学习
+  - 图像去噪
+title: 低剂量CT图像去噪（WGAN-GP与VGG感知损失的对比研究）
+type: experiment
+summary: 整理低剂量 CT 图像恢复任务中的方法、实验配置和结果。
+updated: 2026-08-05
+migrated: 2026-08-05
+---
+
+> [!summary] Summary
+> 整理低剂量 CT 图像恢复任务中的方法、实验配置和结果。
+
 # 1. 论文复现背景
 
 复现论文 *"Low-dose CT image denoising using a generative adversarial network with Wasserstein distance and perceptual loss"* 中的两个核心任务：
@@ -98,3 +114,21 @@
 ├── results/                   # 可视化结果
 └── visualize.py               # 可视化脚本
 ```
+
+## 关键概念
+
+- 医学影像、CT、深度学习、图像去噪
+
+## 关联笔记
+
+- [[笔记/知识库/知识库索引]]
+- [[笔记/研0/笔记/医学图像重建入门]]
+- [[项目/多任务成像/相关论文/四篇学习笔记/生成模型详解]]
+
+## 规划
+
+- [ ] 补充或更新本笔记中的结果、限制与下一步工作。
+
+## 资料来源
+
+- [ ] 补充原始论文、官方文档或数据集链接。

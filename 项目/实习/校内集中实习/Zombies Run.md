@@ -1,3 +1,17 @@
+---
+tags:
+  - 实习
+  - 项目实践
+title: Zombies Run
+type: project
+summary: 记录实习项目中的背景、实现过程、实验结果和实践经验。
+updated: 2026-08-05
+migrated: 2026-08-05
+---
+
+> [!summary] Summary
+> 记录实习项目中的背景、实现过程、实验结果和实践经验。
+
 # 一、准备阶段
 
 ### 1. 安装虚拟机Ubuntu
@@ -126,3 +140,16 @@ bash -c "$(curl -fsSL http://cloud.iflow.cn/iflow-cli/install.sh)"
 ![697](assets/Zombies%20Run/file-20260312152951570.png)
 5. 图鉴
 ![697](assets/Zombies%20Run/file-20260312153022046.png)
+
+## 关键概念
+
+- 实习、项目实践
+
+## 关联笔记
+
+- [[笔记/知识库/知识库索引]]
+- [[笔记/Codex介绍]]
+
+## 规划
+
+- [ ] 补充或更新本笔记中的结果、限制与下一步工作。

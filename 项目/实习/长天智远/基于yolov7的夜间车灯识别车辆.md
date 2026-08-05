@@ -1,6 +1,6 @@
 ---
 tags:
-  - yolo
+  - YOLOv7
   - vehicle-detection
   - cv
   - 项目文档
@@ -9,7 +9,15 @@ aliases:
   - 车辆车灯检测
 created: 2026-07-06
 updated: 2026-07-27
+title: 基于yolov7的夜间车灯识别车辆
+type: project
+summary: 记录实习项目中的背景、实现过程、实验结果和实践经验。
+migrated: 2026-08-05
 ---
+
+> [!summary] Summary
+> 记录实习项目中的背景、实现过程、实验结果和实践经验。
+
 ## 概述
 
 本项目通过检测车辆车灯（前灯 head / 尾灯 tail）来识别车辆，基于 **YOLOv7** 目标检测框架实现。采用 **"训练 → 预标注 → 人工审核 → 扩充数据 → 再训练"** 的迭代式数据扩充策略，逐步提升模型精度。
@@ -783,3 +791,12 @@ python3 dataset/yolo2xml.py
 > 最后更新: 2026-07-27
 > 维护者: ai
 > 相关文件: [[make_dataset.py]] · [[analyze_test.py]] · [[yolo2xml.py]] · [[pre_annotate.py]]
+
+## 关键概念
+
+- yolo、vehicle-detection、cv、项目文档、车灯检测、车辆车灯检测
+
+## 关联笔记
+
+- [[笔记/知识库/知识库索引]]
+- [[笔记/Codex介绍]]

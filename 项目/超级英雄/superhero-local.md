@@ -1,3 +1,18 @@
+---
+tags:
+  - 项目
+  - 游戏
+  - Python
+title: superhero-local
+type: project
+summary: 记录项目的定位、实现结构、当前状态和后续工作。
+updated: 2026-08-05
+migrated: 2026-08-05
+---
+
+> [!summary] Summary
+> 记录项目的定位、实现结构、当前状态和后续工作。
+
 # 超级英雄联盟本地单机改造项目
 
 > 维护日期：2026-08-03
@@ -251,3 +266,15 @@ python original-mod/tools/mumu_smoke.py --scenario warehouse-tabs
 
 - SHA-256：`ba29206c352c74d4c6c6914af116c9436caf1b56a54a1e10444c90d3cdb56145`
 - 已通过：`test_local_backend.py`、`test_all_routes.py`（1267 routes）、`check_lua.py`、`verify_apk.py`。
+
+## 关键概念
+
+- 项目、游戏、Python
+
+## 关联笔记
+
+- [[笔记/知识库/知识库索引]]
+
+## 规划
+
+- [ ] 补充或更新本笔记中的结果、限制与下一步工作。

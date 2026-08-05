@@ -8,15 +8,17 @@ source: D:\Agent_project\Petpet
 updated: 2026-08-05
 tags:
   - project/petpet
-  - pyqt5
+  - PyQt5
   - desktop-pet
   - ai-companion
-  - python
+  - Python
+summary: 记录项目的定位、实现结构、当前状态和后续工作。
+migrated: 2026-08-05
 ---
 
 # Petpet 项目总档案
 
-> [!summary] 一句话概括
+> [!summary] Summary
 > Petpet 是一个运行在桌面上的治愈系陪伴小狗：它有透明置顶窗口、拖拽和物理弹跳、连续帧动画、喂食/抚摸/玩耍/睡觉等互动、成长与 Pet 币经济、装扮商店、小游戏、健康提醒、托盘入口、离线回复，以及可选的智谱 GLM 多轮流式聊天。
 
 ## 1. 项目定位与当前状态
@@ -371,3 +373,15 @@ Petpet/
 - 路线图：`D:\Agent_project\Petpet\docs\TODO.md`
 - 发布说明：`D:\Agent_project\Petpet\docs\RELEASE_NOTES_v1.3.1.md`
 - 测试目录：`D:\Agent_project\Petpet\tests`
+
+## 关键概念
+
+- project/petpet、pyqt5、desktop-pet、ai-companion、python
+
+## 关联笔记
+
+- [[笔记/知识库/知识库索引]]
+
+## 规划
+
+- [ ] 补充或更新本笔记中的结果、限制与下一步工作。

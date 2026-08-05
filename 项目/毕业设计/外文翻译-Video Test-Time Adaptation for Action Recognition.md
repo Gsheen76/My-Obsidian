@@ -1,3 +1,19 @@
+---
+tags:
+  - 毕业设计
+  - 动作识别
+  - 深度学习
+  - 论文翻译
+title: 外文翻译-Video Test-Time Adaptation for Action Recognition
+type: paper
+summary: 记录毕业设计的研究背景、技术方案和实验进展。
+updated: 2026-08-05
+migrated: 2026-08-05
+---
+
+> [!summary] Summary
+> 记录毕业设计的研究背景、技术方案和实验进展。
+
 **Video Test-Time Adaptation for Action Recognition 视频测试时自适应动作识别**
 
 # Abstract 摘要
@@ -292,3 +308,20 @@ We address the problem of test-time adaptation of video action recognition model
 Acknowledgements We gratefully acknowledge the ﬁnancial support by the Austrian Federal Ministry for Digital and Economic Affairs, the National Foundation for Research, Technology and Development and the Christian Doppler Research Association. This work was also partially funded by the FWF Austrain Science Fund Lise Meitner grant (M3374).
 
 致谢 我们衷心感谢奥地利数字与经济事务部、国家研究、技术与发展基金会以及克里斯蒂安·多普勒研究协会的财政支持。本研究还得到了奥地利科学基金会（FWF）Lise Meitner 基金（M3374）的部分资助。
+
+## 关键概念
+
+- 毕业设计、动作识别、深度学习、论文翻译
+
+## 关联笔记
+
+- [[笔记/知识库/知识库索引]]
+- [[笔记/Codex介绍]]
+
+## 规划
+
+- [ ] 补充或更新本笔记中的结果、限制与下一步工作。
+
+## 资料来源
+
+- 原始链接和引用信息见正文。
