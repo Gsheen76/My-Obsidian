@@ -67,13 +67,13 @@ bash -c "$(curl -fsSL http://cloud.iflow.cn/iflow-cli/install.sh)"
 
 - **局内展示**
 1. 界面
-![502](assets/Zombies%20Run（校内集中实习）/file-20260311145315563.png)
+![502](assets/Zombies%20Run/file-20260311145315563.png)
 2. 战斗系统
-![503](assets/Zombies%20Run（校内集中实习）/file-20260311145352553.png)
+![503](assets/Zombies%20Run/file-20260311145352553.png)
 3. 花园系统
-![505](assets/Zombies%20Run（校内集中实习）/file-20260311163649625.png)
+![505](assets/Zombies%20Run/file-20260311163649625.png)
 4. 商店系统
-![504](assets/Zombies%20Run（校内集中实习）/file-20260311163732754.png)
+![504](assets/Zombies%20Run/file-20260311163732754.png)
 
 ### version-2.0
 
@@ -92,9 +92,9 @@ bash -c "$(curl -fsSL http://cloud.iflow.cn/iflow-cli/install.sh)"
 
 - **局内展示**
 1. 关卡系统
-![518](assets/Zombies%20Run（校内集中实习）/file-20260311163250586.png)
+![518](assets/Zombies%20Run/file-20260311163250586.png)
 2. 战斗优化
-![517](assets/Zombies%20Run（校内集中实习）/file-20260311195504287.png)
+![517](assets/Zombies%20Run/file-20260311195504287.png)
 
 ### version-3.0（最终版）
 
@@ -117,12 +117,12 @@ bash -c "$(curl -fsSL http://cloud.iflow.cn/iflow-cli/install.sh)"
 
 - **局内展示**
 1. 战斗优化
-![697](assets/Zombies%20Run（校内集中实习）/file-20260312113750494.png)
+![697](assets/Zombies%20Run/file-20260312113750494.png)
 2. 主界面
-![697](assets/Zombies%20Run（校内集中实习）/file-20260312152858824.png)
+![697](assets/Zombies%20Run/file-20260312152858824.png)
 3. 花园
-![697](assets/Zombies%20Run（校内集中实习）/file-20260312152920861.png)
+![697](assets/Zombies%20Run/file-20260312152920861.png)
 4. 商店
-![697](assets/Zombies%20Run（校内集中实习）/file-20260312152951570.png)
+![697](assets/Zombies%20Run/file-20260312152951570.png)
 5. 图鉴
-![697](assets/Zombies%20Run（校内集中实习）/file-20260312153022046.png)
+![697](assets/Zombies%20Run/file-20260312153022046.png)
