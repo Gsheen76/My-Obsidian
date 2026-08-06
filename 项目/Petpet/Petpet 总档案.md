@@ -1,17 +1,18 @@
 ---
-title: Petpet 项目总档案
+title: Petpet 总档案
 type: project
 status: active
 version: v1.3.1
 platforms: Windows 10/11, macOS Intel, macOS Apple Silicon
 source: D:\Agent_project\Petpet
-updated: 2026-08-05
+updated: 2026-08-06
 tags:
   - project/petpet
   - PyQt5
   - desktop-pet
   - ai-companion
   - Python
+  - 工程协作
 summary: 记录项目的定位、实现结构、当前状态和后续工作。
 migrated: 2026-08-05
 ---
@@ -30,9 +31,16 @@ migrated: 2026-08-05
 - **技术栈**：Python 3.11、PyQt5、Pillow、NumPy；发布版使用 PyInstaller。
 - **测试状态**：运行 `python -m pytest -q`，结果为 **149 passed in 4.59s**。
 - **源码位置**：`D:\Agent_project\Petpet`。
-- **本笔记位置**：`D:\Github Desktop\My-Obsidian\项目\Petpet\Pet.md`。
+- **本笔记位置**：`D:\Github Desktop\My-Obsidian\项目\Petpet\Petpet 总档案.md`。
 
 项目是一个本地优先的单用户桌面应用。除 AI 聊天请求外，养成、动画、装扮、小游戏、设置和数据迁移均可离线完成。发布包不打开命令行窗口，并通过 Windows 托盘或 macOS 菜单栏入口控制显示、设置、更新和退出。
+
+### 当前实现重点
+
+- macOS 使用 `Qt.WA_MacAlwaysShowToolWindow` 保持小狗失去焦点后仍显示在最顶层，默认宠物窗口尺寸为 `150 x 180`，绘制高度为 `132`。
+- 进食和摸头动画默认 `20 FPS`；聊天消息使用原生 Qt 圆角组件，底色保持低饱和、浅色、低对比。
+- `parameter_tuner.py` 是源码调试工具，通过滑块和精确数值框实时修改物理、尺寸、动画、状态衰减、成长反馈和小游戏参数；正式冻结版不显示调试入口。
+- 调试参数可保存到运行数据目录的 `debug_parameters.json`，用于下一次源码启动继续调试。
 
 ## 2. 用户可见功能
 
@@ -258,6 +266,7 @@ python pet.py
 ### 测试
 
 ```powershell
+$env:QT_QPA_PLATFORM = 'offscreen'
 python -m pytest -q
 ```
 
@@ -357,11 +366,15 @@ Petpet/
 
 ## 10.1 协作与验收约定
 
+- 用户说 `add tweaks` 时，理解为小幅、局部、可控的参数调整，不擅自扩大改动范围。
+- 任何参数微调优先加入参数调试器，确保可以实时试验，避免反复对话猜数值。
 - 修改桌面程序的功能、交互、窗口行为、动画或视觉样式后，先运行相关测试；改动涉及共享行为时运行完整 `python -m pytest -q`。
 - Windows 改动测试通过后，重新构建 `dist\Petpet.exe`，停止旧的工作区 Petpet 进程并启动新构建的**无终端版**，供用户直接验证。不要只停在源码测试通过。
 - 涉及聊天窗口、气泡、菜单、商店等视觉改动时，先生成本地渲染或截图检查实际效果；不能仅依据 QSS/代码文本判断。Qt 富文本对圆角等 CSS 支持有限，消息气泡优先使用原生 Qt 组件渲染。
 - macOS 验收重点：小狗失去应用焦点后仍保持可见且置顶、Retina 尺寸不应过大、聊天界面文字和背景对比舒适。macOS 专属改动应在真机打包后复测。
 - 视觉取向：避免高饱和、大面积的对话文字底框；消息样式优先采用低饱和浅色、深色文字、细边框、留白和实际可呈现的圆角。
+- 不回滚用户已有改动；提交前检查 `git status`，避免把运行数据、API key 或个人对话纳入发布。
+- 源码调试入口：托盘菜单 → `调试` → `参数调试器`；正式发布版本不显示该入口。
 
 ## 11. 相关源码入口
 
@@ -380,7 +393,9 @@ Petpet/
 
 ## 关联笔记
 
-- [[笔记/知识库/知识库索引]]
+- [[开发记录/参数调试器 UI 与运行时反馈设计]]：参数调试器 UI 与运行时反馈设计。
+- [[笔记/MOC/MOC-项目与实践]]：项目与实践专题入口。
+- [[笔记/知识库/知识库索引]]：返回知识库索引。
 
 ## 规划
 
