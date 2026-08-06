@@ -1,0 +1,33 @@
+---
+title: 进食动画 6 FPS 参数调整
+type: project
+tags:
+  - Petpet
+  - 开发记录
+  - 参数调试
+  - 动画
+status: completed
+source: D:\Agent_project\Petpet
+updated: 2026-08-06
+---
+
+# 进食动画 6 FPS 参数调整
+
+> [!summary] Summary
+> 将源码调试配置中的进食动画帧率调整为 `6 FPS`，降低进食动作的播放速度。
+
+## 参数
+
+| 参数 | 调整后值 |
+| --- | --- |
+| `animation_eat_fps` | `6.0` |
+
+## 应用状态
+
+- 已写入 `C:\Users\sheen\AppData\Local\Petpet\debug_parameters.json`。
+- 源码版已重启，进程 PID：`14164`。
+
+## 关联笔记
+
+- [[参数调试器 UI 与运行时反馈实现计划]]
+
