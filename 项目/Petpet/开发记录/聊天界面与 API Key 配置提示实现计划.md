@@ -6,7 +6,7 @@ tags:
   - 开发记录
   - 聊天
   - API Key
-status: planned
+status: completed
 source: D:\Agent_project\Petpet
 updated: 2026-08-06
 ---
