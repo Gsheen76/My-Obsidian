@@ -6,7 +6,7 @@ tags:
   - 开发记录
   - 更新
   - Windows
-status: active
+status: completed
 source: D:\Agent_project\Petpet
 updated: 2026-08-06
 ---
@@ -35,3 +35,6 @@ updated: 2026-08-06
 - 更新失败时保留可启动旧版本；成功时只替换目标 `Petpet.exe`。
 - 以真实失败路径补测试，覆盖进程等待、原位替换、重启和清理。
 
+## 实际问题与修复
+
+`File.Replace` 的备份文件原先在启动新版后才清理。新版启动链路会继续占用该旧镜像，导致 `.Petpet.backup-*.exe` 清理失败并残留。现改为在 `Start-Process` 之前重试删除备份；替换失败仍删除 pending/backup 并重启旧版本。
