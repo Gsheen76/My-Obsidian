@@ -2,10 +2,10 @@
 title: Petpet 总档案
 type: project
 status: active
-version: v1.3.1
+version: v1.4.0
 platforms: Windows 10/11, macOS Intel, macOS Apple Silicon
 source: D:\Agent_project\Petpet
-updated: 2026-08-06
+updated: 2026-08-11
 tags:
   - project/petpet
   - PyQt5
@@ -20,16 +20,16 @@ migrated: 2026-08-05
 # Petpet 项目总档案
 
 > [!summary] Summary
-> Petpet 是一个运行在桌面上的治愈系陪伴小狗：它有透明置顶窗口、拖拽和物理弹跳、连续帧动画、喂食/抚摸/玩耍/睡觉等互动、成长与 Pet 币经济、装扮商店、小游戏、健康提醒、托盘入口、离线回复，以及可选的智谱 GLM 多轮流式聊天。
+> Petpet 是一个运行在桌面上的治愈系陪伴小狗：它有透明置顶窗口、拖拽和物理弹跳、连续帧动画、喂食/抚摸/玩耍/睡觉等互动、成长与 Pet 币经济、装扮商店、小游戏、可装修家园、健康提醒、托盘入口、离线回复，以及可选的智谱 GLM 多轮流式聊天。
 
 ## 1. 项目定位与当前状态
 
-- **当前版本**：`v1.3.1`，版本唯一来源是 `version.py` 中的 `VERSION = "1.3.1"`。
-- **当前分支/提交**：`main`，HEAD 为 `b5ddc9c`（`docs: finalize v1.3.1 macOS downloads`）。
-- **最近发布标签**：`v1.3.1`；历史版本从 `v1.0.0`、`v1.1.0`、`v1.1.1`、`v1.2.0` 至 `v1.3.1` 均已打标签。
+- **当前公开版本**：`v1.4.0`，版本唯一来源是 `version.py` 中的 `VERSION = "1.4.0"`。
+- **发布提交**：`9c5a6ad`；后续 macOS 服务器端上传工作流提交为 `26f426c`，`v1.4.0` 标签保持指向发布提交。
+- **最近发布标签**：`v1.4.0`；[GitHub Release](https://github.com/Gsheen76/Petpet/releases/tag/v1.4.0) 已于 2026-08-11 公开，包含 Windows 与 macOS 双架构四项资产。
 - **运行平台**：Windows 10/11、macOS Intel、macOS Apple Silicon。
 - **技术栈**：Python 3.11、PyQt5、Pillow、NumPy；发布版使用 PyInstaller。
-- **测试状态**：运行 `python -m pytest -q`，结果为 **149 passed in 4.59s**。
+- **测试状态**：公开 `v1.4.0` 的最终验证为 **304 passed in 37.92s**；当前开发 worktree 的图文聊天、空回复和 GLM-4.7 正文预算回归验证为 **315 passed in 37.56s**，`py_compile` 与 `git diff --check` 均通过。
 - **源码位置**：`D:\Agent_project\Petpet`。
 - **本笔记位置**：`D:\Github Desktop\My-Obsidian\项目\Petpet\Petpet 总档案.md`。
 
@@ -65,6 +65,8 @@ migrated: 2026-08-05
 | 托盘/菜单栏双击 | 显示或隐藏小狗 |
 
 快捷菜单分为两页：主操作包含喂食、玩耍、聊天、睡觉等；“更多”包含小游戏、记录、成就、商店、设置、教程、更新、显示/隐藏和退出。
+
+`v1.4.0` 快捷菜单改为一行五个主入口：聊天、小屋、商店、互动、更多。互动页为抚摸、喂食、玩耍、睡觉；更多页保留记录、成就、小游戏、设置、隐藏、教程、返回和退出。
 
 ### 养成与状态
 
@@ -102,10 +104,24 @@ migrated: 2026-08-05
 
 每局结束统一通过 `progression.award_minigame_coins` 结算，写入最佳成绩和小游戏收入记录。小游戏中心保留后续扩展位置。
 
+### 家园、装修与小屋宠物
+
+- 家场景固定在屏幕右下区域，主画布为 `900×768`；装修侧栏位于画布左侧，尺寸为 `338×768`，不会遮挡场景。
+- 家具卡片采用两列布局，图片按原比例居中；家具支持购买、放置、拖动、缩放、旋转、收纳和变换存档。
+- 装修时隐藏小狗并显示左右视角按钮；退出装修只关闭侧栏，不退出家场景。
+- 小屋内左键指定移动目的地；路线由固定脚印组成，小狗走过的脚印逐步消失，终点使用倾斜椭圆和可爱箭头反馈。
+- 小屋内右键小狗沿用桌面快捷菜单与对话体验；对话框使用暖色小屋主题并上移避开宠物。
+- `home_pet.py` 管理 2.5D 地面坐标、四向移动、寻路目标、自动睡眠和存档位置；纵深不改变宠物显示尺寸。
+- 无指令时播放正坐待机素材；手动或低精力睡眠会先走到地毯，再播放 8 帧、`3 FPS` 的睡眠动画。
+- 小屋动画缺图时保留可见占位回退，避免状态机或交互因素材缺失而中断。
+
 ### AI 聊天
 
 - 供应商：智谱开放平台；接口为 `https://open.bigmodel.cn/api/paas/v4/chat/completions`。
-- 默认模型：`glm-4-flash`（界面名称 `GLM-4-Flash`）。
+- 默认模型：`glm-4.7-flash`（界面名称 `GLM-4.7-Flash`）；旧 `glm-4-flash` 配置会自动迁移。
+- GLM-4.7 默认思考模式已为陪伴聊天显式关闭，避免 `reasoning_content` 耗尽 200-token 短回复预算；`rate_limit` 与空响应只显示友好提示。
+- `glm-4.6v-flash`（界面名称 `GLM-4.6V-Flash`）可上传单张 PNG、JPG/JPEG 或 WEBP 图片（最大 10 MiB）进行图文聊天；文本模型不显示上传入口。
+- 原图仅用于当前智谱请求，聊天记忆不保存原图、路径或 Base64；本机仅保存 320 px 历史缩略图，移除待发送图片、切换为文本模型或清除记忆会清理对应缩略图。
 - 支持流式输出、最近多轮历史、轻量 `user_profile`、宠物名字同步、时间问候、关键词情绪识别和主动 nudge。
 - API Key 优先级：环境变量 `ZHIPU_API_KEY` > 本地 `config.json`。
 - API Key 缺失、网络失败或接口异常时，自动使用规则型离线回复，不影响其他功能。
@@ -133,6 +149,9 @@ migrated: 2026-08-05
 pet.py
 ├── app_paths.py       资源目录与跨平台可写数据目录
 ├── buddy_ai.py        智谱 GLM、流式聊天、本地记忆、离线回复
+├── home_pet.py        小屋宠物状态、2.5D 移动、寻路与睡眠目标
+├── home_scene.py      家场景画布、家具装修、导航反馈与宠物渲染
+├── scene_system.py    家场景坐标、家具几何与视口计算
 ├── progression.py     记录、好感、经验、Pet 币、强化、装扮、成就
 ├── progression_ui.py  记录/成就/装扮/商店窗口
 ├── minigames.py       小游戏中心与两个小游戏
@@ -199,6 +218,7 @@ pet.py
 | `assets/animations` | 连续帧、`manifest.json`、制作源图 | 114 文件（含 sources） |
 | `assets/decorations` | 待机透明装扮图层 | 6 PNG |
 | `assets/props` | 接球小球等运行时道具 | 1 PNG |
+| `assets/scenes/home` | 家背景、家具、小屋宠物待机/移动/睡眠与导航素材 | 家园专用 PNG 素材 |
 | `assets/sounds` | bark、bounce、eat、pet、sleep | 5 WAV |
 | `assets/icons` | 16 至 1024 像素应用图标 | 8 PNG |
 
@@ -233,7 +253,7 @@ pet.py
 - `pet_state.json`：宠物属性、位置、等级、经验、好感、Pet 币、记录、成就、装扮、强化和小游戏成绩。
 - `pet_settings.json`：窗口尺寸、字体、置顶、更新检查、健康提醒、音效、衰减速度和主动聊天频率。
 
-当前示例存档已经包含完整 v1.3.1 字段，例如 `pending_dig_reward`、`last_dig_discovery_at`、`affection_last_gains`、`decoration_adjustments`、`minigame_best_scores`；不要把真实用户存档或真实 API Key 提交到仓库。
+当前存档兼容层已覆盖 v1.4.0 字段，包括 `home_scene`、`owned_home_decorations`、`home_decoration_positions`、家具变换和小屋宠物位置；不要把真实用户存档或真实 API Key 提交到仓库。
 
 ### 存档兼容策略
 
@@ -303,6 +323,9 @@ Petpet/
 ├── buddy_ai.py                    GLM、记忆、离线回复
 ├── progression.py                 成长经济规则
 ├── progression_ui.py              记录/成就/商店/装扮 UI
+├── home_pet.py                    小屋宠物状态与移动规则
+├── home_scene.py                  家场景、装修编辑器与小屋宠物绘制
+├── scene_system.py                场景坐标与家具几何
 ├── minigames.py                   小游戏 UI 与逻辑
 ├── decoration_renderer.py         装扮图层渲染
 ├── updater.py                     自动更新
@@ -332,6 +355,8 @@ Petpet/
 | `v1.2.4` | 抚摸、接球、自动休息、应用内 API Key 配置 |
 | `v1.3.0` | 温暖记录、成就、Pet 币、好感、强化商店、装扮基础版、2D 分层基础 |
 | `v1.3.1` | 待机装扮图层、试戴预览、装扮微调、持久活力、挖宝事件、24 FPS 玩耍、气泡修复 |
+| `v1.3.2` | 小游戏中心、参数调试器、聊天提示、动画时长与 Windows 更新可靠性修复 |
+| `v1.4.0` | 五入口快捷菜单、家场景、家具装修、2.5D 小屋宠物、脚印寻路、正坐待机与 3 FPS 睡眠动画 |
 
 ## 9. 已知限制与后续路线
 
@@ -384,7 +409,8 @@ Petpet/
 - 更新：`D:\Agent_project\Petpet\updater.py`
 - 动画规范：`D:\Agent_project\Petpet\assets\animations\README.md`
 - 路线图：`D:\Agent_project\Petpet\docs\TODO.md`
-- 发布说明：`D:\Agent_project\Petpet\docs\RELEASE_NOTES_v1.3.1.md`
+- 发布说明：`D:\Agent_project\Petpet\.worktrees\home-scene-system\docs\RELEASE_NOTES_v1.4.0.md`
+- 公开下载：https://github.com/Gsheen76/Petpet/releases/tag/v1.4.0
 - 测试目录：`D:\Agent_project\Petpet\tests`
 
 ## 关键概念
@@ -394,6 +420,11 @@ Petpet/
 ## 关联笔记
 
 - [[开发记录/参数调试器 UI 与运行时反馈设计]]：参数调试器 UI 与运行时反馈设计。
+- [[场景系统/家场景装修编辑器交互记录]]：家园与装修交互演进。
+- [[菜单系统/宠物快捷菜单交互记录]]：五入口快捷菜单与互动页。
+- [[发布系统/Petpet v1.4.0 发布设计]]：四平台完整发布设计。
+- [[发布系统/Petpet v1.4.0 发布说明]]：面向用户的更新与升级说明。
+- [[发布系统/Petpet v1.4.0 发布实施记录]]：测试、构建、哈希、Actions 与 Release 结果。
 - [[笔记/MOC/MOC-项目与实践]]：项目与实践专题入口。
 - [[笔记/知识库/知识库索引]]：返回知识库索引。
 
