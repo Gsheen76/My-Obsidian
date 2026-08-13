@@ -503,6 +503,16 @@ Petpet/
 
 详见 [[聊天系统/暖色圆角聊天组件设计]]。
 
+## 2026-08-13 免费聊天延迟诊断与首字兜底
+
+- `openrouter/free` 会动态选择免费模型；本次慢请求实际使用 `nvidia/nemotron-nano-9b-v2:free`（Nvidia），首字耗时 7.08 秒。
+- Worker 不再只根据 HTTP 错误判断失败：OpenRouter 5 秒未产生有效文字时，会取消慢流并切换智谱官方 `glm-4.7-flash`。
+- 快速 OpenRouter 模型不会被切换；修复后线上复测由 `cohere/north-mini-code:free`（Cohere）在 1.66 秒出首字、3.49 秒完成。
+- 本地 `chat_diagnostic.log` 新增模型、服务商、首字与总耗时元数据，不保存聊天正文或 API Key。
+- 当前 Worker 版本为 `80c45a7e-3980-43ed-828c-ee7e685809c4`。
+
+详见 [[聊天系统/默认免费聊天代理实施记录#2026-08-13 免费模型首字超时兜底]]。
+
 ## 2026-08-13 小屋状态卡与商店双列布局
 
 > [!success]
