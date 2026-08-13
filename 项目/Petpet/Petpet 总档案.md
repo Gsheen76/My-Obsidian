@@ -567,6 +567,8 @@ Petpet/
 - 智谱 Key 仅保存为 Cloudflare Secret `ZHIPU_API_KEY`，不进入源码、Git、配置示例或日志。
 - 两个上游都失败时继续返回稳定错误 `default_provider_unavailable`；每日额度仍只在进入上游前扣除一次。
 - Worker 已部署为版本 `fc223214-eafe-4814-a28f-e3a3e60a665c`；线上无隐私冒烟返回 `200 text/event-stream`，无效请求返回 `400`。
+- 桌面免费聊天的长等待失败确认是 Worker 连接路径未可靠使用系统代理；改为显式系统代理与 6 秒连接上限后，Petpet 自身链路实测 1.94 秒完成。
+- 宝藏气泡按确认再向下移动一个直径（80px）。
 
 详见 [[聊天系统/GLM-4.7-Flash 免费兜底实施计划]]。
 
