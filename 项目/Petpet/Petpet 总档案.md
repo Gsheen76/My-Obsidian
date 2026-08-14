@@ -29,7 +29,7 @@ migrated: 2026-08-05
 - **最近公开标签**：`v1.4.1`；[GitHub Release](https://github.com/Gsheen76/Petpet/releases/tag/v1.4.1) 已于 2026-08-13 公开，包含 Windows 与 macOS 双架构四项资产。
 - **运行平台**：Windows 10/11、macOS Intel、macOS Apple Silicon。
 - **技术栈**：Python 3.11、PyQt5、Pillow、NumPy；发布版使用 PyInstaller。
-- **测试状态**：`v1.4.1` 最终全量验证为 **407 passed in 40.42s**，发布脚本契约测试为 **16 passed**，Worker 契约测试为 **13 passed**；PowerShell AST、Python 编译、差异格式、Windows 构建与四项发布资产下载哈希均通过。
+- **测试状态**：当前 worktree 全量验证为 **450 passed in 28.42s**，聊天 focused 为 **97 passed**，Worker 为 **21 passed**，阿里云函数为 **5 passed**；`v1.4.1` 正式发布基线仍为 407 passed。
 - **源码位置**：`D:\Agent_project\Petpet`。
 - **本笔记位置**：`D:\Github Desktop\My-Obsidian\项目\Petpet\Petpet 总档案.md`。
 
@@ -118,8 +118,8 @@ migrated: 2026-08-05
 ### AI 聊天
 
 - 聊天模式由玩家明确选择“免费聊天”或“自己配置”；保存个人 Key 不会自动改变当前模式。
-- 免费聊天使用项目方 Cloudflare Worker 转发的默认文字服务，当前上游为 OpenRouter 免费路由 `openrouter/free`。
-- 首次默认聊天必须明确同意数据说明；免费模型可能有各自的数据使用条款。安装 ID 与来源 IP 各限制 20 次/UTC 日，每次回复最多 200 个输出 token。
+- 免费聊天优先直连阿里云函数的智谱 `glm-4.7-flash`；阿里云连接前失败或本地额度耗尽时，才尝试 Cloudflare Worker。Cloudflare 仍按 GLM 优先、OpenRouter 免费路由兜底。
+- 首次默认聊天必须明确同意数据说明；免费模型可能有各自的数据使用条款。阿里云由桌面客户端按北京时间本地记录 20 次/日，Cloudflare 由 Durable Object 独立记录 20 次/UTC 日，每次回复最多 200 个输出 token。
 - 默认模式只支持文字。额度耗尽、代理未部署或上游不可用时显示中性系统提示，立即解锁输入框，不把错误伪装成小狗台词。
 - 自己配置模式使用玩家保存的智谱 `glm-4.6v-flash` Key；可上传单张 PNG、JPG/JPEG 或 WEBP 图片（最大 10 MiB）进行图文聊天。
 - 原图仅用于当前智谱请求，聊天记忆不保存原图、路径或 Base64；本机仅保存 320 px 历史缩略图，移除待发送图片或清除记忆会清理对应缩略图。
@@ -192,7 +192,7 @@ pet.py
 用户输入
   → 读取玩家显式选择的 chat_mode、个人 API Key、默认聊天同意状态与 memory.json
   → 构造宠物人格、时间、情绪、用户画像和最近历史
-  → 免费模式：Cloudflare Worker 默认文字代理；自己配置：个人智谱 GLM-4.6V
+  → 免费模式：阿里云 glm-4.7-flash 优先、Cloudflare 独立额度兜底；自己配置：个人智谱 GLM-4.6V
   → UI 逐 token 更新
   → 写入 history、统计 ai_replies
   → 默认额度/服务错误显示中性提示；普通接口错误使用友好 fallback
@@ -292,7 +292,7 @@ $env:QT_QPA_PLATFORM = 'offscreen'
 python -m pytest -q
 ```
 
-测试覆盖 AI 配置与聊天工具、动画颜色、路径迁移、接球、挖宝、小游戏、菜单、教程、抚摸、睡眠、气泡、成长规则、成长 UI、更新器、单实例和 Windows 打包元数据。当前结果：`407 passed`。
+测试覆盖 AI 配置与聊天工具、动画颜色、路径迁移、接球、挖宝、小游戏、菜单、教程、抚摸、睡眠、气泡、成长规则、成长 UI、更新器、单实例和 Windows 打包元数据。当前 worktree 结果：`450 passed`。
 
 ### Windows 构建
 
@@ -332,7 +332,8 @@ Petpet/
 ├── decoration_renderer.py         装扮图层渲染
 ├── updater.py                     自动更新
 ├── config.json.example             安全配置模板
-├── cloudflare-worker/             默认免费文字聊天代理、KV 限额与部署说明
+├── cloudflare-worker/             海外兜底聊天代理与 Durable Object 独立额度
+├── aliyun-chat/                   大陆优先 glm-4.7-flash Web 函数
 ├── assets/                        姿势、动画、音效、图标、装扮
 ├── data/                          本地运行数据（不应提交敏感内容）
 ├── docs/                          TODO 与各版本发布说明
@@ -534,6 +535,9 @@ Petpet/
 
 ## 2026-08-13 阿里云优先与统一免费额度
 
+> [!warning] 已被 2026-08-14 独立额度方案取代
+> 阿里云访问 `workers.dev` 的额度请求在大陆链路发生 `TypeError`，因此不再使用统一 Cloudflare 账本。保留本节仅用于记录旧决策。
+
 - 免费聊天架构确认改为阿里云函数优先、Cloudflare Worker 灾备，主要服务中国大陆玩家。
 - 两条线路统一使用同一份每日 20 次额度；Cloudflare Durable Object 作为唯一原子账本。
 - 每句消息使用统一 `request_id` 幂等扣额，线路切换不会重复增加安装 ID 与 IP 计数。
@@ -601,12 +605,53 @@ Petpet/
 
 - 新增阿里云函数计算 Web 函数源码，服务中国大陆玩家，不依赖本机代理。
 - 免费聊天固定先走阿里云，仅在尚未收到 HTTP 响应的连接失败阶段切换 Cloudflare。
-- 两条线路统一使用 Cloudflare Durable Object 的每日 20 次额度；同一 `request_id` 跨线路只扣一次。
+- 阿里云由客户端在 `DATA_DIR/chat_quota_state.json` 按北京时间独立记录 20 次/日；只有 HTTP 200 才扣除，同一 `request_id` 只扣一次。
+- Cloudflare 保持 Durable Object 独立 20 次/UTC 日；阿里云本地额度耗尽后可继续尝试 Cloudflare，因此每天最多约 40 次。
+- 阿里云函数不再读取 `QUOTA_ENDPOINT` 或 `QUOTA_SHARED_SECRET`，也不再访问 Cloudflare。
 - Cloudflare 公开入口保留旧客户端兼容，避免已发布版本因缺少 `request_id` 中断。
-- 当前仅完成本地代码和测试，没有自动部署云端，也没有写入任何密钥。
-- 验证：Python `445 passed`，Cloudflare `21 passed`，阿里云函数 `7 passed`。
+- 新部署包 SHA-256 为 `733BD39AAEE1799AEB9DDDE5A71D4F8C3E47C661E86C996AE26DA91CF3F4096A`，等待上传阿里云验证。
+- 验证：Python `450 passed`，聊天 focused `97 passed`，Cloudflare `21 passed`，阿里云函数 `5 passed`。
 
-详见 [[聊天系统/阿里云优先与统一免费额度设计]]。
+详见 [[聊天系统/阿里云本地额度与 Cloudflare 独立额度设计]] 与 [[聊天系统/阿里云本地额度与 Cloudflare 独立额度实施记录]]。
+
+## 2026-08-14 流式聊天显示性能修复
+
+- 阿里云线上日志确认智谱 HTTP 响应通常约 0.37–0.47 秒；桌面本地多数请求首字约 0.63–1.13 秒、总耗时约 1.15–1.40 秒。
+- SSE 客户端改为低缓冲读取，短回复无需等待默认 512 字节缓冲。
+- 流式 token 改为原位更新最后一个助手气泡，不再反复删除并重建整份聊天记录，修复列表闪空、跳到顶部和明显卡顿。
+- 保留一次约 7.08 秒的上游首字抖动记录，用于后续观察智谱服务稳定性。
+- 验证：聊天相关 `93 passed`，全量 `451 passed`。
+
+详见 [[聊天系统/流式聊天首字延迟与记录闪烁修复]]。
+
+## 2026-08-14 智谱付费模型与充分上下文设计
+
+- 中国大陆阿里云主入口计划改用低成本付费模型 `glm-4.7-flashx`，免费模型不再承担稳定主服务。
+- 输入预算调整为 32KB 请求、8000 字符系统内容、1600 字符单条消息和最多 12 条消息。
+- 最近 10 条历史消息只作为标准对话发送，不再重复嵌入系统提示词。
+- 游戏知识库增加完整概览并校准 v1.4.1 当前功能，每次最多注入 5 条相关资料。
+- 游戏知识仅在玩家询问游戏相关内容时按需注入；普通陪伴聊天不调用知识库。
+- 输出继续限制 200 Tokens并关闭思考，兼顾陪伴质量、首字速度和成本。
+
+详见 [[聊天系统/智谱付费模型与充分上下文设计]]。
+
+## 2026-08-14 智谱付费模型与充分上下文实施
+
+- 阿里云大陆聊天入口默认模型已切换为 `glm-4.7-flashx`，仍支持 `ZHIPU_MODEL` 环境变量覆盖。
+- 桌面端、阿里云和 Cloudflare 统一为 32KB 请求、8000 字符系统消息、1600 字符普通消息和最多 12 条消息。
+- 最近 10 条历史只作为对话消息发送，人设系统提示词不再重复近期聊天。
+- 知识库新增当前游戏概览；只在游戏相关问题中最多注入 5 条资料，日常陪伴聊天不注入。
+- 输出保持 200 Tokens、关闭思考；智谱失败日志仅保留安全的数值业务错误码。
+- 验证：聊天与知识 `103 passed`，阿里云 `7 passed`，Cloudflare `22 passed`，Python 全量 `456 passed`。
+- 本地阿里云上传包 SHA-256：`281E7641BFB5B63AAADB8715B11483AF62F6673ABED7B2719A9E092BD0CA7BBD`；本轮未部署、提交、推送或发布。
+- 首次线上上传后的冒烟验证发现平台启动命令被设为 `node server.js`，与包内 `src/server.js` 不一致，实例报 `MODULE_NOT_FOUND`；需改回 `node src/server.js`，端口保持 `9000` 后重新部署配置。
+- 第二次验证发现自定义运行时不从 `PATH` 查找 `node`，需使用 Node.js 20 公共层的绝对入口：`/var/fc/lang/nodejs20/bin/node src/server.js`。
+- 第三次验证确认本地 ZIP 结构正确，但线上 LATEST 缺少 `/code/src/server.js`；需从“代码”页重新上传已校验 ZIP，确认文件树显示 `src/server.js` 后点击“部署代码”。
+- 重新上传后线上已恢复 `200 text/event-stream` 与完整 `[DONE]`，约 3.37 秒完成；但响应仍是 `glm-4.7-flash`，需把阿里云环境变量 `ZHIPU_MODEL` 改为 `glm-4.7-flashx` 或删除旧覆盖值。
+- 环境变量更新并部署后最终线上验证通过：`200 text/event-stream`、完整 `[DONE]`、实际模型 `glm-4.7-flashx`，约 4.08 秒完成；阿里云大陆聊天入口已正式在线。
+- 玩家实际连续两次聊天日志均为 `status=200`，智谱响应头耗时 546ms/548ms，无 429 或 5xx，线上链路表现稳定。
+
+详见 [[聊天系统/智谱付费模型与充分上下文实施记录]]。
 
 ## 2026-08-13 状态卡高清与属性面板交互修复
 
