@@ -2,10 +2,10 @@
 title: Petpet 总档案
 type: project
 status: active
-version: v1.4.1
+version: v1.5.1
 platforms: Windows 10/11, macOS Intel, macOS Apple Silicon
 source: D:\Agent_project\Petpet
-updated: 2026-08-13
+updated: 2026-08-17
 tags:
   - project/petpet
   - PyQt5
@@ -24,12 +24,13 @@ migrated: 2026-08-05
 
 ## 1. 项目定位与当前状态
 
-- **当前公开版本**：`v1.4.1`，版本唯一来源是 `version.py` 中的 `VERSION = "1.4.1"`。
-- **发布提交**：标签 `v1.4.1` 指向 `8136eccd0ca44cbe6a38da44e67feafbef397626`；发布工具后续维护提交为 `f1d505d`。
-- **最近公开标签**：`v1.4.1`；[GitHub Release](https://github.com/Gsheen76/Petpet/releases/tag/v1.4.1) 已于 2026-08-13 公开，包含 Windows 与 macOS 双架构四项资产。
+- **当前公开版本**：`v1.5.1`，版本唯一来源是 `version.py` 中的 `VERSION = "1.5.1"`。
+- **发布提交**：标签 `v1.5.1` 与远端 `main` 指向 `404d7e3`。
+- **最近公开标签**：`v1.5.1`；[GitHub Release](https://github.com/Gsheen76/Petpet/releases/tag/v1.5.1) 已于 2026-08-17 公开，包含 Windows 与 macOS 双架构四项应用资产及 SHA256 清单。
 - **运行平台**：Windows 10/11、macOS Intel、macOS Apple Silicon。
 - **技术栈**：Python 3.11、PyQt5、Pillow、NumPy；发布版使用 PyInstaller。
-- **测试状态**：当前 worktree 全量验证为 **450 passed in 28.42s**，聊天 focused 为 **97 passed**，Worker 为 **21 passed**，阿里云函数为 **5 passed**；`v1.4.1` 正式发布基线仍为 407 passed。
+- **当前开发状态**：代码与资源结构重构已作为 `v1.5.1` 公开发布。当前 worktree 为 `D:\Agent_project\Petpet\.worktrees\home-scene-system`，发布提交、标签、远端 `main` 与公开 Release 已完成。
+- **最近验证**：发布前 Python 全量测试为 **511 passed in 171.84s**；`py_compile`、`git diff --check origin/main...HEAD` 通过；Windows PyInstaller 构建和 4 秒 EXE 冒烟通过，资源目录只含运行资源。源码启动发现的 `POSE_NAMES` 首绘回归、知识库版本和构建图标旧路径均已修复并有回归测试。
 - **源码位置**：`D:\Agent_project\Petpet`。
 - **本笔记位置**：`D:\Github Desktop\My-Obsidian\项目\Petpet\Petpet 总档案.md`。
 
@@ -149,15 +150,14 @@ migrated: 2026-08-05
 
 ```text
 pet.py
-├── app_paths.py       资源目录与跨平台可写数据目录
-├── buddy_ai.py        智谱 GLM、流式聊天、本地记忆、离线回复
-├── home_pet.py        小屋宠物状态、2.5D 移动、寻路与睡眠目标
-├── home_scene.py      家场景画布、家具装修、导航反馈与宠物渲染
-├── scene_system.py    家场景坐标、家具几何与视口计算
-├── progression.py     记录、好感、经验、Pet 币、强化、装扮、成就
-├── progression_ui.py  记录/成就/装扮/商店窗口
-├── minigames.py       小游戏中心与两个小游戏
-├── decoration_renderer.py  装扮透明图层定位、裁剪、旋转、绘制
+├── petpet/
+│   ├── app/           路径、双宠物存档、设置与桌面宠物控制器
+│   ├── chat/          配置、记忆、知识库、提示词、网络传输与聊天 API
+│   ├── home/          家园宠物、几何、渲染与家园窗口
+│   ├── progression/   玩家成长规则、记录、成就和商店窗口
+│   ├── minigames/     金币雨、幸运爪爪和小游戏入口
+│   └── ui/            聊天、设置、教程、桌面浮层、装饰与公共控件
+├── app_paths.py 等    根目录兼容入口，不复制业务逻辑
 └── updater.py         版本检查、资产选择、下载、替换与清理
 ```
 
@@ -169,7 +169,17 @@ pet.py
 - `PetWindow` 负责透明窗口、动画帧加载、自动行走、拖拽/弹跳、喂食/抚摸/睡觉/接球和主动气泡。
 - `TrayApp` 负责 Windows 托盘/macOS 菜单栏入口、更新、设置和退出。
 
-### `progression.py`：纯养成规则层
+### `petpet/`：业务实现
+
+- `petpet.app` 维护跨平台资源/数据路径、玩家与双宠物存档迁移、设置和桌面 `PetWindow` 控制器。
+- `petpet.chat` 维护聊天模式、配置、独立记忆、游戏知识、提示词和 HTTP/SSE 传输；根目录 `buddy_ai.py` 保持模块别名兼容。
+- `petpet.home` 维护家园宠物的 2.5D 行为、场景几何、渲染规则与窗口控制器。
+- `petpet.progression` 和 `petpet.minigames` 分别承载纯成长规则/窗口及小游戏窗口。
+- `petpet.ui` 承载聊天、设置、教程、桌面气泡菜单、装饰和可复用控件。
+
+根目录旧模块只保留为历史导入兼容面。当前收尾目标是确保包内实现不再反向依赖这些兼容模块。
+
+### `petpet.progression.core`：纯养成规则层
 
 关键职责：
 
@@ -184,7 +194,7 @@ pet.py
 
 该模块尽量不依赖 UI，便于测试、存档迁移和未来替换界面。
 
-### `buddy_ai.py`：AI 适配层
+### `petpet.chat.api`：AI 适配层
 
 默认代理通过正式运行依赖 `requests` 连接并解析 SSE；个人智谱请求继续使用轻量 HTTP 适配，不依赖供应商 SDK。主要流程：
 
@@ -198,11 +208,11 @@ pet.py
   → 默认额度/服务错误显示中性提示；普通接口错误使用友好 fallback
 ```
 
-### `progression_ui.py` 与 `minigames.py`：窗口层
+### `petpet.progression.ui` 与 `petpet.minigames.ui`：窗口层
 
 两者复用 `CozyProgressWindow` 的暖色主题、固定尺寸和按钮布局。UI 只调用 `progression.py` 的规则函数，保存由主窗口回调完成。
 
-### `decoration_renderer.py`：装扮绘制
+### `petpet.ui.decorations`：装扮绘制
 
 负责透明像素裁剪、按宠物边界适配、旋转后的包围盒计算、图层绘制和待机装扮组合。装扮的归一化位置和缩放范围由 `progression.py` 校验，避免非法存档造成 UI 崩溃。
 
@@ -212,17 +222,16 @@ pet.py
 
 ## 4. 资源与动画
 
-资源位于 `assets/`，构建时由两个 PyInstaller spec 一起打包：
+运行资源与制作素材在 `assets/` 下物理分离。两个 PyInstaller spec 只收集 `assets/runtime/`：
 
 | 目录 | 内容 | 当前规模 |
 |---|---|---:|
-| `assets/poses` | idle、happy、sad、eat、sleep、drag、close 静态姿势 | 7 PNG |
-| `assets/animations` | 连续帧、`manifest.json`、制作源图 | 114 文件（含 sources） |
-| `assets/decorations` | 待机透明装扮图层 | 6 PNG |
-| `assets/props` | 接球小球等运行时道具 | 1 PNG |
-| `assets/scenes/home` | 家背景、家具、小屋宠物待机/移动/睡眠与导航素材 | 家园专用 PNG 素材 |
-| `assets/sounds` | bark、bounce、eat、pet、sleep | 5 WAV |
-| `assets/icons` | 16 至 1024 像素应用图标 | 8 PNG |
+| `assets/runtime/pets/desktop` | 桌面宠物静态姿势与连续帧动画 | 运行时 PNG |
+| `assets/runtime/pets/home` | 家园宠物待机、移动与睡眠素材 | 运行时 PNG |
+| `assets/runtime/scenes/home` | 家背景与导航反馈 | 运行时 PNG |
+| `assets/runtime/furniture/home` | 地毯、沙发、绿植与壁画 | 运行时 PNG |
+| `assets/runtime/decorations`、`props`、`sounds`、`icons`、`knowledge` | 装扮、道具、音效、图标与玩家知识库 | 运行时资源 |
+| `assets/source/spritesheets`、`references` | 精灵表与制作参考图 | 不进入安装包 |
 
 当前动画目录及配置：
 
@@ -236,7 +245,7 @@ pet.py
 | `dig_reward` | 30 | 20 | 否 | 挖宝发现动画 |
 | `happy` | 资源目录中配置 | 8 | 是 | 待机开心状态 |
 
-动画清单集中在 `assets/animations/manifest.json`。缺少某动作目录时会回退到 `assets/poses/` 对应静态图，因此可以渐进式补充素材。制作约束记录在 `assets/animations/README.md`：透明 PNG、统一画布与脚底基线、从 `000.png` 连续命名、避免文字/边框/地面线。
+动画清单集中在 `assets/runtime/pets/desktop/animations/manifest.json`。缺少动作目录时会回退到 `assets/runtime/pets/desktop/poses/` 对应静态图。制作约束记录在 `assets/source/spritesheets/README.md`。
 
 ## 5. 本地数据与隐私
 
@@ -319,22 +328,16 @@ macOS 当前尚未使用 Apple Developer ID 签名和公证，首次打开可能
 
 ```text
 Petpet/
-├── pet.py                         主程序、Qt UI、动画、交互、托盘
+├── pet.py                         稳定源码与打包启动入口、Qt 生命周期和托盘编排
 ├── version.py                     唯一版本号
-├── app_paths.py                   资源路径、数据路径、迁移
-├── buddy_ai.py                    默认代理、GLM、记忆、知识库与离线回复
-├── progression.py                 成长经济规则
-├── progression_ui.py              记录/成就/商店/装扮 UI
-├── home_pet.py                    小屋宠物状态与移动规则
-├── home_scene.py                  家场景、装修编辑器与小屋宠物绘制
-├── scene_system.py                场景坐标与家具几何
-├── minigames.py                   小游戏 UI 与逻辑
-├── decoration_renderer.py         装扮图层渲染
+├── petpet/                        实际业务包：app/chat/home/progression/minigames/ui
+├── app_paths.py 等                旧导入兼容转发层
 ├── updater.py                     自动更新
 ├── config.json.example             安全配置模板
 ├── cloudflare-worker/             海外兜底聊天代理与 Durable Object 独立额度
 ├── aliyun-chat/                   大陆优先 glm-4.7-flash Web 函数
-├── assets/                        姿势、动画、音效、图标、装扮
+├── assets/runtime/                唯一进入安装包的运行资源
+├── assets/source/                 不进入安装包的精灵表与参考图
 ├── data/                          本地运行数据（不应提交敏感内容）
 ├── docs/                          TODO 与各版本发布说明
 ├── packaging/                     Windows/macOS PyInstaller spec
@@ -362,10 +365,11 @@ Petpet/
 | `v1.3.2` | 小游戏中心、参数调试器、聊天提示、动画时长与 Windows 更新可靠性修复 |
 | `v1.4.0` | 五入口快捷菜单、家场景、家具装修、2.5D 小屋宠物、脚印寻路、正坐待机与 3 FPS 睡眠动画 |
 | `v1.4.1` | 免费/个人图文聊天、玩法知识库、双方头像、暖色圆角聊天、三档设置与六页教程 |
+| `v1.5.0` | 家园宠物行为、独立好感成长、状态卡家具、宝藏与属性 UI、阿里云优先免费聊天、GLM-4.7-FlashX |
 
-## 9. 已知限制与后续路线
+## 9. 历史产品路线
 
-### `docs/TODO.md` 中未完成项目
+以下为早期产品方向的历史记录，不作为当前重构收尾范围或提交门禁。
 
 - 多屏与贴边：使用 `QScreen.availableGeometry()`，支持多显示器、贴边吸附和不同分辨率。
 - macOS 真机验收：菜单栏交互、Retina 缩放、多屏、签名与公证。
@@ -415,8 +419,8 @@ Petpet/
 - 动画规范：`D:\Agent_project\Petpet\assets\animations\README.md`
 - 路线图：`D:\Agent_project\Petpet\docs\TODO.md`
 - 历史发布说明：`D:\Agent_project\Petpet\.worktrees\home-scene-system\docs\RELEASE_NOTES_v1.4.0.md`
-- 当前发布说明：`D:\Agent_project\Petpet\.worktrees\home-scene-system\docs\RELEASE_NOTES_v1.4.1.md`
-- 公开下载（发布完成后）：https://github.com/Gsheen76/Petpet/releases/tag/v1.4.1
+- 当前发布说明：`D:\Agent_project\Petpet\.worktrees\home-scene-system\docs\RELEASE_NOTES_v1.5.0.md`
+- 公开下载：https://github.com/Gsheen76/Petpet/releases/tag/v1.5.0
 - 测试目录：`D:\Agent_project\Petpet\tests`
 
 ## 关键概念
@@ -437,12 +441,28 @@ Petpet/
 - [[发布系统/Petpet v1.4.1 发布实施计划]]：v1.4.1 验证、构建与发布步骤。
 - [[发布系统/Petpet v1.4.1 发布说明]]：聊天、知识库和暖色界面更新说明。
 - [[发布系统/Petpet v1.4.1 发布实施记录]]：最终提交、测试、构建、Actions、资产哈希与公开结果。
+- [[发布系统/Petpet v1.5.0 发布说明]]：家园宠物、好感成长与大陆优先聊天更新说明。
+- [[发布系统/Petpet v1.5.0 发布实施记录]]：发布提交、测试、构建、资产哈希与恢复过程。
+- [[发布系统/Petpet v1.5.1 发布说明]]：代码包化、资源分层与首绘回归修复说明。
+- [[发布系统/Petpet v1.5.1 发布实施记录]]：公开提交、Actions、资产哈希与恢复过程。
+- [[工程结构/项目代码与资源结构重构设计]]：`v1.5.0` 后的代码包、双宠物数据和运行/制作资源分层方案。
+- [[工程结构/项目代码与资源结构重构实施计划]]：按可独立验证的纵向切片执行重构。
+- [[工程结构/项目代码与资源结构重构实施记录]]：已完成包骨架、统一路径、玩家/双宠物存档基础、独立聊天记忆、游戏知识库与提示词服务、公共 UI 字体与设置控件、完整设置窗口及教程内容与窗口迁移；收尾验证后当前全量测试为 509 passed。
 - [[笔记/MOC/MOC-项目与实践]]：项目与实践专题入口。
 - [[笔记/知识库/知识库索引]]：返回知识库索引。
 
 ## 规划
 
 - [ ] 补充或更新本笔记中的结果、限制与下一步工作。
+
+## 2026-08-14 v1.5.0 正式发布
+
+- `v1.5.0` 已公开，发布提交与远端 `main`、注释标签统一指向 `a6545343e86c9859179c106c7488033d67ee5460`。
+- 全量测试 `457 passed`，Windows 构建与启动冒烟通过；macOS Actions 任务 `31800821250` 成功完成双架构构建。
+- 五项资产均已下载复核大小与 SHA256，Windows 校验清单内容匹配。
+- 一键脚本在 Actions 时间戳解析和 PyInstaller 非确定性重建哈希处停止，保留安全草稿；最终沿用首次已冒烟的 Windows 资产，通过同等远端引用与资产闸门后公开。
+
+详见 [[发布系统/Petpet v1.5.0 发布说明]] 与 [[发布系统/Petpet v1.5.0 发布实施记录]]。
 
 ## 2026-08-13 小屋宠物功能分流与好感成长设计
 
@@ -503,6 +523,21 @@ Petpet/
 - 文件选择器仍使用系统原生窗口。
 
 详见 [[聊天系统/暖色圆角聊天组件设计]]。
+
+## 2026-08-15 项目结构重构进度
+
+- 聊天配置、模型规则、公开端点解析与阿里云本地额度状态已迁移到 `petpet.chat.config`。
+- 根目录 `buddy_ai.py` 保留兼容入口，当前运行行为和用户数据路径不变。
+- 本阶段 focused tests 为 `62 passed`，全量测试为 `489 passed`，源码小狗启动冒烟通过。
+- 聊天 HTTP/SSE 传输已进一步迁移到 `petpet.chat.transport`；全量测试更新为 `491 passed`，源码冒烟继续通过。
+- 完整聊天窗口已迁移到 `petpet.ui.chat`，`pet.py` 仅保留兼容门面；全量测试更新为 `492 passed`。
+- 桌面状态卡、快捷菜单、奖励/互动/对话气泡及锚点几何已迁移到 `petpet.ui.desktop`；全量测试更新为 `494 passed`。
+- 桌面 `PetWindow` 主控制器已迁移到 `petpet.app.pet_window`，根入口仅保留精确别名；全量测试更新为 `495 passed`。
+- 小屋视口、家具变换与坐标几何已迁移到 `petpet.home.geometry`，根 `scene_system.py` 保持兼容；全量测试更新为 `496 passed`。
+- 小屋状态卡、宠物帧、阴影、目标反馈与画布渲染规则已迁移到 `petpet.home.rendering`；全量测试更新为 `497 passed`。
+- 完整小屋窗口已迁移到 `petpet.home.window`，根 `home_scene.py` 成为兼容门面；全量测试更新为 `498 passed`。
+
+详见 [[工程结构/项目代码与资源结构重构实施记录]]。
 
 ## 2026-08-13 免费聊天延迟诊断与首字兜底
 
@@ -696,3 +731,30 @@ Petpet/
 - 本轮 focused tests 为 126 passed，全量测试为 376 passed。
 
 详见 [[聊天系统/暖色圆角聊天组件设计]]。
+## 2026-08-15 成长规则域结构重构
+
+- 成长记录、成就、Pet 币、家具状态与升级平衡迁移到 `petpet.progression.core`。
+- 根目录 `progression.py` 仅保留兼容入口，旧代码无需修改导入。
+- 验证：成长相关 `134 passed`，Python 全量 `499 passed`，源码 GUI 冒烟通过。
+- 版本仍为 `1.5.0`，本阶段未提交、推送或发布。
+## 2026-08-15 成长 UI 与小游戏结构重构
+
+- 成长窗口迁入 `petpet.progression.ui`，小游戏迁入 `petpet.minigames.ui`。
+- 根目录旧入口继续兼容；调试参数修改的成长常量和小游戏类常量仍与包实现共享。
+- 验证：相关 `142 passed`，Python 全量 `502 passed`，源码 GUI 冒烟通过。
+- 版本仍为 `1.5.0`，本阶段未提交、推送或发布。
+## 2026-08-15 项目代码与资源结构重构完成
+
+- `pet.py` 继续作为稳定启动入口，业务实现按 `app/chat/home/progression/minigames/ui` 进入 `petpet` 包。
+- 根目录旧模块保留为兼容入口；聊天运行时补丁、成长平衡参数和各窗口类对象身份保持兼容。
+- 玩家等级/经验/Pet币/成就/库存共享，桌面与家园两只宠物的名字、属性、好感、冷却和聊天记忆独立。
+- 运行资源进入 `assets/runtime`，制作精灵表和参考图进入 `assets/source`；安装包只收集前者。
+- 最终阶段验证：Python `510 passed in 44.65s`，`compileall`、`git diff --check` 通过；资源目录含 147 个运行文件和 8 个制作源图，Windows EXE 构建成功，含 147 个运行资源、0 个制作源图。
+- 用户源码启动暴露 `POSE_NAMES` 首绘回归，已通过包内 `POSE` 映射修复并增加自动回归测试；修复后的实际 GUI 冒烟仍待确认。macOS CI 因当前重构提交尚未推送而顺延。两项均明确保留为外部验证门禁，不以测试或构建结果冒充完成。
+- 版本仍为 `1.5.0`，未提交、推送或发布。
+
+## 2026-08-17 重构收尾验证
+
+- 包内兼容层依赖已收口：`petpet` 不再反向导入根目录 `app_paths`、`progression` 等兼容入口。
+- 新增包边界与首绘回归测试后，全量测试由 `508` 增至 `510 passed in 44.65s`。
+- 代码与资源收尾记录见 [[工程结构/项目代码与资源结构重构实施记录]]；本地提交待本轮末执行，不推送、不打标签、不发布。
