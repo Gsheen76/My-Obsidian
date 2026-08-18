@@ -9,6 +9,7 @@ tags:
 status: completed
 source: D:\Agent_project\Petpet
 updated: 2026-08-06
+summary: 提升小狗聊天气泡的底纹与文本对比度，统一聊天字体缩放，并在 API Key 未配置时通过聊天入口和主菜单设置入口的红点提醒用户。
 ---
 
 # 聊天界面与 API Key 配置提示实现记录

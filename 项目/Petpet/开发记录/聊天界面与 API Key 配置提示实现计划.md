@@ -9,6 +9,7 @@ tags:
 status: completed
 source: D:\Agent_project\Petpet
 updated: 2026-08-06
+summary: 记录 聊天界面与 API Key 配置提示实现计划 的背景、过程和结果。
 ---
 
 # 聊天界面与 API Key 配置提示实现计划

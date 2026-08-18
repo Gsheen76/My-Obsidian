@@ -9,6 +9,7 @@ tags:
 status: completed
 source: D:\Agent_project\Petpet
 updated: 2026-08-06
+summary: API Key 未配置时，在小狗本体的右上角显示红点提示，并与聊天入口及主菜单设置入口使用一致的配置状态。
 ---
 
 # 小狗本体 API Key 红点修复
@@ -37,4 +38,3 @@ updated: 2026-08-06
 ## 关联笔记
 
 - [[聊天界面与 API Key 配置提示实现记录]]
-

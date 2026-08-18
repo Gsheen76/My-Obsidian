@@ -1,11 +1,13 @@
 ---
 title: GLM-4.7-Flash 免费兜底实施计划
-date: 2026-08-13
+updated: 2026-08-13
 tags:
   - Petpet
   - 聊天系统
   - Cloudflare
   - GLM
+type: project
+summary: 记录 GLM-4.7-Flash 免费兜底实施计划 的实现步骤与验证安排。
 ---
 
 # GLM-4.7-Flash 免费兜底实施计划

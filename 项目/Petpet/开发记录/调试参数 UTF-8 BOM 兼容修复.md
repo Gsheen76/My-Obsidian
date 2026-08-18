@@ -8,6 +8,7 @@ tags:
 status: completed
 source: D:\Agent_project\Petpet
 updated: 2026-08-06
+summary: 修复 `debug_parameters.json` 带 UTF-8 BOM 时被加载器忽略、动画 FPS 回退默认值的问题，并完成进食和抚摸动画 `10 FPS` 的运行时验证。
 ---
 
 # 调试参数 UTF-8 BOM 兼容修复

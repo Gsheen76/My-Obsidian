@@ -1,10 +1,12 @@
 ---
 title: Petpet v1.5.0 发布说明
-date: 2026-08-14
+updated: 2026-08-14
 version: v1.5.0
 tags:
   - project/petpet
   - release
+type: project
+summary: 记录 Pet陪它 v1.5.0 的背景、过程和结果。
 ---
 
 # Pet陪它 v1.5.0

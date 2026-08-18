@@ -1,11 +1,13 @@
 ---
 title: Petpet v1.5.1 发布说明
-date: 2026-08-17
+updated: 2026-08-17
 version: v1.5.1
 status: published
 tags:
   - project/petpet
   - release
+type: project
+summary: 记录 Petpet v1.5.1 发布说明 的说明内容、使用要点和当前状态。
 ---
 
 # Petpet v1.5.1 发布说明

@@ -1,11 +1,13 @@
 ---
 title: Petpet v1.4.0 发布说明
-date: 2026-08-11
+updated: 2026-08-11
 tags:
   - Petpet
   - 发布
   - v1-4-0
 status: published
+type: project
+summary: 记录 Pet陪它 v1.4.0 的背景、过程和结果。
 ---
 
 # Pet陪它 v1.4.0

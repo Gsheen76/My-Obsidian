@@ -1,12 +1,14 @@
 ---
 title: Petpet v1.4.0 发布实施记录
-date: 2026-08-11
+updated: 2026-08-11
 tags:
   - Petpet
   - 发布
   - v1-4-0
 status: published
 release_url: https://github.com/Gsheen76/Petpet/releases/tag/v1.4.0
+type: project
+summary: 记录 Petpet v1.4.0 发布实施记录 的实施过程、结果和问题。
 ---
 
 # Petpet v1.4.0 发布实施记录

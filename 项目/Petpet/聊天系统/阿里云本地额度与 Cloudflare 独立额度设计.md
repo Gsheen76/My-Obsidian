@@ -1,6 +1,6 @@
 ---
 title: 阿里云本地额度与 Cloudflare 独立额度设计
-date: 2026-08-14
+updated: 2026-08-14
 tags:
   - Petpet
   - 聊天系统
@@ -8,6 +8,8 @@ tags:
   - Cloudflare
   - 免费额度
 status: confirmed
+type: project
+summary: 记录 阿里云本地额度与 Cloudflare 独立额度设计 的设计目标、方案和约束。
 ---
 
 # 阿里云本地额度与 Cloudflare 独立额度设计

@@ -9,6 +9,7 @@ tags:
 status: completed
 source: D:\Agent_project\Petpet
 updated: 2026-08-06
+summary: 以隔离的真实发布资产升级为主验证，依据失败证据补充最小修复和自动化回归测试。
 ---
 
 # Windows 更新链路 v1.3.0 到 v1.3.1 实现计划

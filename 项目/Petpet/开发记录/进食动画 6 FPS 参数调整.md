@@ -9,6 +9,7 @@ tags:
 status: completed
 source: D:\Agent_project\Petpet
 updated: 2026-08-06
+summary: 将源码调试配置中的进食动画帧率调整为 `6 FPS`，降低进食动作的播放速度。
 ---
 
 # 进食动画 6 FPS 参数调整
@@ -30,4 +31,3 @@ updated: 2026-08-06
 ## 关联笔记
 
 - [[参数调试器 UI 与运行时反馈实现计划]]
-

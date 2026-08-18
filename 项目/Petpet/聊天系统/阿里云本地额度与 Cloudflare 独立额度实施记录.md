@@ -1,11 +1,13 @@
 ---
 title: 阿里云本地额度与 Cloudflare 独立额度实施记录
-date: 2026-08-14
+updated: 2026-08-14
 tags:
   - Petpet
   - 聊天系统
   - 实施记录
 status: ready-to-deploy
+type: project
+summary: 记录 阿里云本地额度与 Cloudflare 独立额度实施记录 的实施过程、结果和问题。
 ---
 
 # 阿里云本地额度与 Cloudflare 独立额度实施记录
@@ -57,4 +59,3 @@ status: ready-to-deploy
 - [[阿里云本地额度与 Cloudflare 独立额度实施计划]]
 - [[阿里云优先与统一免费额度设计]]：已被本方案取代的旧额度架构。
 - [[Petpet 总档案]]
-

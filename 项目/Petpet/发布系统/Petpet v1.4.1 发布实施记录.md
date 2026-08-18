@@ -1,11 +1,13 @@
 ---
 title: Petpet v1.4.1 发布实施记录
-date: 2026-08-13
+updated: 2026-08-13
 tags:
   - Petpet
   - 发布
   - v1-4-1
 status: published
+type: project
+summary: 记录 Petpet v1.4.1 发布实施记录 的实施过程、结果和问题。
 ---
 
 # Petpet v1.4.1 发布实施记录

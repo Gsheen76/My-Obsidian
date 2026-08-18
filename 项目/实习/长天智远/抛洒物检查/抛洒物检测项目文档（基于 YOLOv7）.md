@@ -1,4 +1,5 @@
 ---
+title: 抛洒物检测项目文档（基于 YOLOv7）
 
 tags:
 
@@ -20,6 +21,8 @@ created: 2026-08-11
 
 updated: 2026-08-18
 
+type: project
+summary: 记录 抛洒物检测项目文档（基于 YOLOv7） 的背景、过程和结果。
 ---
 
   

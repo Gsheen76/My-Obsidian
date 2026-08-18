@@ -1,11 +1,13 @@
 ---
 title: 阿里云本地额度与 Cloudflare 独立额度实施计划
-date: 2026-08-14
+updated: 2026-08-14
 tags:
   - Petpet
   - 聊天系统
   - 实施计划
 status: ready-to-deploy
+type: project
+summary: 记录 阿里云本地额度与 Cloudflare 独立额度实施计划 的实现步骤与验证安排。
 ---
 
 # 阿里云本地额度与 Cloudflare 独立额度实施计划

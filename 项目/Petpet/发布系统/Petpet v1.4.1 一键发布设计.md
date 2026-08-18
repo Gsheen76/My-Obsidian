@@ -1,11 +1,13 @@
 ---
 title: Petpet v1.4.1 一键发布设计
-date: 2026-08-13
+updated: 2026-08-13
 tags:
   - Petpet
   - 发布
   - v1-4-1
 status: completed
+type: project
+summary: 记录 Petpet v1.4.1 一键发布设计 的设计目标、方案和约束。
 ---
 
 # Petpet v1.4.1 一键发布设计

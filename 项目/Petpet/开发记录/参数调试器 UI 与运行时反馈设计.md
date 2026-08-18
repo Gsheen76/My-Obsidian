@@ -1,11 +1,13 @@
 ---
 title: 参数调试器 UI 与运行时反馈设计
-date: 2026-08-06
+updated: 2026-08-06
 tags:
   - Petpet
   - 开发记录
   - 参数调试器
 status: approved
+type: project
+summary: 记录 参数调试器 UI 与运行时反馈设计 的设计目标、方案和约束。
 ---
 
 # 参数调试器 UI 与运行时反馈设计

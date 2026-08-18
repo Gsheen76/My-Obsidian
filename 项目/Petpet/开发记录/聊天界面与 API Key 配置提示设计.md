@@ -9,6 +9,7 @@ tags:
 status: approved-design
 source: D:\Agent_project\Petpet
 updated: 2026-08-06
+summary: 强化聊天中小狗消息的底纹与文字可读性，让气泡文字完整跟随聊天字体设置；API Key 未配置时在聊天入口和主菜单设置入口同时显示状态与红点提醒。
 ---
 
 # 聊天界面与 API Key 配置提示设计

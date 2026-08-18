@@ -9,6 +9,7 @@ tags:
 status: completed
 source: D:\Agent_project\Petpet
 updated: 2026-08-06
+summary: 在隔离临时安装目录中，用真实发布资产复现 `v1.3.0 → v1.3.1` 的 Windows 原位更新，并将失败点转化为更新器回归测试与修复。
 ---
 
 # Windows 更新链路 v1.3.0 到 v1.3.1 设计

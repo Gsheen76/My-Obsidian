@@ -1,11 +1,13 @@
 ---
 title: Petpet v1.4.0 发布实施计划
-date: 2026-08-11
+updated: 2026-08-11
 tags:
   - Petpet
   - 发布
   - v1-4-0
 status: completed
+type: project
+summary: 记录 Petpet v1.4.0 发布实施计划 的实现步骤与验证安排。
 ---
 
 # Petpet v1.4.0 发布实施计划
