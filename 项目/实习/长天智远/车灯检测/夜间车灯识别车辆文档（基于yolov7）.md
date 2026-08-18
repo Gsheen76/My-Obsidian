@@ -9,7 +9,7 @@ aliases:
   - 车辆车灯检测
 created: 2026-07-06
 updated: 2026-08-07
-title: 基于yolov7的夜间车灯识别车辆
+title: 夜间车灯识别车辆文档（基于yolov7）
 type: project
 summary: 记录实习项目中的背景、实现过程、实验结果和实践经验。
 migrated: 2026-08-05
