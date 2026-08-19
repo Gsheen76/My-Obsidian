@@ -2,10 +2,10 @@
 title: Petpet 总档案
 type: project
 status: active
-version: v1.5.1
+version: v1.5.2
 platforms: Windows 10/11, macOS Intel, macOS Apple Silicon
 source: D:\Agent_project\Petpet
-updated: 2026-08-17
+updated: 2026-08-19
 tags:
   - project/petpet
   - PyQt5
@@ -24,13 +24,13 @@ migrated: 2026-08-05
 
 ## 1. 项目定位与当前状态
 
-- **当前公开版本**：`v1.5.1`，版本唯一来源是 `version.py` 中的 `VERSION = "1.5.1"`。
-- **发布提交**：标签 `v1.5.1` 与远端 `main` 指向 `404d7e3`。
-- **最近公开标签**：`v1.5.1`；[GitHub Release](https://github.com/Gsheen76/Petpet/releases/tag/v1.5.1) 已于 2026-08-17 公开，包含 Windows 与 macOS 双架构四项应用资产及 SHA256 清单。
+- **当前公开版本**：`v1.5.2`，版本唯一来源是 `version.py` 中的 `VERSION = "1.5.2"`。
+- **发布提交**：`v1.5.2` 已公开发布；README 文档补充提交在其后追加，未修改已发布标签。
+- **最近公开标签**：`v1.5.2`；[GitHub Release](https://github.com/Gsheen76/Petpet/releases/tag/v1.5.2) 已公开，包含 Windows 与 macOS 双架构应用资产及 SHA256 清单。
 - **运行平台**：Windows 10/11、macOS Intel、macOS Apple Silicon。
 - **技术栈**：Python 3.11、PyQt5、Pillow、NumPy；发布版使用 PyInstaller。
-- **当前开发状态**：代码与资源结构重构已作为 `v1.5.1` 公开发布。当前 worktree 为 `D:\Agent_project\Petpet\.worktrees\home-scene-system`，发布提交、标签、远端 `main` 与公开 Release 已完成。
-- **最近验证**：发布前 Python 全量测试为 **511 passed in 171.84s**；`py_compile`、`git diff --check origin/main...HEAD` 通过；Windows PyInstaller 构建和 4 秒 EXE 冒烟通过，资源目录只含运行资源。源码启动发现的 `POSE_NAMES` 首绘回归、知识库版本和构建图标旧路径均已修复并有回归测试。
+- **当前开发状态**：v1.5.2 已公开发布，README 全文维护已提交。下一阶段进入多宠物系统设计，设计已确认但尚未开始源码实现。
+- **最近验证**：v1.5.2 发布前全量测试为 **510 passed**；README 维护后当前 worktree 全量测试为 **533 passed**，`compileall`、`git diff --check` 通过。Windows 与 macOS 发布资产已完成验证。
 - **源码位置**：`D:\Agent_project\Petpet`。
 - **本笔记位置**：`D:\Github Desktop\My-Obsidian\项目\Petpet\Petpet 总档案.md`。
 
@@ -151,7 +151,7 @@ migrated: 2026-08-05
 ```text
 pet.py
 ├── petpet/
-│   ├── app/           路径、双宠物存档、设置与桌面宠物控制器
+│   ├── app/           路径、存档、设置与桌面宠物控制器；多宠物模型尚在设计
 │   ├── chat/          配置、记忆、知识库、提示词、网络传输与聊天 API
 │   ├── home/          家园宠物、几何、渲染与家园窗口
 │   ├── progression/   玩家成长规则、记录、成就和商店窗口
@@ -171,7 +171,7 @@ pet.py
 
 ### `petpet/`：业务实现
 
-- `petpet.app` 维护跨平台资源/数据路径、玩家与双宠物存档迁移、设置和桌面 `PetWindow` 控制器。
+- `petpet.app` 维护跨平台资源/数据路径、当前单宠物存档、设置和桌面 `PetWindow` 控制器；多宠物存档边界见 [[宠物系统/多宠物系统设计]]。
 - `petpet.chat` 维护聊天模式、配置、独立记忆、游戏知识、提示词和 HTTP/SSE 传输；根目录 `buddy_ai.py` 保持模块别名兼容。
 - `petpet.home` 维护家园宠物的 2.5D 行为、场景几何、渲染规则与窗口控制器。
 - `petpet.progression` 和 `petpet.minigames` 分别承载纯成长规则/窗口及小游戏窗口。
@@ -260,8 +260,8 @@ pet.py
 ### 文件说明
 
 - `config.json`：API Key、自动聊天模式、默认聊天同意状态、安装 ID 与公开代理地址。敏感信息只保存在本地。
-- `memory.json`：AI 多轮历史、用户画像、宠物名字和主动 nudge 时间。
-- `pet_state.json`：宠物属性、位置、等级、经验、好感、Pet 币、记录、成就、装扮、强化和小游戏成绩。
+- `memory.json`：当前宠物的 AI 多轮历史、用户画像、宠物名字和主动 nudge 时间；多宠物隔离尚未实现。
+- `pet_state.json`：当前版本的宠物属性、位置、等级、经验、好感、Pet 币、记录、成就、装扮、强化和小游戏成绩；多宠物分区结构尚未实现。
 - `pet_settings.json`：窗口尺寸、字体、置顶、更新检查、健康提醒、音效、衰减速度和主动聊天频率。
 
 当前存档兼容层已覆盖 v1.4.0 字段，包括 `home_scene`、`owned_home_decorations`、`home_decoration_positions`、家具变换和小屋宠物位置；不要把真实用户存档或真实 API Key 提交到仓库。
@@ -448,6 +448,7 @@ Petpet/
 - [[工程结构/项目代码与资源结构重构设计]]：`v1.5.0` 后的代码包、双宠物数据和运行/制作资源分层方案。
 - [[工程结构/项目代码与资源结构重构实施计划]]：按可独立验证的纵向切片执行重构。
 - [[工程结构/项目代码与资源结构重构实施记录]]：已完成包骨架、统一路径、玩家/双宠物存档基础、独立聊天记忆、游戏知识库与提示词服务、公共 UI 字体与设置控件、完整设置窗口及教程内容与窗口迁移；收尾验证后当前全量测试为 509 passed。
+- [[宠物系统/多宠物系统设计]]：午餐肉与冰淇淋的宠物注册、共享/独立存档、宠物商店、同步切换与动画回退设计；当前仅完成设计确认。
 - [[笔记/MOC/MOC-项目与实践]]：项目与实践专题入口。
 - [[笔记/知识库/知识库索引]]：返回知识库索引。
 
@@ -758,3 +759,14 @@ Petpet/
 - 包内兼容层依赖已收口：`petpet` 不再反向导入根目录 `app_paths`、`progression` 等兼容入口。
 - 新增包边界与首绘回归测试后，全量测试由 `508` 增至 `510 passed in 44.65s`。
 - 代码与资源收尾记录见 [[工程结构/项目代码与资源结构重构实施记录]]；本地提交待本轮末执行，不推送、不打标签、不发布。
+
+## 2026-08-19 多宠物系统设计确认
+
+> [!info]
+> 本阶段只完成设计记录，尚未修改源码、资源或版本号。设计文档见 [[宠物系统/多宠物系统设计]]。
+
+- 桌面端默认宠物和家园端默认宠物统一为“午餐肉”；当前家园小狗正式作为第二只宠物“冰淇淋”保留。
+- 商店新增“宠物”栏目，首期显示午餐肉与冰淇淋；午餐肉默认拥有并使用，冰淇淋显示待购买。
+- 等级、经验、Pet币、家具、成就、强化和玩家进度共享；饱腹、心情、精力、好感、昵称、位置和聊天记忆按宠物独立。
+- 桌面和家园使用同一个 `active_pet_id`，切换后同步刷新；缺少动画时回退当前宠物自己的待机图，不借用另一只宠物动作。
+- 未制作资源暂时允许使用待机图或简单方块占位，正式资源上传后直接替换，不增加复杂动作预览槽位。
