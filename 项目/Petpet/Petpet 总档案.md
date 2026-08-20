@@ -5,7 +5,7 @@ status: active
 version: v1.5.2
 platforms: Windows 10/11, macOS Intel, macOS Apple Silicon
 source: D:\Agent_project\Petpet
-updated: 2026-08-19
+updated: 2026-08-20
 tags:
   - project/petpet
   - PyQt5
@@ -42,6 +42,13 @@ migrated: 2026-08-05
 - 进食和摸头动画默认 `20 FPS`；聊天消息使用原生 Qt 圆角组件，底色保持低饱和、浅色、低对比。
 - `parameter_tuner.py` 是源码调试工具，通过滑块和精确数值框实时修改物理、尺寸、动画、状态衰减、成长反馈和小游戏参数；正式冻结版不显示调试入口。
 - 调试参数可保存到运行数据目录的 `debug_parameters.json`，用于下一次源码启动继续调试。
+
+### 维护工作区的待移植修复
+
+> [!warning]
+> 根目录维护工作区 `D:\Agent_project\Petpet` 仍是 `v1.3.2`；它与当前 `v1.5.2` 的 `home-scene-system` 开发工作树不是同一代码线。下列修复尚未移植或发布。
+
+- 更新确认后改用 `QTimer.singleShot(0, ...)` 延后一轮事件循环创建下载进度框，避免确认按钮的鼠标释放事件误触新窗口的“取消”。已由单独回归测试验证。详见 [[开发记录/更新确认后误取消下载修复]]。
 
 ## 2. 用户可见功能
 
