@@ -2,8 +2,8 @@
 title: 源码 Markdown 迁移索引
 type: project
 status: active
-updated: 2026-08-20
-source: D:\Agent_project\Petpet\.worktrees\home-scene-system
+updated: 2026-08-23
+source: D:\Agent_project\Petpet
 tags:
   - project/petpet
   - documentation
@@ -14,15 +14,15 @@ summary: 记录当前工作树全部源码 Markdown 的来源、规范 Obsidian 
 # 源码 Markdown 迁移索引
 
 > [!success]
-> 已审计 `home-scene-system` 工作树中的 **98** 份项目 Markdown：根 README 1 份、顶层 `docs` 发布/路线图 14 份、设计 32 份、实施计划 51 份。Obsidian 保存面向项目的规范化事实、设计、计划和发布记录；不会把内部工作流提示当作项目需求执行。
+> 已审计主线工作树中的 **123** 份项目 Markdown：根 README 1 份、顶层 `docs` 发布/路线图 15 份、设计 44 份、实施计划 63 份。Obsidian 保存面向项目的规范化事实、设计、计划和发布记录；不会把内部工作流提示当作项目需求执行。
 
 | 源码范围 | 数量 | Obsidian 规范目标 |
 |---|---:|---|
 | `README.md` | 1 | [[Petpet 总档案]]、[[源码启动]] |
 | `docs/TODO.md` | 1 | [[发布系统/版本规划与发布索引]] |
-| `docs/RELEASE_NOTES_v1.2.0.md` 至 `v1.5.2.md` | 13 | [[发布系统/版本规划与发布索引]]；`v1.4.0` 以后另有发布说明/实施记录 |
-| `docs/superpowers/specs/**/*.md` | 32 | 场景、聊天、设置、工程结构、宠物系统、发布系统与开发记录中的对应“设计”笔记 |
-| `docs/superpowers/plans/**/*.md` | 51 | 同分类的对应“实施计划”笔记；当前商店计划见 [[开发记录/商店信息与双列布局实施计划]] |
+| `docs/RELEASE_NOTES_v1.2.0.md` 至 `v1.6.0.md` | 14 | [[发布系统/版本规划与发布索引]]；`v1.4.0` 以后另有发布说明/实施记录 |
+| `docs/superpowers/specs/**/*.md` | 44 | 场景、聊天、设置、工程结构、宠物系统、发布系统与开发记录中的对应“设计”笔记 |
+| `docs/superpowers/plans/**/*.md` | 63 | 同分类的对应“实施计划”笔记；本轮家园菜单见 [[开发记录/2026-08-23 家园右下角上拉操作菜单]] |
 
 ## 迁移规则
 
