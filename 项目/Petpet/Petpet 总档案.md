@@ -2,10 +2,10 @@
 title: Petpet 总档案
 type: project
 status: active
-version: v1.6.0
+version: v1.6.1
 platforms: Windows 10/11, macOS Intel, macOS Apple Silicon
 source: D:\Agent_project\Petpet
-updated: 2026-08-22
+updated: 2026-08-27
 tags:
   - project/petpet
   - PyQt5
@@ -24,13 +24,13 @@ migrated: 2026-08-05
 
 ## 1. 项目定位与当前状态
 
-- **当前公开版本**：`v1.6.0`，版本唯一来源是 `version.py` 中的 `VERSION = "1.6.0"`。
-- **发布提交**：`0d40e042f10bbe859d3c080fa50dcbde29d2e3d8`；标签 `v1.6.0` 与远端 `main` 一致。
-- **最近公开标签**：`v1.6.0`；[GitHub Release](https://github.com/Gsheen76/Petpet/releases/tag/v1.6.0) 已公开，包含 Windows 与 macOS 双架构应用资产及 SHA256 清单。
-- **运行平台**：Windows 10/11、macOS Intel、macOS Apple Silicon。
+- **当前公开版本**：`v1.6.1`，版本唯一来源是 `version.py` 中的 `VERSION = "1.6.1"`。
+- **发布提交**：`a1c49118e4e31eb9dc0865ef40fde39dd3231986`；标签 `v1.6.1` 与远端 `main` 一致。
+- **最近公开标签**：`v1.6.1`；[GitHub Release](https://github.com/Gsheen76/Petpet/releases/tag/v1.6.1) 已公开，包含 Windows 与 macOS arm64 资产及 SHA256 清单。
+- **运行平台**：Windows 10/11、macOS Apple Silicon。自 `v1.6.1` 起停止发布 Intel Mac 版本，Intel 用户留用 `v1.6.0`；更新器遇跨架构资产直接判为无适用安装包。
 - **技术栈**：Python 3.11、PyQt5、Pillow、NumPy；发布版使用 PyInstaller。
-- **当前开发状态**：v1.6.0 已公开发布；多宠物系统、宠物对应动画、聊天人格、商店改版和家园/桌面同步已合并。
-- **最近验证**：发布门禁全量测试 **645 passed**，`py_compile`、`git diff --check`、Windows 构建/冒烟和 macOS 双架构 Actions 均通过。
+- **当前开发状态**：v1.6.1 已公开发布；商店素材化换装、成就页重构、全局幼圆字体、家园双图标菜单已合并。
+- **最近验证**：发布门禁全量测试 **659 passed**，`py_compile`、`git diff --check`、Windows 构建冒烟和 macOS arm64 Actions 均通过。
 - **源码位置**：`D:\Agent_project\Petpet`。
 - **本笔记位置**：`D:\Github Desktop\My-Obsidian\项目\Petpet\Petpet 总档案.md`。
 
@@ -49,6 +49,11 @@ migrated: 2026-08-05
 > 根目录维护工作区 `D:\Agent_project\Petpet` 仍是 `v1.3.2`；它与当前 `v1.5.2` 的 `home-scene-system` 开发工作树不是同一代码线。下列修复尚未移植或发布。
 
 - 更新确认后改用 `QTimer.singleShot(0, ...)` 延后一轮事件循环创建下载进度框，避免确认按钮的鼠标释放事件误触新窗口的“取消”。已由单独回归测试验证。详见 [[开发记录/更新确认后误取消下载修复]]。
+
+### 2026-08-27 v1.6.1 正式发布
+
+> [!success]
+> `v1.6.1` 已公开发布，包含商店素材化换装、成就页重构、全局幼圆字体、家园双图标菜单与午餐肉桌面行走动画。自本版本起停发 macOS Intel 包，仅保留 Windows 与 macOS arm64。实施细节见 [[发布系统/Petpet v1.6.1 发布实施记录]]。
 
 ### 2026-08-22 v1.6.0 正式发布
 
@@ -382,6 +387,8 @@ Petpet/
 | `v1.4.0` | 五入口快捷菜单、家场景、家具装修、2.5D 小屋宠物、脚印寻路、正坐待机与 3 FPS 睡眠动画 |
 | `v1.4.1` | 免费/个人图文聊天、玩法知识库、双方头像、暖色圆角聊天、三档设置与六页教程 |
 | `v1.5.0` | 家园宠物行为、独立好感成长、状态卡家具、宝藏与属性 UI、阿里云优先免费聊天、GLM-4.7-FlashX |
+| `v1.6.0` | 多宠物系统、按宠物动画与聊天人格、商店信息改版、家园/桌面同步 |
+| `v1.6.1` | 商店素材化换装、成就页重构、全局幼圆字体、家园双图标菜单；停发 Intel Mac 包 |
 
 ## 9. 历史产品路线
 
@@ -466,6 +473,8 @@ Petpet/
 - [[工程结构/项目代码与资源结构重构实施记录]]：已完成包骨架、统一路径、玩家/双宠物存档基础、独立聊天记忆、游戏知识库与提示词服务、公共 UI 字体与设置控件、完整设置窗口及教程内容与窗口迁移；收尾验证后当前全量测试为 509 passed。
 - [[宠物系统/多宠物系统设计]]：午餐肉与冰淇淋的宠物注册、共享/独立存档、宠物商店、同步切换与动画回退记录；行为已实现，正式动画资源仍待补齐。
 - [[笔记/MOC/MOC-项目与实践]]：项目与实践专题入口。
+- [[发布系统/Petpet v1.6.1 发布说明]]：v1.6.1 商店/成就/家园视觉更新与 Intel 停发公告。
+- [[发布系统/Petpet v1.6.1 发布实施记录]]：三资产发布、网络中断恢复与手动终验记录。
 - [[笔记/知识库/知识库索引]]：返回知识库索引。
 
 ## 规划
