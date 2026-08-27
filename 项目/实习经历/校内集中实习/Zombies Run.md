@@ -147,8 +147,8 @@ bash -c "$(curl -fsSL http://cloud.iflow.cn/iflow-cli/install.sh)"
 
 ## 关联笔记
 
-- [[笔记/知识库/知识库索引]]
-- [[笔记/Codex介绍]]
+- [[../../../笔记/知识库/知识库索引]]
+- [[../../../笔记/心得/Codex介绍]]
 
 ## 规划
 
