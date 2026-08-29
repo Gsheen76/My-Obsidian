@@ -8,7 +8,7 @@ aliases:
   - 车灯检测
   - 车辆车灯检测
 created: 2026-07-06
-updated: 2026-08-07
+updated: 2026-08-29
 title: 夜间车灯识别车辆文档（基于yolov7）
 type: project
 summary: 记录基于 YOLOv7 的车灯检测项目全流程：数据标注与预标注扩充、九轮训练迭代、视频验证与停车检测业务方案。
@@ -16,6 +16,9 @@ migrated: 2026-08-05
 ---
 
 # 车灯检测项目文档（基于 YOLOv7）
+
+> [!summary] Summary
+> 记录基于 YOLOv7 的车灯检测项目全流程：数据标注与预标注扩充、九轮训练迭代、视频验证与停车检测业务方案。
 
 ## 概述
 
@@ -973,6 +976,11 @@ python3 dataset/yolo2xml.py
 ---
 
 > [!quote] 项目文档版本
-> 最后更新: 2026-08-07
+> 最后更新: 2026-08-29
 > 维护者: ai
 > 相关文件: [[make_dataset.py]] · [[analyze_test.py]] · [[yolo2xml.py]] · [[pre_annotate.py]]
+
+## 关联笔记
+
+- [[笔记/知识库/知识库索引]]：返回全库主题索引。
+- [[笔记/心得/Codex介绍]]：本项目的 AI 协作维护方式。
