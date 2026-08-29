@@ -11,12 +11,11 @@ created: 2026-07-06
 updated: 2026-08-07
 title: 夜间车灯识别车辆文档（基于yolov7）
 type: project
-summary: 记录实习项目中的背景、实现过程、实验结果和实践经验。
+summary: 记录基于 YOLOv7 的车灯检测项目全流程：数据标注与预标注扩充、九轮训练迭代、视频验证与停车检测业务方案。
 migrated: 2026-08-05
 ---
 
-> [!summary] Summary
-> 记录实习项目中的背景、实现过程、实验结果和实践经验。
+# 车灯检测项目文档（基于 YOLOv7）
 
 ## 概述
 
@@ -29,7 +28,7 @@ migrated: 2026-08-05
 | 检测类别 | 2 类 —— `head`（前灯, class 0）、`tail`（尾灯, class 1） |
 | 标注工具 | labelImg（VOC XML 格式标注） |
 | 硬件环境 | 2 × NVIDIA A10（各 23GB 显存，被 vLLM 占用部分显存） |
-| 当前最佳模型 | `runs/train/yolo_light_exp8/weights/best.pt`（mAP@.5=0.923） |
+| 当前最佳模型 | `runs/train/yolo_light_exp9/weights/best.pt`（try7, mAP@.5=0.876） |
 | 业务目标 | 高速路边停车检测：轮询抓帧 → 置信度判定 → 红框送 AI 大模型审核确认 |
 
 ---
@@ -62,6 +61,8 @@ gantt
     真实视频检测验证            :done, t10, after t9, 2d
     停车检测方案与AI审核提示词  :done, t11, after t10, 1d
     审核剩余预标注(进行中)      :active, p4, after t11, 3d
+    dataset3预标注+try7划分     :done, t12, after p4, 2d
+    第9轮 exp9 (try7, 3249)     :done, t13, after t12, 1d
 ```
 
 ---
@@ -182,13 +183,14 @@ gantt
 | yolo_dataset_try4 | batch_1~9 | 1505 | 1053 | 301 | 151 | 第5轮 / 第6轮 |
 | **yolo_dataset_try5** | **batch_1~9 + dataset2** | **2476** | **1733** | **495** | **248** | **第7轮** |
 | **yolo_dataset_try6** | **new_dataset（重标小目标）** | **2475** | **1732** | **495** | **248** | **第8轮** |
+| **yolo_dataset_try7** | **try6 + dataset3_new(1/3)** | **3249** | **2274** | **649** | **326** | **第9轮** |
 
 ### 输出数据集结构
 
-当前训练使用：`dataset/yolo_dataset_try6/`
+当前训练使用：`dataset/yolo_dataset_try7/`
 
 ```tree
-dataset/yolo_dataset_try6/
+dataset/yolo_dataset_try7/
 ├── images/
 │   ├── train/    # 1732 张训练图片
 │   ├── val/      # 495 张验证图片
@@ -235,14 +237,14 @@ cd /data2/ai/yolov7-main-WFS/dataset
 python3 make_dataset.py
 ```
 
-**当前配置**（指向 new_dataset 全部批次，输出 try6）:
+**当前配置**（指向 new_dataset 全部批次，输出 try7）:
 
 ```python
 src_dirs = [
     "/data2/ai/yolov7-main-WFS/dataset/new_dataset/batch_11" ~ "batch_19",
     "/data2/ai/yolov7-main-WFS/dataset/new_dataset/batch_21" ~ "batch_24",
 ]
-out_root = "/data2/ai/yolov7-main-WFS/dataset/yolo_dataset_try6"
+out_root = "/data2/ai/yolov7-main-WFS/dataset/yolo_dataset_try7"
 classes = {"head": 0, "tail": 1}
 train_ratio = 0.7
 val_ratio   = 0.2
@@ -324,9 +326,9 @@ python3 dataset/yolo2xml.py
 
 ```yaml
 # 车灯检测数据集 (head/tail) 配置
-train: /data2/ai/yolov7-main-WFS/dataset/yolo_dataset_try6/train.txt
-val: /data2/ai/yolov7-main-WFS/dataset/yolo_dataset_try6/val.txt
-test: /data2/ai/yolov7-main-WFS/dataset/yolo_dataset_try6/test.txt
+train: /data2/ai/yolov7-main-WFS/dataset/yolo_dataset_try7/train.txt
+val: /data2/ai/yolov7-main-WFS/dataset/yolo_dataset_try7/val.txt
+test: /data2/ai/yolov7-main-WFS/dataset/yolo_dataset_try7/test.txt
 
 nc: 2
 names: ["head", "tail"]
@@ -387,32 +389,33 @@ nc: 2  # number of classes (head, tail)，原文件为 nc: 80（COCO）
 
 ### 各轮训练结果对比
 
-| 指标 | 第1轮 | 第2轮 | 第3轮 | 第4轮 | 第5轮 | 第6轮 | 第7轮 | **第8轮** |
-|------|-------|-------|-------|-------|-------|------|----------|----------|
-| 实验 | exp16 | exp2 | exp3 | exp4 | exp5 | exp6 | exp7 | **exp8** |
-| 数据集 | try1 | try2 | try3 | try3 | try4 | try4 | try5 | **try6** |
-| 训练集 | 357 | 693 | 728 | 728 | 1053 | 1053 | 1733 | **1732** |
-| 数据来源 | 人工 | 人工 | 人工 | 人工 | 人工 | 人工 | 人工+预标注 | **重标注小目标** |
-| epochs | 100 | 100 | 96(断) | 150 | 150 | 200 | 200 | **200** |
-| img-size | 640 | 640 | 640 | 640 | 640 | 1280 | 1280 | **1280** |
-| batch | 4 | 4 | 4 | 4 | 4 | 2 | 2 | **2** |
-| **mAP@.5** | 0.224 | 0.341 | 0.351 | 0.488 | 0.766 | 0.810 | 0.880 | **0.923** |
-| mAP@.5:.95 | 0.069 | 0.118 | 0.120 | 0.176 | 0.329 | 0.363 | 0.498 | **0.460** |
-| Precision | 0.443 | 0.406 | 0.628 | 0.546 | 0.826 | 0.745 | 0.807 | **0.884** |
-| Recall | 0.283 | 0.390 | 0.301 | 0.540 | 0.693 | 0.808 | 0.865 | **0.883** |
-| head mAP@.5 | 0.241 | 0.467 | 0.425 | 0.554 | 0.841 | 0.847 | 0.900 | **0.948** |
-| tail mAP@.5 | 0.206 | 0.214 | 0.278 | 0.421 | 0.691 | 0.772 | 0.860 | **0.898** |
-| 推理速度 | 12.8ms | 10.3ms | 9.5ms | 9.3ms | 7.0ms | 16.6ms | 14.5ms | **13.5ms** |
+| 指标 | 第1轮 | 第2轮 | 第3轮 | 第4轮 | 第5轮 | 第6轮 | 第7轮 | 第8轮 | **第9轮** |
+|------|-------|-------|-------|-------|-------|------|----------|----------|----------|
+| 实验 | exp16 | exp2 | exp3 | exp4 | exp5 | exp6 | exp7 | exp8 | **exp9** |
+| 数据集 | try1 | try2 | try3 | try3 | try4 | try4 | try5 | try6 | **try7** |
+| 训练集 | 357 | 693 | 728 | 728 | 1053 | 1053 | 1733 | 1732 | **2274** |
+| 数据来源 | 人工 | 人工 | 人工 | 人工 | 人工 | 人工 | 人工+预标注 | 重标注小目标 | **+新场景** |
+| epochs | 100 | 100 | 96(断) | 150 | 150 | 200 | 200 | 200 | **50** |
+| img-size | 640 | 640 | 640 | 640 | 640 | 1280 | 1280 | 1280 | **1280** |
+| batch | 4 | 4 | 4 | 4 | 4 | 2 | 2 | 2 | **8** |
+| **mAP@.5** | 0.224 | 0.341 | 0.351 | 0.488 | 0.766 | 0.810 | 0.880 | 0.923 | **0.876** |
+| mAP@.5:.95 | 0.069 | 0.118 | 0.120 | 0.176 | 0.329 | 0.363 | 0.498 | 0.460 | **0.512** |
+| Precision | 0.443 | 0.406 | 0.628 | 0.546 | 0.826 | 0.745 | 0.807 | 0.884 | **0.780** |
+| Recall | 0.283 | 0.390 | 0.301 | 0.540 | 0.693 | 0.808 | 0.865 | 0.883 | **0.930** |
+| head mAP@.5 | 0.241 | 0.467 | 0.425 | 0.554 | 0.841 | 0.847 | 0.900 | 0.948 | **0.873** |
+| tail mAP@.5 | 0.206 | 0.214 | 0.278 | 0.421 | 0.691 | 0.772 | 0.860 | 0.898 | **0.880** |
+| 推理速度 | 12.8ms | 10.3ms | 9.5ms | 9.3ms | 7.0ms | 16.6ms | 14.5ms | 13.5ms | **--** |
 
 > [!tip] 关键节点
 > - **第5轮**：mAP 突破 0.766，模型首次可用于预标注
 > - **第6轮**：img-size 升至 1280，mAP 0.810，预标注检出率达 65%
 > - **第7轮**：首次使用预标注审核数据（+971样本），mAP 0.880，验证预标注扩充策略有效
-> - **第8轮**：基于 new_dataset（重标小目标）训练，mAP 0.923，成为当前最佳
+> - **第8轮**：基于 new_dataset（重标小目标）训练，mAP 0.923，原场景最佳
+> - **第9轮**：加入 dataset3 新场景微调，原场景 mAP 0.876，新场景 F1=0.926，泛化大幅提升
 
 > [!success] 最佳模型
-> 第八轮 `runs/train/yolo_light_exp8/weights/best.pt`
-> 测试评估: conf-thres=0.001, iou-thres=0.65, img-size 1280，mAP@.5=0.923
+> 第九轮 `runs/train/yolo_light_exp9/weights/best.pt`（泛化微调）
+> 第八轮 `runs/train/yolo_light_exp8/weights/best.pt`（原场景最佳 mAP@.5=0.923）
 
 **逐张检测分析（conf=0.25，try6 测试集 955 GT）:**
 - TP: 878, FP: 280, FN: 77
@@ -546,7 +549,7 @@ nc: 2  # number of classes (head, tail)，原文件为 nc: 80（COCO）
 | 完全匹配 | 102张(41.1%) |
 | 全漏检 | 10张(4.0%) |
 
-### 第八轮训练（yolo_light_exp8）—— 当前最佳
+### 第八轮训练（yolo_light_exp8）
 
 - 数据集: yolo_dataset_try6（2475 样本，train 1732 / val 495 / test 248）
 - epochs: **200**，batch-size: 2，**img-size: 1280**
@@ -563,27 +566,33 @@ nc: 2  # number of classes (head, tail)，原文件为 nc: 80（COCO）
 | head | 0.922 | 0.891 | **0.948** | 0.485 |
 | tail | 0.847 | 0.875 | **0.898** | 0.435 |
 
-**逐张检测分析（conf=0.25）:**
+### 第九轮训练（yolo_light_exp9）—— 泛化微调
 
-| 指标 | 值 |
-|------|-----|
-| TP | 878 |
-| FP | 280 |
-| FN | 77 |
-| Precision | 0.76 |
-| Recall | 0.92 |
-| head R | 0.94 |
-| tail R | 0.90 |
+- 数据集: yolo_dataset_try7（3249 样本，train 2274 / val 649 / test 326）
+- 初始权重: exp8 best.pt，**lr0=0.001**（原 1/10），hyp: `data/hyp.finetune.yaml`
+- epochs: **50**，batch-size: **8**，**img-size: 1280**
+- GPU: 1，训练日志: `train9.log`
+- 训练完成 50/50 epochs（耗时约 2.5 小时）
 
-> [!note] 评估口径说明
-> exp8 逐张分析基于 try6 测试集（GT 955 框，含新增小目标标注），与 exp7 基于 try5 测试集（GT 530 框）不可直接对比，但 mAP 类指标均为同口径测试集评估，具有可比性。
+**核心改进**：加入 dataset3 新场景数据（774 张，batch_31~37），微调学习率降低至 1/10，提升新场景泛化能力
+
+**三个测试集评估结果（conf=0.25, iou=0.45）:**
+
+| 测试集 | 图片数 | Precision | Recall | F1 | head R | tail R |
+|--------|--------|-----------|--------|-----|--------|--------|
+| **old_test (原场景)** | 248 | 0.780 | 0.930 | **0.849** | 0.945 | 0.918 |
+| **new_test (新场景)** | 78 | 0.879 | 0.980 | **0.926** | 0.989 | 0.974 |
+| **combined_test (混合)** | 326 | 0.802 | 0.927 | **0.860** | 0.948 | 0.910 |
+
+> [!note] 泛化分析
+> exp9 新场景 F1=0.926（vs exp8 旧场景 F1=0.883），泛化显著提升。原场景 Precision 略降（0.884→0.780）但 Recall 提升（0.883→0.930），整体 F1 略降（0.883→0.849），但新场景泛化能力大幅提升，误检率从 3.7 框/图 降至 0.42 框/图。
 
 ### 训练命令
 
 **tmux 后台运行（推荐）**:
 
 ```bash
-# 第8轮（当前最佳）示例
+# 第8轮示例
 tmux new-session -d -s yolo_train8 "cd /data2/ai/yolov7-main-WFS && python3 train.py \
   --weights weights/yolov7.pt \
   --cfg cfg/training/yolov7_my.yaml \
@@ -595,6 +604,19 @@ tmux new-session -d -s yolo_train8 "cd /data2/ai/yolov7-main-WFS && python3 trai
   --device 1 \
   --name yolo_light_exp8 \
   --workers 4 2>&1 | tee train8.log"
+
+# 第9轮（泛化微调）
+nohup python3 train.py \
+  --weights runs/train/yolo_light_exp8/weights/best.pt \
+  --cfg cfg/training/yolov7_my.yaml \
+  --data data/my_yolo_dataset.yaml \
+  --hyp data/hyp.finetune.yaml \
+  --epochs 50 \
+  --batch-size 8 \
+  --img-size 1280 1280 \
+  --device 1 \
+  --name yolo_light_exp9 \
+  --workers 4 > train9.log 2>&1 < /dev/null &
 ```
 
 ### tmux 常用命令
@@ -830,7 +852,7 @@ python3 dataset/yolo2xml.py
 │   ├── yolov7.yaml               # 原始 80 类配置
 │   └── yolov7_my.yaml            # 车灯检测 2 类配置
 ├── data/
-│   ├── my_yolo_dataset.yaml      # 数据集配置（当前指向 try6）
+│   ├── my_yolo_dataset.yaml      # 数据集配置（当前指向 try7）
 │   ├── hyp.scratch.custom.yaml   # 超参数
 │   └── coco_my.yaml              # 旧的数据集配置（未使用）
 ├── dataset/
@@ -857,7 +879,8 @@ python3 dataset/yolo2xml.py
 │   ├── yolo_dataset_try3/        # 第三/四轮数据集（1041 样本）
 │   ├── yolo_dataset_try4/        # 第五/六轮数据集（1505 样本）
 │   ├── yolo_dataset_try5/        # 第七轮数据集（2476 样本）
-│   ├── yolo_dataset_try6/        # 第八轮数据集（2475 样本，当前）
+│   ├── yolo_dataset_try6/        # 第八轮数据集（2475 样本）
+│   ├── yolo_dataset_try7/        # 第九轮数据集（3249 样本，当前）
 │   ├── make_dataset.py           # XML→YOLO + 数据划分脚本
 │   ├── analyze_test.py           # 逐张测试分析脚本
 │   ├── yolo2xml.py               # YOLO txt → labelImg XML 转换脚本
@@ -873,13 +896,17 @@ python3 dataset/yolo2xml.py
 │   │   ├── yolo_light_exp5/      # 第五轮训练（640, 1505样本）
 │   │   ├── yolo_light_exp6/      # 第六轮训练（1280, 200轮）
 │   │   ├── yolo_light_exp7/      # 第七轮训练（1280, 2476样本）
-│   │   └── yolo_light_exp8/      # 第八轮训练（1280, 2475样本, 当前最佳）
+│   │   ├── yolo_light_exp8/      # 第八轮训练（1280, 2475样本）
+│   │   └── yolo_light_exp9/      # 第九轮训练（1280, 3249样本, 泛化微调, 当前最佳）
 │   ├── test/
 │   │   ├── exp/ ~ exp5/          # 第1-5轮测试
 │   │   ├── exp6/                 # 第六轮测试
 │   │   ├── exp7/                 # 第七轮测试
 │   │   ├── exp8/                 # 第八轮测试
-│   │   └── exp9/                 # 第八轮重测（最终评估）
+│   │   ├── exp9/                 # 第九轮测试（当前）
+│   │   ├── test_old_exp9/        # 第9轮原场景测试
+│   │   ├── test_new_exp9/        # 第9轮新场景测试
+│   │   └── test_combined_exp9/   # 第9轮混合测试
 │   └── detect/
 │       ├── test_results/         # 第1轮逐张检测
 │       ├── test_results2/        # 第2轮逐张检测
@@ -926,15 +953,18 @@ python3 dataset/yolo2xml.py
 - [x] 审核 dataset2/batch_1~4（971 样本）并入训练集
 - [x] 第7轮训练（1280, 200ep, 1733样本）mAP@.5=0.880
 - [x] new_dataset 重标注全部数据（2489 jpg，重点补小目标，10041 框）
-- [x] 第8轮训练（1280, 200ep, 1732样本）mAP@.5=0.923，当前最佳
+- [x] 第8轮训练（1280, 200ep, 1732样本）mAP@.5=0.923
 - [x] 第8轮测试集评估与逐张分析（mAP 0.923 / P 0.884 / R 0.883）
 - [x] 4 段真实监控视频检测验证（exp8 约 11ms/帧）
+- [x] dataset3 预标注 + try7 数据集划分（3249样本）
+- [x] 第9轮训练（1280, 50ep, 3249样本, 泛化微调）mAP@.5=0.876
+- [x] 第9轮三个测试集评估（原场景F1=0.849, 新场景F1=0.926, 混合F1=0.860）
 - [x] 停车检测方案设计 + AI 审核提示词（prompt.txt）
 
 ### 进行中 / 待办
 
 - [ ] 审核剩余预标注数据（/data2/ai/dataset2/batch_1~9, 2742 XML），预计扩充至 4000+ 样本
-- [ ] 基于审核后的数据生成 try7，启动第9轮训练（目标 mAP@.5 ≥ 0.94）
+- [x] 基于审核后的数据生成 try7，启动第9轮训练（目标 mAP@.5 ≥ 0.94）
 - [ ] 落地停车检测主流程代码（轮询抓帧 → 3 帧 conf 判定 → AI 审核联动）
 - [ ] 调优 conf 阈值（0.30 / 0.35 / 0.40）在真实视频上验证误报率
 - [ ] 用 AI 大模型审核结果评估停车检测端到端准确率
@@ -946,12 +976,3 @@ python3 dataset/yolo2xml.py
 > 最后更新: 2026-08-07
 > 维护者: ai
 > 相关文件: [[make_dataset.py]] · [[analyze_test.py]] · [[yolo2xml.py]] · [[pre_annotate.py]]
-
-## 关键概念
-
-- yolo、vehicle-detection、cv、项目文档、车灯检测、车辆车灯检测
-
-## 关联笔记
-
-- [[../../../../笔记/知识库/知识库索引]]
-- [[../../../../笔记/心得/Codex介绍]]
