@@ -1,11 +1,6 @@
 ---
 title: Petpet 总档案
 type: project
-status: active
-version: v1.6.3
-platforms: Windows 10/11, macOS Apple Silicon
-source: D:\Agent_project\Petpet
-updated: 2026-09-01
 tags:
   - project/petpet
   - PyQt5
@@ -14,6 +9,11 @@ tags:
   - Python
   - 工程协作
 summary: 项目级总览：定位与当前状态、功能总览、架构、版本演进、维护约定与档案馆索引。日志与细节一律在分类目录。
+status: active
+version: v1.6.3
+platforms: Windows 10/11, macOS Apple Silicon
+source: D:\Agent_project\Petpet
+updated: 2026-09-01
 migrated: 2026-08-05
 ---
 
@@ -32,7 +32,7 @@ migrated: 2026-08-05
 - **最近公开标签**：`v1.6.3`；[GitHub Release](https://github.com/Gsheen76/Petpet/releases/tag/v1.6.3) 已公开，包含 Windows exe/zip、macOS arm64 资产及 SHA256 清单。
 - **运行平台**：Windows 10/11、macOS Apple Silicon。自 `v1.6.1` 起停止发布 Intel Mac 版本，Intel 用户留用 `v1.6.0`；更新器遇跨架构资产直接判为无适用安装包。
 - **技术栈**：Python 3.11、PyQt5、Pillow、NumPy；发布版使用 PyInstaller。
-- **当前开发状态**：v1.6.3 已公开发布（2026-08-31）。发布后进入交互手感打磨：小屋胶囊按键两段式按压反馈（缩小变暗 → 回弹高亮 → 触发，总 80ms，提交 `5e9713f` 未推送）。
+- **当前开发状态**：v1.6.3 已公开发布（2026-09-01，发布日期以 git 标签与 GitHub Release 为准）。发布后进入交互手感打磨：小屋胶囊按键两段式按压反馈（缩小变暗 → 回弹高亮 → 触发，总 80ms，提交 `5e9713f` 未推送）。
 - **最近验证**：offscreen 全量测试 **668 passed**、Windows 平台像素实测、精确重启 EnumWindows 验证可见（验证流程四步见 §10.1）。
 - **源码位置**：`D:\Agent_project\Petpet`。
 - **本笔记位置**：`D:\Github Desktop\My-Obsidian\项目\Petpet\Petpet 总档案.md`。
