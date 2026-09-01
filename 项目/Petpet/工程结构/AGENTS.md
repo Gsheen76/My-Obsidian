@@ -54,6 +54,7 @@
 | 状态持久化 | `petpet/app/state.py`、`app/paths.py` | 所有可写数据走 `app/paths.py` 的路径常量，**不许硬编码用户目录** |
 | 养成/商店/货币逻辑 | `petpet/progression/core.py` | 纯逻辑，UI 无关，可 TDD |
 | 养成/商店面板 | `petpet/progression/ui.py` | 核心视觉层 |
+| 宠物详情面板 | `petpet/ui/pet_profile.py` | 快照纯函数 + PetProfileWindow；xp 升级曲线在 `progression/core.py`，勿再复制公式 |
 | 家园场景 | `petpet/home/`、`home_scene.py`、`home_pet.py` | 根目录同名文件多为 `petpet/home/` 的兼容 facade，新代码 import 包内模块 |
 | 聊天 | `petpet/chat/` | `api.py`（上游调用）、`service.py`（编排）、`memory.py`（记忆）；key 只从 `config.json` 读 |
 | 通用 UI 控件 | `petpet/ui/common.py`、`controls.py` | 新控件先看这里能否复用 |
