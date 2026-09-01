@@ -51,7 +51,7 @@ D:\Agent_project\Petpet
 
 | 领域 | 内容 |
 |------|------|
-| **宠物详情面板** | 新窗口 `petpet/ui/pet_profile.py`（快照函数 + `PetProfileWindow`）：左右分栏，左栏头像切换（未拥有灰阶、active「使用中」徽章），右栏立绘/改名/等级经验条/好感度进度条/介绍/套装卡；套装面板内装备/卸下（未拥有跳商店）；改名复用 `PetNameEditDialog`（经 `configure_name_dialog_factory` 注入，类在根模块 pet.py）。入口：右键气泡菜单 primary 第二位「宠物」（列数 5→6，画布 590→700）+ 家园上拉菜单「宠物」项。规格与决策见 Obsidian `宠物系统\宠物详情面板设计/实施计划/实施记录` |
+| **宠物详情面板** | 新窗口 `petpet/ui/pet_profile.py`：美术素材化画布（`assets/runtime/ui/pet_profile/`，背景+牌匾+左栏+站垫+胶囊+花形关闭钮），左栏头像切换（未拥有灰阶+🔒、active「使用中」标签），右栏立绘/改名（复用 `PetNameEditDialog`，工厂注入）/等级经验条/好感度条/介绍/套装卡（装备/卸下/跳商店）。素材条填充用 ArtBar 裁剪；Qt 样式表裸声明+规则块混用会丢规则（坑位见 Obsidian 实施记录）。入口：右键气泡菜单「宠物」（6 列，画布 700）+ 家园菜单「宠物」项。详见 Obsidian `宠物系统\宠物详情面板*` |
 
 ### v1.6.3（当前）
 
