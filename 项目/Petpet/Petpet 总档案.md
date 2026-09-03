@@ -13,7 +13,7 @@ status: active
 version: v1.6.3
 platforms: Windows 10/11, macOS Apple Silicon
 source: D:\Agent_project\Petpet
-updated: 2026-09-02
+updated: 2026-09-03
 migrated: 2026-08-05
 ---
 
@@ -33,7 +33,7 @@ migrated: 2026-08-05
 - **运行平台**：Windows 10/11、macOS Apple Silicon。自 `v1.6.1` 起停止发布 Intel Mac 版本，Intel 用户留用 `v1.6.0`；更新器遇跨架构资产直接判为无适用安装包。
 - **技术栈**：Python 3.11、PyQt5、Pillow、NumPy；发布版使用 PyInstaller。
 - **当前开发状态**：v1.6.3 已公开发布（2026-09-01，发布日期以 git 标签与 GitHub Release 为准）。发布后进行中（均未推送）：小屋胶囊按键两段式按压反馈（`5e9713f`）；宠物详情面板新素材逐轮重建——`_ArtButton` 头像式按住交互、**横滚修复**（图定框/文字 280/动画 130）、牌上名字艺术字、装备钮就位描述下方+穿装待机动画（`2e4c5f9`..`f4b2ff4`），**长期规则：所有按键必须带悬停+点击两态反馈**（见 [[宠物详情面板新素材重建记录]]）。
-- **最近验证**：offscreen 全量测试 **706 passed**（2026-09-01，第三十三轮）、Windows 平台交互/像素实测、精确重启 EnumWindows 验证可见（验证流程四步见 §10.1）。
+- **最近验证**：offscreen 全量测试 **706 passed**（2026-09-03，第三十三轮）、Windows 平台交互/像素实测、精确重启 EnumWindows 验证可见（验证流程四步见 §10.1）。
 - **源码位置**：`D:\Agent_project\Petpet`。
 - **本笔记位置**：`D:\Github Desktop\My-Obsidian\项目\Petpet\Petpet 总档案.md`。
 
