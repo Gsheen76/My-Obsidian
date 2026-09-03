@@ -32,8 +32,8 @@ migrated: 2026-08-05
 - **最近公开标签**：`v1.6.3`；[GitHub Release](https://github.com/Gsheen76/Petpet/releases/tag/v1.6.3) 已公开，包含 Windows exe/zip、macOS arm64 资产及 SHA256 清单。
 - **运行平台**：Windows 10/11、macOS Apple Silicon。自 `v1.6.1` 起停止发布 Intel Mac 版本，Intel 用户留用 `v1.6.0`；更新器遇跨架构资产直接判为无适用安装包。
 - **技术栈**：Python 3.11、PyQt5、Pillow、NumPy；发布版使用 PyInstaller。
-- **当前开发状态**：v1.6.3 已公开发布（2026-09-01，发布日期以 git 标签与 GitHub Release 为准）。发布后进行中（均未推送）：小屋胶囊按键两段式按压反馈（`5e9713f`）；宠物详情面板新素材逐轮重建——二十一轮完成：卡位还原+rail 左移、改名键/关闭键统一 `_ArtButton` 悬浮放大点击缩小交互、牌上名字艺术字、进度条恢复+简介舒展（`2e4c5f9`..`7118f8b`），**长期规则：所有按键必须带悬停+点击两态反馈**（见 [[宠物详情面板新素材重建记录]]）。
-- **最近验证**：offscreen 全量测试 **706 passed**（2026-09-01，第二十一轮）、Windows 平台交互/像素实测、精确重启 EnumWindows 验证可见（验证流程四步见 §10.1）。
+- **当前开发状态**：v1.6.3 已公开发布（2026-09-01，发布日期以 git 标签与 GitHub Release 为准）。发布后进行中（均未推送）：小屋胶囊按键两段式按压反馈（`5e9713f`）；宠物详情面板新素材逐轮重建——二十三轮完成：`_ArtButton` 统一交互 + KeepAspectRatio 原比例绘制（改名钮压扁修复）、进度条恢复、简介商店色（`2e4c5f9`..`8b7bc82`），**长期规则：所有按键必须带悬停+点击两态反馈**（见 [[宠物详情面板新素材重建记录]]）。
+- **最近验证**：offscreen 全量测试 **706 passed**（2026-09-01，第二十二轮）、Windows 平台交互/像素实测、精确重启 EnumWindows 验证可见（验证流程四步见 §10.1）。
 - **源码位置**：`D:\Agent_project\Petpet`。
 - **本笔记位置**：`D:\Github Desktop\My-Obsidian\项目\Petpet\Petpet 总档案.md`。
 
