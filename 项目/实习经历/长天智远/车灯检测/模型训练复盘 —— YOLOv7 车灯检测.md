@@ -7,7 +7,7 @@ aliases:
   - 模型训练复盘
   - 训练指南
 created: 2026-07-28
-updated: 2026-07-28
+updated: 2026-09-04
 title: 模型训练复盘 —— YOLOv7 车灯检测
 type: project
 summary: 记录实习项目中的背景、实现过程、实验结果和实践经验。

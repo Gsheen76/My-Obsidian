@@ -10,7 +10,7 @@ aliases:
   - 抛洒物检测
   - 抛洒物目标检测
 created: 2026-08-11
-updated: 2026-08-18
+updated: 2026-09-04
 summary: 记录抛洒物检测项目的背景、训练过程、评估结果和后续计划。
 migrated: 2026-08-18
 ---
@@ -459,4 +459,4 @@ python3 detect.py \
 > [!quote] 项目文档版本
 > 最后更新: 2026-08-18
 > 维护者: ai
-> 相关文件: [[车灯检测]] · `make_drop_dataset.py` · `eval_drop_test.py`
+> 相关文件: [[车灯检测/夜间车灯识别车辆文档（基于yolov7）|车灯检测]] · `make_drop_dataset.py` · `eval_drop_test.py`
