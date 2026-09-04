@@ -94,10 +94,10 @@ head:      # FPN融合 + 3个检测头
 ### 要素 3：数据集配置 `--data`
 
 ```yaml
-# data/my_yolo_dataset.yaml
-train: /data2/ai/yolov7-main-WFS/dataset/yolo_dataset_try5/train.txt
-val:   /data2/ai/yolov7-main-WFS/dataset/yolo_dataset_try5/val.txt
-test:  /data2/ai/yolov7-main-WFS/dataset/yolo_dataset_try5/test.txt
+# data/my_yolo_dataset.yaml（当前指向 try7）
+train: /data2/ai/yolov7-main-WFS/dataset/yolo_dataset_try7/train.txt
+val:   /data2/ai/yolov7-main-WFS/dataset/yolo_dataset_try7/val.txt
+test:  /data2/ai/yolov7-main-WFS/dataset/yolo_dataset_try7/test.txt
 nc: 2
 names: ["head", "tail"]
 ```
@@ -206,12 +206,13 @@ h = (ymax - ymin) / img_h        # 高度
 
 ---
 
-## 五、7 轮训练演进路线
+## 五、9 轮训练演进路线
 
 ```
-510样本    → 990     → 1041    → 1505    → 1505(1280) → 2476(预标注)
-mAP: 0.224 → 0.341  → 0.351   → 0.488   → 0.766      → 0.810 → 0.880
+510样本    → 990     → 1041    → 1505    → 1505(1280) → 2476(预标注) → 2475(重标小目标) → 3249(+新场景)
+mAP: 0.224 → 0.341  → 0.351   → 0.488   → 0.766      → 0.810 → 0.880 → 0.923 → 0.876*
 ```
+\* 第9轮原场景 mAP 略降，换来新场景泛化（F1=0.926）。
 
 | 轮次 | 改了什么 | mAP@.5 变化 | 原因 |
 |------|---------|-------------|------|
@@ -221,30 +222,37 @@ mAP: 0.224 → 0.341  → 0.351   → 0.488   → 0.766      → 0.810 → 0.880
 | 4→5 | 数据 1041→1505 | 0.488→0.766 | **+57% 大幅提升**，数据量是关键 |
 | 5→6 | img-size 640→1280 | 0.766→0.810 | 小目标检出率提升，tail mAP +8% |
 | 6→7 | 数据 1053→1733（+预标注 971） | 0.810→0.880 | **预标注数据首次生效** |
+| 7→8 | 换 new_dataset 重标小目标（2475） | 0.880→0.923 | **补齐漏检小目标**，原场景最佳 |
+| 8→9 | +dataset3 新场景 774 张微调（lr 1/10，50 轮） | 0.923→0.876（原场景） | 原场景略降，**新场景 F1 0→0.926** |
 
-### 三个关键转折点
+### 关键转折点
 
 1. **第 5 轮**：数据量突破 1000，mAP 从 0.48 跳到 0.77 — 量变引起质变
 2. **第 6 轮**：分辨率 640→1280 — 小目标（车灯）必须高分辨率
 3. **第 7 轮**：预标注数据首次并入 — 验证了迭代扩充策略
+4. **第 8 轮**：重标注补齐小目标 — 数据质量 > 数据数量，少量补标换来 +4.3 个点
+5. **第 9 轮**：新场景泛化微调 — 低学习率 + 新场景数据，泛化与原场景精度的取舍
 
 ### 各轮详细参数
 
-| 指标 | 第1轮 | 第2轮 | 第3轮 | 第4轮 | 第5轮 | 第6轮 | **第7轮** |
-|------|-------|-------|-------|-------|-------|------|----------|
-| 实验 | exp16 | exp2 | exp3 | exp4 | exp5 | exp6 | **exp7** |
-| 数据集 | try1 | try2 | try3 | try3 | try4 | try4 | **try5** |
-| 训练集 | 357 | 693 | 728 | 728 | 1053 | 1053 | **1733** |
-| 数据来源 | 人工 | 人工 | 人工 | 人工 | 人工 | 人工 | **人工+预标注** |
-| epochs | 100 | 100 | 96(断) | 150 | 150 | 200 | **200** |
-| img-size | 640 | 640 | 640 | 640 | 640 | 1280 | **1280** |
-| batch | 4 | 4 | 4 | 4 | 4 | 2 | **2** |
-| **mAP@.5** | 0.224 | 0.341 | 0.351 | 0.488 | 0.766 | 0.810 | **0.880** |
-| mAP@.5:.95 | 0.069 | 0.118 | 0.120 | 0.176 | 0.329 | 0.363 | **0.498** |
-| Precision | 0.443 | 0.406 | 0.628 | 0.546 | 0.826 | 0.745 | **0.807** |
-| Recall | 0.283 | 0.390 | 0.301 | 0.540 | 0.693 | 0.808 | **0.865** |
-| head mAP@.5 | 0.241 | 0.467 | 0.425 | 0.554 | 0.841 | 0.847 | **0.900** |
-| tail mAP@.5 | 0.206 | 0.214 | 0.278 | 0.421 | 0.691 | 0.772 | **0.860** |
+| 指标 | 第1轮 | 第2轮 | 第3轮 | 第4轮 | 第5轮 | 第6轮 | 第7轮 | 第8轮 | **第9轮** |
+|------|-------|-------|-------|-------|-------|------|-------|-------|----------|
+| 实验 | exp16 | exp2 | exp3 | exp4 | exp5 | exp6 | exp7 | exp8 | **exp9** |
+| 数据集 | try1 | try2 | try3 | try3 | try4 | try4 | try5 | try6 | **try7** |
+| 训练集 | 357 | 693 | 728 | 728 | 1053 | 1053 | 1733 | 1732 | **2274** |
+| 数据来源 | 人工 | 人工 | 人工 | 人工 | 人工 | 人工 | 人工+预标注 | 重标注小目标 | **+新场景微调** |
+| epochs | 100 | 100 | 96(断) | 150 | 150 | 200 | 200 | 200 | **50** |
+| img-size | 640 | 640 | 640 | 640 | 640 | 1280 | 1280 | 1280 | **1280** |
+| batch | 4 | 4 | 4 | 4 | 4 | 2 | 2 | 2 | **8** |
+| **mAP@.5** | 0.224 | 0.341 | 0.351 | 0.488 | 0.766 | 0.810 | 0.880 | **0.923** | 0.876 |
+| mAP@.5:.95 | 0.069 | 0.118 | 0.120 | 0.176 | 0.329 | 0.363 | 0.498 | 0.460 | **0.512** |
+| Precision | 0.443 | 0.406 | 0.628 | 0.546 | 0.826 | 0.745 | 0.807 | 0.884 | **0.780** |
+| Recall | 0.283 | 0.390 | 0.301 | 0.540 | 0.693 | 0.808 | 0.865 | 0.883 | **0.930** |
+| head mAP@.5 | 0.241 | 0.467 | 0.425 | 0.554 | 0.841 | 0.847 | 0.900 | 0.948 | **0.873** |
+| tail mAP@.5 | 0.206 | 0.214 | 0.278 | 0.421 | 0.691 | 0.772 | 0.860 | 0.898 | **0.880** |
+
+> [!note] 第 8、9 轮补充
+> 第 8 轮 `runs/train/yolo_light_exp8/weights/best.pt` 为原场景最佳（mAP@.5=0.923）；第 9 轮从 exp8 权重续训（`hyp.finetune.yaml`，lr0=0.001），新场景测试集 F1=0.926、混合 F1=0.860，误检率从 3.7 框/图 降至 0.42 框/图。三轮测试集口径不同（try5/6 测试集 248 张，try7 混合 326 张），mAP 不可直接纵向比较。
 
 ---
 
@@ -330,38 +338,40 @@ python3 dataset/yolo2xml.py
 
 ---
 
-## 十、下一轮训练怎么做
+## 十、下一轮训练 SOP
+
+> 第 8、9 轮即按此流程完成：第 8 轮换 `new_dataset` 源，第 9 轮再并入 `dataset3_new` 并改用 `hyp.finetune.yaml` 微调。下轮把 `tryN`/`expN` 顺延编号即可。
 
 ```bash
 # 1. 审核完 /data2/ai/dataset2/ 预标注数据后
 
 # 2. 修改 make_dataset.py
 #    - src_dirs 加入新审核数据目录
-#    - out_root 改为 yolo_dataset_try6
+#    - out_root 改为 yolo_dataset_tryN（下一轮编号）
 
 # 3. 运行数据划分
 cd /data2/ai/yolov7-main-WFS/dataset && python3 make_dataset.py
 
-# 4. 修改 data/my_yolo_dataset.yaml，路径指向 try6
+# 4. 修改 data/my_yolo_dataset.yaml，路径指向新数据集
 
 # 5. 启动训练
-tmux new-session -d -s yolo_train8 \
+tmux new-session -d -s yolo_trainN \
 "cd /data2/ai/yolov7-main-WFS && python3 train.py \
   --weights weights/yolov7.pt \
   --cfg cfg/training/yolov7_my.yaml \
   --data data/my_yolo_dataset.yaml \
   --hyp data/hyp.scratch.custom.yaml \
   --epochs 200 --batch-size 2 --img-size 1280 1280 \
-  --device 1 --name yolo_light_exp8 --workers 4 \
-  2>&1 | tee train8.log"
+  --device 1 --name yolo_light_expN --workers 4 \
+  2>&1 | tee trainN.log"
 
 # 6. 监控训练
-tmux attach -t yolo_train8        # 看实时输出
+tmux attach -t yolo_trainN        # 看实时输出
 # Ctrl+B 然后 D 退出 tmux
 
 # 7. 训练完成后评估
 python3 test.py \
-  --weights runs/train/yolo_light_exp8/weights/best.pt \
+  --weights runs/train/yolo_light_expN/weights/best.pt \
   --data data/my_yolo_dataset.yaml \
   --task test --img-size 1280 \
   --conf-thres 0.001 --iou-thres 0.65 \
@@ -385,4 +395,5 @@ python3 test.py \
 
 ## 规划
 
-- [ ] 补充或更新本笔记中的结果、限制与下一步工作。
+- [ ] 审核剩余预标注数据（`/data2/ai/dataset2/batch_1~9`，2742 XML），扩充后按第十节 SOP 启动下一轮训练。
+- [ ] 跟进 [[车灯检测/夜间车灯识别车辆文档（基于yolov7）]] 待办：停车检测主流程落地、conf 阈值调优、模型导出部署。

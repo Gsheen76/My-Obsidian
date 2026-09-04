@@ -31,7 +31,7 @@ migrated: 2026-08-05
 | 检测类别 | 2 类 —— `head`（前灯, class 0）、`tail`（尾灯, class 1） |
 | 标注工具 | labelImg（VOC XML 格式标注） |
 | 硬件环境 | 2 × NVIDIA A10（各 23GB 显存，被 vLLM 占用部分显存） |
-| 当前最佳模型 | `runs/train/yolo_light_exp9/weights/best.pt`（try7, mAP@.5=0.876） |
+| 最佳模型 | 原场景 exp8 `runs/train/yolo_light_exp8/weights/best.pt`（mAP@.5=0.923）；泛化 exp9 `runs/train/yolo_light_exp9/weights/best.pt`（新场景 F1=0.926，当前使用） |
 | 业务目标 | 高速路边停车检测：轮询抓帧 → 置信度判定 → 红框送 AI 大模型审核确认 |
 
 ---
@@ -967,7 +967,6 @@ python3 dataset/yolo2xml.py
 ### 进行中 / 待办
 
 - [ ] 审核剩余预标注数据（/data2/ai/dataset2/batch_1~9, 2742 XML），预计扩充至 4000+ 样本
-- [x] 基于审核后的数据生成 try7，启动第9轮训练（目标 mAP@.5 ≥ 0.94）
 - [ ] 落地停车检测主流程代码（轮询抓帧 → 3 帧 conf 判定 → AI 审核联动）
 - [ ] 调优 conf 阈值（0.30 / 0.35 / 0.40）在真实视频上验证误报率
 - [ ] 用 AI 大模型审核结果评估停车检测端到端准确率
@@ -978,7 +977,7 @@ python3 dataset/yolo2xml.py
 > [!quote] 项目文档版本
 > 最后更新: 2026-08-29
 > 维护者: ai
-> 相关文件: [[make_dataset.py]] · [[analyze_test.py]] · [[yolo2xml.py]] · [[pre_annotate.py]]
+> 相关文件: `make_dataset.py` · `analyze_test.py` · `yolo2xml.py` · `pre_annotate.py`
 
 ## 关联笔记
 
