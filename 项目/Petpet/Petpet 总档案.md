@@ -13,7 +13,7 @@ status: active
 version: v1.6.3
 platforms: Windows 10/11, macOS Apple Silicon
 source: D:\Agent_project\Petpet
-updated: 2026-09-03
+updated: 2026-09-06
 migrated: 2026-08-05
 ---
 
