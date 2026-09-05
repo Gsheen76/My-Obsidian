@@ -59,13 +59,22 @@
 | 聊天 | `petpet/chat/` | `api.py`（上游调用）、`service.py`（编排）、`memory.py`（记忆）；key 只从 `config.json` 读 |
 | 通用 UI 控件 | `petpet/ui/common.py`、`controls.py` | 新控件先看这里能否复用 |
 
-## 资源约定（assets/runtime/）
+## 资源管理规范（assets/，2026-09-04 素材治理轮定稿）
+
+**目录分工**：`assets/runtime/` 是唯一随程序打包的运行时素材根（打包 spec 只带它）；`assets/source/` 是开发期归档（AI 稿/参考图/精灵表中间稿），不打包、可自由命名。参考图、弃用稿**绝不留在 runtime**——归档进 `assets/source/references/`。
+
+**命名规范（强制）**：runtime 文件名纯 ASCII、snake_case `^[a-z0-9_]+\.(png|wav|json)$`；例外：动画帧 `NNN.png`、应用图标 `icon-N.png`。禁止中文、大写、连字符。
+
+**守卫测试**：`tests/test_asset_inventory.py` 四条规则，新增/改动素材必须过——① runtime 每个文件可被引用链命中（代码/manifest/spec/脚本文本，或为 manifest 声明目录下的帧文件）；② 命名符合上述规范；③ 动画帧目录必须被 manifest `folder` 字段声明（无幽灵文件夹）；④ 主代码禁止盘符绝对路径引用 assets。
+
+**其余既有约定**：
 
 - 宠物按 ID 组织：`pets/<pet_id>/desktop/{poses,animations,outfits}` 与 `pets/<pet_id>/home/…`
-- 每套动画由 `animations/manifest.json` 声明：`folder`、`fps`、`loop`、`fallback`、可选 `frame_sequence` 与 `frame_durations_ms`（逐帧毫秒数允许非均匀）
+- 每套动画由 `animations/manifest.json` 声明：`folder`、`fps`、`loop`、`fallback`、可选 `frame_sequence` 与 `frame_durations_ms`（逐帧毫秒数允许非均匀）；`fallback` 指向**静态姿势名**（非动画键），文件夹缺失时加载器跳过并落回姿势，允许预声明尚不存在的文件夹
 - 姿势静态图在 `poses/<动作>.png`；**所有帧与姿势必须同尺寸、宠物主体大小一致**，脚底阴影对齐（历史 bug 多源于此）
 - 资产加载必须有失败回退：损坏或缺失的单个资源不得拖慢绘制或崩溃（见 README v1.6.1 约定）
 - 新增宠物需同步更新 `pets/manifest.json`（id、默认名、性格、价格/折扣、preview、avatar、desktop/home 入口）
+- 动画制作/拆帧流程见 `assets/source/spritesheets/README.md`（v2）；`tools/build_fetch_animation.py`、`build_petting_animation.py` 为旧目录结构时代的遗留脚本，重跑前需重指路径
 
 ## UI 约定
 
