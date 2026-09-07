@@ -1,8 +1,8 @@
 # Petpet 项目交接文档
 
-**版本**：v1.7.0
+**版本**：v1.7.0（+ 未发布：礼物系统，2026-09-07）
 **日期**：2026-09-07
-**核心分支**：main（与远端一致；v1.7.0 已发布，工作树干净）
+**核心分支**：main（v1.7.0 已发布；礼物系统改动在工作树待提交）
 
 ---
 
@@ -47,7 +47,13 @@ D:\Agent_project\Petpet
 
 ## 3. 最近主要变更
 
-### v1.7.0（当前，2026-09-07 已公开发布）
+### v1.7.0 后（未发布，2026-09-07）
+
+| 领域 | 内容 |
+|------|------|
+| **礼物系统** | **商店第 5 页「礼物」+ 宠物详情面板第 3 分栏「礼物」**：消耗品礼物（骨头饼干 80 币/+10 好感、肉肉罐头 200/+30、爱心礼盒 480/+80，`GIFT_DEFINITIONS` 在 core.py）；玩家共享背包 `gift_inventory`（PLAYER_FIELDS，schema v3→v4）；`purchase_gift`/`give_gift`（当前宠物走门面 `add_affection`，其他宠物直接落 profile——`_apply_affection` 从 add_affection 抽出的加点+升级纯函数）；records 增 `gifts_bought/gifts_given`；好感无冷却无上限（币价即门槛，用户未答问卷按推荐项）。商店卡=宠物卡同款横版+持有数+直购无弹窗；面板只显示有货礼物卡（虚线暖框+`_ArtButton` 送出键 `send_gift_button.png`），空背包显示引导；送礼走 `PurchasePopup` 双键确认（新增 `confirm_text/cancel_text` 可选参数，默认行为不变）→ 扣库存加好感存档 + 小狗气泡 + 待机区 5 颗心错峰飘起（QVariantAnimation 抬升+淡出）→ 面板刷新。占位素材 6 件由 `tools/generate_gift_assets.py` 生成（三图标/gift_tab_icon/tab_gift/send_gift_button），`tab_gift.png` 以 tab_intro.png 为底逐行修复文字区再写「礼物」（幼圆 SIMYOU.TTF）——正式稿同名替换即可。坑位：测试裸 state 无 active_pet_id 时 give_gift 需回退门面路径（无 pets 字典=门面即唯一宠物）；Git Bash 内联 powershell 的 `$_` 会被 bash 吞——重启脚本落 Temp\*.ps1 再 -File 执行。验证：TDD 19 条新测试 + offscreen 全量 **734 passed** + Windows 三张截图（商店礼物页/面板礼物分栏/确认弹窗）视觉验收 + 精确重启 PID 36176 可见。详见 Obsidian `宠物系统\礼物系统设计`、`宠物系统\礼物系统实施记录` |
+
+### v1.7.0（当前已发布，2026-09-07）
 
 发布提交 `70b5444`（tag v1.7.0，[GitHub Release](https://github.com/Gsheen76/Petpet/releases/tag/v1.7.0)）。本版内容 = 下表「v1.6.3 后」全部条目 + 版本锚点 bump（version.py/README/game_knowledge.json/release-gate 测试 9 条）。发布说明 `docs/RELEASE_NOTES_v1.7.0.md`；SHA256 下载件与本地逐条比对一致。
 
@@ -138,6 +144,16 @@ assets/runtime/ui/shop/
 └── upgrade_tab_icon.png    # 强化标签图标
 ```
 
+```
+assets/runtime/ui/gifts/          # 礼物图标（商店卡+面板背包共用，GIFT_DEFINITIONS["icon"]）
+├── bone_cookie.png               # 骨头饼干（80 币/+10 好感）
+├── meat_can.png                  # 肉肉罐头（200/+30）
+└── love_box.png                  # 爱心礼盒（480/+80）
+# 同轮新增：ui/shop/gift_tab_icon.png（商店页签）、
+#          ui/pet_profile_new/tab_gift.png（面板第三分栏）、send_gift_button.png（送出键）
+# 占位生成器：tools/generate_gift_assets.py（正式素材同名替换）
+```
+
 ---
 
 ## 7. 开发/验证流程
@@ -150,7 +166,7 @@ assets/runtime/ui/shop/
 | 版本发布 | 更新 `version.py` + README + 发布说明 → `scripts/release.ps1 -Version X.Y.Z` |
 
 **测试约束**：
-- `QT_QPA_PLATFORM=offscreen` 跑全量（~80s，707 passed）
+- `QT_QPA_PLATFORM=offscreen` 跑全量（~80s–5min，**734 passed**，2026-09-07 礼物系统后基准）
 - Windows 平台截图需真实字体库（offscreen 无字体数据库，渲染会缺字）
 - `setPixmap` 会清空 `QLabel.text()` → 必须用 `PreservedTextLabel` 保留文本
 
@@ -188,6 +204,7 @@ assets/runtime/ui/shop/
 - **Obsidian 文档规范**（写库前必读，归类/命名/流程的唯一规则源）：`D:\Github Desktop\My-Obsidian\项目\Petpet\文档规范.md`
 - **Obsidian 总档案**：`D:\Github Desktop\My-Obsidian\项目\Petpet\Petpet 总档案.md`（只放项目级总览；2026-09-01 已拆分瘦身，日志类内容全部在各分类目录）
 - **Obsidian 开发记录**：`D:\Github Desktop\My-Obsidian\项目\Petpet\开发记录\`（按日命名 `YYYY-MM-DD 主题.md`；最新：`2026-09-07 商店徽标缩小与按键反馈统一.md`（v1.7.0 期）、`2026-09-05 小屋宠物按键新素材.md`、`2026-09-01 小屋按键两段式按压反馈.md`、`2026-08-27 成就分类筛选与弹窗交互完善.md` 含 v1.6.1→v1.6.3 全部迭代细节）
+- **礼物系统文档**：`宠物系统\礼物系统设计.md` + `宠物系统\礼物系统实施记录.md`（2026-09-07，目录数值/数据模型/好感双路径/交互决策与坑位）
 - **版本规划索引**：`D:\Github Desktop\My-Obsidian\项目\Petpet\发布系统\版本规划与发布索引.md`
 - **最新 Release**：https://github.com/Gsheen76/Petpet/releases/tag/v1.7.0
 
