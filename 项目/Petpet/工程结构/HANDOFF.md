@@ -51,7 +51,7 @@ D:\Agent_project\Petpet
 
 | 领域 | 内容 |
 |------|------|
-| **礼物系统** | **商店第 5 页「礼物」+ 宠物详情面板第 3 分栏「礼物」**：消耗品礼物（骨头饼干 80 币/+10 好感、肉肉罐头 200/+30、爱心礼盒 480/+80，`GIFT_DEFINITIONS` 在 core.py）；玩家共享背包 `gift_inventory`（PLAYER_FIELDS，schema v3→v4）；`purchase_gift`/`give_gift`（当前宠物走门面 `add_affection`，其他宠物直接落 profile——`_apply_affection` 从 add_affection 抽出的加点+升级纯函数）；records 增 `gifts_bought/gifts_given`；好感无冷却无上限（币价即门槛，用户未答问卷按推荐项）。商店卡=宠物卡同款横版+持有数+直购无弹窗；面板只显示有货礼物卡（虚线暖框+`_ArtButton` 送出键 `send_gift_button.png`），空背包显示引导；送礼走 `PurchasePopup` 双键确认（新增 `confirm_text/cancel_text` 可选参数，默认行为不变）→ 扣库存加好感存档 + 小狗气泡 + 待机区 5 颗心错峰飘起（QVariantAnimation 抬升+淡出）→ 面板刷新。占位素材 6 件由 `tools/generate_gift_assets.py` 生成（三图标/gift_tab_icon/tab_gift/send_gift_button），`tab_gift.png` 以 tab_intro.png 为底逐行修复文字区再写「礼物」（幼圆 SIMYOU.TTF）——正式稿同名替换即可。坑位：测试裸 state 无 active_pet_id 时 give_gift 需回退门面路径（无 pets 字典=门面即唯一宠物）；Git Bash 内联 powershell 的 `$_` 会被 bash 吞——重启脚本落 Temp\*.ps1 再 -File 执行；**重启验证假阳性事故（2026-09-07）**：击杀查询静默未命中用户 20:19 自启旧实例（PID 36176），新实例被单实例顶掉，名字反查把旧进程报成 RESTART_OK——**重启验证必须用 `Start-Process -PassThru` 追踪自己启动的 PID，击杀无输出＝异常要排查**。验证：TDD 19 条新测试 + offscreen 全量 **734 passed** + Windows 三张截图（商店礼物页/面板礼物分栏/确认弹窗）视觉验收 + 按击杀-重启返工后真实验证（新 PID 18180，21:53:42，点宠弹菜单交互正常）。详见 Obsidian `宠物系统\礼物系统设计`、`宠物系统\礼物系统实施记录` |
+| **礼物系统** | **商店第 5 页「礼物」+ 宠物详情面板第 3 分栏「礼物」**：消耗品礼物**三档 × 每档三选一**（档表 `GIFT_TIER_META`：小小心意 80 币/+10、真挚款待 200/+30、豪华大礼 480/+80；目录 9 项全中性——无骨头/毛线/鱼干等犬猫专属意象，为后续小猫等宠物留位，守卫测试锁词）；**每宠每档一个最爱**（注册表 `pets/manifest.json` 的 `gift_preferences`，午餐肉=曲奇/罐头/礼盒、冰淇淋=布丁/莓篮/小毯），最爱礼好感 **×1.5**（15/45/120），`preferred_gift_ids`/`gift_affection_for` 在 core.py；玩家共享背包 `gift_inventory`（PLAYER_FIELDS，schema v3→v4；`bone_cookie` 存量一次性折算 `sweet_cookie`）；`purchase_gift`/`give_gift`（当前宠物走门面 `add_affection`，其他宠物直接落 profile——`_apply_affection` 纯函数双路径复用，偏好两路同生效）；records 增 `gifts_bought/gifts_given`；好感无冷却无上限。商店三档分组头+当前宠物最爱卡「♥ 最爱」红标；面板只显示有货卡，最爱卡红标+珊瑚色好感行；送礼 `PurchasePopup` 双键确认（`confirm_text/cancel_text` 可选参数，默认行为不变）→ 扣库存加好感存档 + 气泡（最爱「TA 超喜欢！」）+ 待机区 5 心飘动 → 刷新。占位素材 12 件由 `tools/generate_gift_assets.py` 生成，`tab_gift.png` 以 tab_intro.png 为底逐行修复再写「礼物」——正式稿同名替换。坑位：测试裸 state 无 active_pet_id 时 give_gift 需回退门面路径；Git Bash 内联 powershell 的 `$_` 被 bash 吞——脚本落 Temp\*.ps1 再 -File；**重启验证假阳性事故**：击杀查询静默未命中旧实例、新实例被单实例顶掉、名字反查把旧进程报成成功——**必须 `Start-Process -PassThru` 追踪自启 PID**（用户 20:19 自启旧实例导致"商店没变化"反馈，最终实例 PID 3544/22:42:15）。验证：offscreen 全量 **742 passed** + Windows 三截图视觉验收 + PassThru 重启验证。详见 Obsidian `宠物系统\礼物系统设计`、`宠物系统\礼物系统实施记录` |
 
 ### v1.7.0（当前已发布，2026-09-07）
 
@@ -146,11 +146,18 @@ assets/runtime/ui/shop/
 
 ```
 assets/runtime/ui/gifts/          # 礼物图标（商店卡+面板背包共用，GIFT_DEFINITIONS["icon"]）
-├── bone_cookie.png               # 骨头饼干（80 币/+10 好感）
-├── meat_can.png                  # 肉肉罐头（200/+30）
-└── love_box.png                  # 爱心礼盒（480/+80）
+├── sweet_cookie.png              # 甜心曲奇（档一 80 币/+10）
+├── milk_pudding.png              # 元气布丁（档一）
+├── cheese_cubes.png              # 香香起司（档一）
+├── meat_can.png                  # 肉肉罐头（档二 200/+30）
+├── plush_ball.png                # 毛绒小球（档二）
+├── berry_basket.png              # 莓莓小篮（档二）
+├── love_box.png                  # 爱心礼盒（档三 480/+80）
+├── warm_blanket.png              # 暖暖小毯（档三）
+└── shiny_medal.png               # 亮晶晶奖牌（档三）
 # 同轮新增：ui/shop/gift_tab_icon.png（商店页签）、
 #          ui/pet_profile_new/tab_gift.png（面板第三分栏）、send_gift_button.png（送出键）
+# 偏好声明：pets/manifest.json 每宠 gift_preferences（每档一个最爱，×1.5 好感）
 # 占位生成器：tools/generate_gift_assets.py（正式素材同名替换）
 ```
 
@@ -166,7 +173,7 @@ assets/runtime/ui/gifts/          # 礼物图标（商店卡+面板背包共用�
 | 版本发布 | 更新 `version.py` + README + 发布说明 → `scripts/release.ps1 -Version X.Y.Z` |
 
 **测试约束**：
-- `QT_QPA_PLATFORM=offscreen` 跑全量（~80s–5min，**734 passed**，2026-09-07 礼物系统后基准）
+- `QT_QPA_PLATFORM=offscreen` 跑全量（~2–5min，**742 passed**，2026-09-07 礼物偏好轮后基准）
 - Windows 平台截图需真实字体库（offscreen 无字体数据库，渲染会缺字）
 - `setPixmap` 会清空 `QLabel.text()` → 必须用 `PreservedTextLabel` 保留文本
 
