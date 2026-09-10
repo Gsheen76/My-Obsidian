@@ -92,7 +92,7 @@
 - 全局字体走 `petpet/app/fonts.py`，不要在面板里散落 `setFont(new QFont(...))`
 - 视口/窗口尺寸调整需同时检查：设置面板开关不应改变聊天窗口大小（历史修复），主视口宽 700
 - 交互动画（摸头/喂食/玩耍/挖宝/睡觉）统一缩放到与 idle 主体一致
-- 家园窗口**不置顶**（允许被其他窗口遮挡）；家园胶囊键遵循上述按键交互规范（`_button_state` 的 pressed/recover/hover 相态；松开键内回弹 40ms 后触发），常量 `HomeSceneWindow.BUTTON_PRESS_FLASH_MS=40`（回弹时长）
+- 家园窗口**置顶**（`WindowStaysOnTopHint`，2026-09-10 用户定稿恢复）；装修模式切**全景**：窗口临时加宽为 左栏 338 + 整幅世界 1800（`decoration_scene_window_geometry`），画布 1:1 铺满世界、镜头归零，**不再有左右平移**（pan 链路已整体移除）；家园胶囊键遵循上述按键交互规范（`_button_state` 的 pressed/recover/hover 相态；松开键内回弹 40ms 后触发），常量 `HomeSceneWindow.BUTTON_PRESS_FLASH_MS=40`（回弹时长）
 
 ## 代码风格
 
