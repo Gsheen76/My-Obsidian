@@ -1,9 +1,10 @@
 ---
 title: Petpet v1.7.1 发布实施记录
-type: implementation
+type: project
 tags:
   - project/petpet
   - release
+  - v1.7.1
 summary: v1.7.1 发布实施：内容范围（礼物系统/游戏自动隐藏/气泡菜单贴图化等）、发版流程执行与验证、SHA256 比对与 macOS Actions 产物确认。
 status: active
 source: D:\Agent_project\Petpet

@@ -1,9 +1,10 @@
 ---
 title: Petpet v1.7.1 发布说明
-type: release-notes
+type: project
 tags:
   - project/petpet
   - release
+  - v1.7.1
 summary: 面向用户的 v1.7.1 更新内容：礼物系统、游戏中自动隐藏、右键菜单全新图标、待机时长优化与界面细节打磨。
 status: active
 source: D:\Agent_project\Petpet

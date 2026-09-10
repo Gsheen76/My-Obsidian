@@ -32,8 +32,8 @@ migrated: 2026-08-05
 - **最近公开标签**：`v1.7.1`；[GitHub Release v1.7.1](https://github.com/Gsheen76/Petpet/releases/tag/v1.7.1) 已公开（2026-09-10），包含 Windows exe/zip、macOS arm64 资产及 SHA256 清单（详见 [[Petpet v1.7.1 发布说明]]）。
 - **运行平台**：Windows 10/11、macOS Apple Silicon。自 `v1.6.1` 起停止发布 Intel Mac 版本，Intel 用户留用 `v1.6.0`；更新器遇跨架构资产直接判为无适用安装包。
 - **技术栈**：Python 3.11、PyQt5、Pillow、NumPy；发布版使用 PyInstaller。
-- **当前开发状态**：v1.7.1 发布后进入下一迭代（2026-09-10）：聊天长期记忆已升级结构化六栏档案、喝水/休息/站立提醒加专属音效、GitHub Actions CI 上线；下一候选：新宠物小猫、送礼联动动画、套装分栏素材补图。
-- **最近验证**：长期记忆/提醒音效/CI 轮全量 offscreen **767 passed**（本地 + GitHub Actions Windows runner 双绿，2026-09-10）；CI 已常驻每次 push 自动验证。
+- **当前开发状态**：v1.7.1 发布后进入下一迭代（2026-09-10）：聊天长期记忆升级结构化六栏档案、喝水/休息/站立提醒加专属音效、GitHub Actions CI 上线；家园家具扩充至 8 件（四新 + 旧四重制正式素材，装修分栏 7→4 合并）并定稿装修全景（窗口临时加宽 1:1 展示整幅世界、平移链路移除、小屋恢复置顶）；下一候选：新宠物小猫、送礼联动动画、套装分栏素材补图。
+- **最近验证**：装修全景与小屋置顶轮全量 offscreen **774 passed**（实平台渲染差分验收 8 件家具，2026-09-10；此前家具扩充/正式素材落位轮 773，长期记忆/提醒音效/CI 轮 767 为本地 + GitHub Actions Windows runner 双绿）；CI 已常驻每次 push 自动验证。
 - **源码位置**：`D:\Agent_project\Petpet`。
 - **本笔记位置**：`D:\Github Desktop\My-Obsidian\项目\Petpet\Petpet 总档案.md`。
 
@@ -42,7 +42,7 @@ migrated: 2026-08-05
 ### 当前实现重点
 
 - 视觉语言已锁定：温暖奶油/珊瑚系（底色 `#fff9ee`、主色 `#f28f76`）、圆角胶囊控件、全局幼圆字体（统一走 `petpet/app/fonts.py`）。
-- 常驻面板（商店/成就/记录/设置/小游戏/聊天）统一 850×960 暖色素材风格；家园主视口宽 700，家园窗口不置顶。
+- 常驻面板（商店/成就/记录/设置/小游戏/聊天）统一 850×960 暖色素材风格；家园主视口宽 700，家园窗口置顶（`WindowStaysOnTopHint`，2026-09-10 用户定稿恢复）。
 - 多宠物架构：宠物按 ID 注册（`assets/runtime/pets/manifest.json`），存档分"玩家共享 + 每宠独立"两层。
 - macOS 使用 `Qt.WA_MacAlwaysShowToolWindow` 保持小狗失去焦点后仍显示在最顶层；默认宠物窗口 `150 x 180`，绘制高度 `132`。
 - `parameter_tuner.py` 是源码调试工具，通过滑块和精确数值框实时修改物理、尺寸、动画、状态衰减、成长反馈和小游戏参数；参数可存 `debug_parameters.json` 续调；正式冻结版不显示调试入口。
@@ -112,7 +112,7 @@ migrated: 2026-08-05
 
 - 家场景固定在屏幕右下区域，主画布为 `700×768`（世界 `1800×768`，相机跟随）；装修侧栏位于画布左侧，不会遮挡场景。
 - 家具卡片采用两列布局，图片按原比例居中；家具支持购买、放置、拖动、缩放、旋转、收纳和变换存档。
-- 装修时隐藏小狗并显示左右视角按钮；退出装修只关闭侧栏，不退出家场景；非装修模式下空白处按住可拖动整个小屋窗口。
+- 装修时隐藏小狗并切全景：窗口临时加宽为 左栏 338 + 整幅世界 1800，画布 1:1 零缩放、镜头归零（左右平移链路已于 2026-09-10 整体移除）；退出装修还原原窗口、镜头回跟小狗；非装修模式下空白处按住可拖动整个小屋窗口。
 - 家园右下角为双图标互斥菜单：左「交互」弹出抚摸、喂食、玩耍、睡觉，右「菜单」弹出商店、装修、退出；胶囊按键有 hover/按压反馈，动作在反馈播完后触发。
 - 小屋内左键指定移动目的地；路线由固定脚印组成；小屋内右键小狗沿用桌面快捷菜单与对话体验。
 - `home_pet.py` 管理 2.5D 地面坐标、四向移动、寻路目标、自动睡眠和存档位置；纵深不改变宠物显示尺寸。
@@ -232,7 +232,7 @@ pet.py
 | `assets/runtime/pets/<pet_id>/home` | 家园宠物待机、移动与睡眠素材 |
 | `assets/runtime/pets/manifest.json` | 宠物注册表：id、默认名、性格、价格/折扣、preview、avatar、入口 |
 | `assets/runtime/scenes/home` | 家背景与导航反馈 |
-| `assets/runtime/furniture/home` | 地毯、沙发、绿植与壁画 |
+| `assets/runtime/furniture/home` | 八件家具：地毯、沙发、绿植、墙画、落地灯、书架、茶几、玩具藤篮 |
 | `assets/runtime/ui/shop` | 商店/面板暖色素材包 |
 | `assets/runtime/decorations`、`props`、`sounds`、`icons`、`knowledge` | 装扮、道具、音效、图标与玩家知识库 |
 | `assets/source/spritesheets`、`references` | 精灵表与制作参考图（不进入安装包） |
@@ -293,7 +293,7 @@ $env:QT_QPA_PLATFORM = 'offscreen'
 python -m pytest -q
 ```
 
-测试覆盖状态机、聊天、成长规则、UI 边界、更新器、单实例和打包元数据；当前全量结果：**668 passed**（约 80–110s）。Windows 平台渲染验证需真实桌面字体库（offscreen 无字体数据库）。
+测试覆盖状态机、聊天、成长规则、UI 边界、更新器、单实例和打包元数据；当前全量结果：**774 passed**（约 80–110s）。Windows 平台渲染验证需真实桌面字体库（offscreen 无字体数据库）。
 
 ### Windows 构建
 
@@ -417,8 +417,8 @@ Petpet/
 - 更新：`D:\Agent_project\Petpet\updater.py`
 - 动画制作约束：`D:\Agent_project\Petpet\assets\source\spritesheets\README.md`
 - 路线图：`D:\Agent_project\Petpet\docs\TODO.md`
-- 当前发布说明：`D:\Agent_project\Petpet\docs\RELEASE_NOTES_v1.6.3.md`
-- 公开下载：https://github.com/Gsheen76/Petpet/releases/tag/v1.6.3
+- 当前发布说明：`D:\Agent_project\Petpet\docs\RELEASE_NOTES_v1.7.1.md`
+- 公开下载：https://github.com/Gsheen76/Petpet/releases/tag/v1.7.1
 - 测试目录：`D:\Agent_project\Petpet\tests`
 - 长期工作约定（仓库侧）：`D:\Agent_project\Petpet\AGENTS.md` 与 `HANDOFF.md`（副本同步在 `工程结构\`）
 
@@ -428,7 +428,7 @@ Petpet/
 |---|---|---|
 | [[文档规范]] | 归类/命名/写入规则（写库前必读） | — |
 | [[源码启动]] | 源码运行指引 | — |
-| `开发记录\` | 按日开发日志与修复记录 | [[开发记录/2026-08-27 成就分类筛选与弹窗交互完善]]（v1.6.1→v1.6.3 全程细节）、[[开发记录/2026-09-06 商店徽标缩小与按键反馈统一]]、[[开发记录/2026-09-07 商店徽标缩小与按键反馈统一]]、[[开发记录/2026-09-07 礼物偏好展示与商店礼物页分栏]]（最新轮） |
+| `开发记录\` | 按日开发日志与修复记录 | [[开发记录/2026-08-27 成就分类筛选与弹窗交互完善]]（v1.6.1→v1.6.3 全程细节）、[[开发记录/2026-09-06 商店徽标缩小与按键反馈统一]]、[[开发记录/2026-09-07 商店徽标缩小与按键反馈统一]]、[[开发记录/2026-09-09 游戏自动隐藏判定收紧]]、[[开发记录/2026-09-10 长期记忆与提醒音效与CI]]、[[开发记录/2026-09-10 装修全景与小屋置顶]]（最新轮） |
 | `发布系统\` | 发布说明/实施/索引、更新链路 | [[发布系统/版本规划与发布索引]] |
 | `场景系统\` | 家园/装修/小屋 | [[场景系统/家场景系统设计]] |
 | `宠物系统\` | 多宠物/动画 | [[宠物系统/多宠物系统设计]] |
