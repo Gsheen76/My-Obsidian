@@ -108,6 +108,6 @@
 
 ## 明确不做
 
-- 不引入 GUI 框架之外的重量级依赖（保持 runtime 三件套：PyQt5/requests/Pillow）
+- 不引入 GUI 框架之外的重量级依赖（runtime 四件套：PyQt5/requests/Pillow/numpy——Pillow 与 numpy 在 `petpet/home`、`ui/pet_profile`、`progression/ui` 运行时使用，`requirements/runtime.txt` 必须与实际 import 一致）
 - 不在 `cloudflare-worker`/`aliyun-chat` 中存放任何密钥；`config.json.example` 是唯一密钥模板
 - 不动 `data/` 下玩家真实存档（测试环境除外）
