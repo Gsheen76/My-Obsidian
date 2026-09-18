@@ -4,6 +4,7 @@ type: project
 tags:
   - project/petpet
   - release
+  - v1.7.4
 summary: v1.7.4（2026-09-18 发布）：查看/陪伴分离+送礼反应+聊天搜索+陪伴周报+礼物排版统一，及全应用审计十一项加固（存档原子写/自动睡醒回归/聊天卡顿根除等）。面向用户的变更清单。
 status: active
 source: D:\Agent_project\Petpet
