@@ -71,6 +71,7 @@
 
 **其余既有约定**：
 
+- **素材导入默认不校色**（两次用户定稿：恐龙拖拽 2026-08-31、原皮抓起 2026-09-22，均判校色版「暗淡/偏色」而选原色）——精灵图按源图原色导入；配平 idle 之类的校色只走显式 opt-in 参数（如 `import_lunch_meat_grab.py` 的 `--sat/--val/--green`），不设默认增益
 - 宠物按 ID 组织：`pets/<pet_id>/desktop/{poses,animations,outfits}` 与 `pets/<pet_id>/home/…`
 - 每套动画由 `animations/manifest.json` 声明：`folder`、`fps`、`loop`、`fallback`、可选 `frame_sequence` 与 `frame_durations_ms`（逐帧毫秒数允许非均匀）；`fallback` 指向**静态姿势名**（非动画键），文件夹缺失时加载器跳过并落回姿势，允许预声明尚不存在的文件夹
 - 姿势静态图在 `poses/<动作>.png`；**所有帧与姿势必须同尺寸、宠物主体大小一致**，脚底阴影对齐（历史 bug 多源于此）
