@@ -82,23 +82,29 @@
 
 ## UI 约定
 
-### 按键交互规范（用户定稿 2026-09-06，全应用统一，无例外）
+### 按键交互规范（2026-09-28 用户定稿：纯缩放反馈，全应用统一，无例外）
 
-所有可交互按键（面板/商店/家园/弹窗/贴图键/QSS 键）必须实现同一套反馈逻辑：
+所有可交互按键（面板/商店/家园/弹窗/贴图键/QSS 键）的反馈**只有缩放**，不得加任何描边/白洗/高亮叠层：
 
-1. **悬浮**：按键**放大**（约 +2px/边）+ 高亮（白洗 + 珊瑚描边 `#f28f76`）。
-2. **按住**：按键**内缩**（约 -3px/边）+ 压暗，**持续整个按住期间**（不是定时闪相）。
-3. **松开**：在键内 → 回弹原大小 + 高亮短闪 40ms，播完后**才触发动作**；拖出键外 → 取消不触发。
+1. **悬浮**：按键**放大**（约 +2px/边，家园自绘键 ±3px）。
+2. **点击/按住**：**还原原大小**——按压内缩与压暗已按用户 2026-09-28 终版定稿**全部删除**（「最简单的逻辑：悬浮放大，点击还原大小」）。
+3. **松开**：在键内 → **点击音瞬间即响**、0ms（下一事件拍）即**触发动作**；拖出键外 → 取消不触发。
 4. **可选中按键**（页签/筛选等 checkable）：反馈视觉相同，但保留原生释放时序——拦截 release 会跳过 `nextCheckState` 破坏选中切换。
 5. **未选中的可切换按键**：不得过度透明（透明度 ≥0.65），保持可辨识。
-6. 实现要点：贴图自绘键（`_ArtButton`/`_TabButton`）直接缩放绘制矩形，widget 几何余量按悬浮涨幅预留（KeepAspectRatio 限制维度会翻转，余量按最坏轴预留）；QSS 全铺满皮肤的按键用 `render` 抓素颜帧整体缩放（`FeedbackButton`），几何余量为零不能直接放大矩形。
+6. **分栏/页签类 checkable 键用 `setFlatFeedback(True)` 轻反馈**（2026-09-28 用户定稿：栏目只要悬浮颜色变化——整帧缩放会把文字压扁，放大也不要）。实现要点：**视觉反馈依赖的预渲染帧缓存（如 `FeedbackButton._capture_skin` 的 render 抓帧）必须在 `showEvent` 时机预建**——懒抓会让每个键首次悬浮/按压的第一帧走素颜（无反馈、迟一拍，2026-09-28 手感延迟轮根因）；贴图自绘键按各自余量机制绘制（`_AvatarButton` 常态内缩 2px、悬浮放大到全幅；`_ArtButton`/`_TabButton` 靠 margin/headroom/side_margin 余量）——绘制永远在 widget 边界内（KeepAspectRatio 限制维度会翻转，余量按最坏轴预留）；QSS 全铺满皮肤的按键用 `render` 抓素颜帧整体缩放（`FeedbackButton`），几何余量为零不能直接放大矩形。
+7. **守卫**：`tests/test_button_feedback_pure_scale.py` 钉死 hover 帧 == 素颜帧整体放大（无叠层像素）。
 
-- **无父顶层原生窗必须继承 `petpet/ui/common.KeepAliveTopLevelWindow`**（2026-09-24 家族根治）：任何设 `Qt.Tool` 标志的顶层 QWidget 子类（气泡/菜单/浮窗/面板壳）构造即入类级保活表、`closeEvent` 出表——杜绝「弃引用→GC 连 C++ 销毁→在途窗口事件投递已释放接收者」的 AV 闪退家族；`tests/test_parentless_window_guard.py` 静态扫描全库强制，**零豁免**。短命浮窗在各自 `closeEvent` 里先停自身定时器再 `super()`（基类刻意不停表，防误杀关后复用面板的实例定时器）
+> **气泡菜单例外（2026-09-28 晚用户定稿：「右键菜单栏的那些效果还是保持之前的效果，我喜欢之前那样的交互方式」）**：BubbleMenu 的悬浮光环（白洗 `242,143,118,34` + 珊瑚描边 `#f28f76` 2.2px，画在整格内无裁角）保留旧效果，纯缩放规范不适用于气泡菜单——`test_button_feedback_pure_scale.py` 反向钉死光环必须存在。
+> **四角锁定特效根因存档（勿重蹈）**：2026-09-09 版规范曾定「悬浮=放大+白洗+珊瑚描边」，`FeedbackButton` 把描边画在 `rect±2` 的圆角矩形上——控件边界把描边直线段全部裁掉、只剩四角的弧段，视觉即「取景框角标/四角锁定特效」，被用户连拍 6 张截图否决。教训：① 任何叠层只能画在 widget 边界**内**；② 悬浮描边/白洗类效果已被用户明确废弃，禁止复活（同轮根除的还有家园 `_draw_scene_button`/图片键/分类签/放置键、宠物面板 `_TabButton`/`_AvatarButton` 的同类叠层）。
+> 统一点击音（2026-09-28 三轮定稿：**所有按键都要响，包括分栏页签**——checkable 不响的旧豁免已废除）：`petpet/app/sounds.py` 两层结构——显式调用层（FeedbackButton 松开/家园键/贴图键/头像/气泡菜单）+ `install_click_sound_filter`（pet.py main 安装的**应用级过滤器**，兜住 QAbstractButton 全家/QTabBar/设 PointingHandCursor 的自绘键，键内左键松开即响）；`play_click` 带 25ms 节流防双层命中双响，跟随设置项 `sound_enabled`。`RESOURCE_DIR` 是 str，用 `/` 拼 TypeError 会被静默吞掉，坑位见 HANDOFF。**音效预热一律放启动期**（pet.py main 拿单实例锁后 + PetWindow 构造尾部）：QSoundEffect 的 play 有设备接入同步段（进程首个 ~1s+每实例 ~200ms），任何「启动后延时预热」都会把冻结压到用户操作窗口上（2026-09-28 卡顿轮，曾致切分栏冻 5s）；play() 自带 restart 语义，勿加 stop()（每次同步 ~240ms）。**点击音=QSoundEffect 单实例+节流 40ms>音效时长**（播放中再 play()=restart 有 ~300ms 同步段——节流大于音长是单实例永不撞 restart 的结构性保证，音效时长改动必须同步评估节流值；多实例在本机 WASAPI 每次 play ~500ms 勿用；winsound 的 waveOut 出声缓冲有耳朵延迟勿用）。**静音路径一律 volume=0 且不在播放中解除**（mute 即时属性，播放中解除必漏声；音量只在真实播放前设）。
+
+- **无父顶层原生窗必须继承 `petpet/ui/common.KeepAliveTopLevelWindow`**（2026-09-24 家族根治）：任何设 `Qt.Tool` 标志的顶层 QWidget 子类（气泡/菜单/浮窗/面板壳）构造即入类级保活表、`closeEvent` **延迟出表**（`CLOSE_GRACE_MS=2500` 缓冲后在途窗口消息排空才 discard——2026-09-28 15:56 第六案：当场出表会让最后引用在嵌套事件投递中同步析构 C++ 对象，qwindows→notify×3→AV 读 -1）——杜绝「弃引用→GC 连 C++ 销毁→在途窗口事件投递已释放接收者」的 AV 闪退家族；`tests/test_parentless_window_guard.py` 静态扫描全库强制，**零豁免**。短命浮窗在各自 `closeEvent` 里先停自身定时器再 `super()`（基类刻意不停表，防误杀关后复用面板的实例定时器）
 - 桌面浮窗**预热一律不 `show` 停靠屏外**：用 `grab()` 强制完整 paintEvent 即可——常驻显示的停靠窗在 125% 缩放屏首次移入会被 WM 按 100/125 钳到 517/620（事后重申尺寸无效），未显示窗口首开直接按目标几何创建无此患
+- **面板尺寸统一 850×960**（2026-09-28 用户定稿「打开的页面要统一大小」）：所有 CozyProgressWindow 子类偏好尺寸、聊天窗 fixedSize、宠物详情 UNIFIED 常量一律 850×960；`tests/test_panel_size_uniform.py` 静态扫描强制，新面板别用别的尺寸
 - 全局字体走 `petpet/app/fonts.py`，不要在面板里散落 `setFont(new QFont(...))`
 - 视口/窗口尺寸调整需同时检查：设置面板开关不应改变聊天窗口大小（历史修复），主视口宽 700
 - 交互动画（摸头/喂食/玩耍/挖宝/睡觉）统一缩放到与 idle 主体一致
-- 家园窗口**置顶**（`WindowStaysOnTopHint`，2026-09-10 用户定稿恢复）；装修模式切**全景**：窗口临时加宽为 左栏 338 + 整幅世界 1800（`decoration_scene_window_geometry`），画布 1:1 铺满世界、镜头归零，**不再有左右平移**（pan 链路已整体移除）；家园胶囊键遵循上述按键交互规范（`_button_state` 的 pressed/recover/hover 相态；松开键内回弹 40ms 后触发），常量 `HomeSceneWindow.BUTTON_PRESS_FLASH_MS=40`（回弹时长）
+- 家园窗口**置顶**（`WindowStaysOnTopHint`，2026-09-10 用户定稿恢复）；装修模式切**全景**：窗口临时加宽为 左栏 338 + 整幅世界 1800（`decoration_scene_window_geometry`），画布 1:1 铺满世界、镜头归零，**不再有左右平移**（pan 链路已整体移除）；家园胶囊键遵循上述按键交互规范（`_button_state` 的 pressed/recover/hover 相态；松开键内回弹 8ms 后触发（点击音在松开瞬间即响）），常量 `HomeSceneWindow.BUTTON_PRESS_FLASH_MS=8`（2026-09-28 三轮 40→15→8ms，回弹与触发延迟）
 
 ## 代码风格
 
