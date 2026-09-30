@@ -1,17 +1,17 @@
 ---
-title: 2026-09-30 摇醒卡顿根治（SpeechBubble DWM 冻结）
-type: log
+title: 2026-09-30 摇醒卡顿根治SpeechBubbleDWM冻结
+type: project
 tags:
   - project/petpet
   - performance
   - bugfix
 summary: 摇醒卡在原地不跟鼠标的两层根因——wake 函数同步阻塞 37ms（deferred 修）+ SpeechBubble 首次 show 的 DWM 合成 ~1.7s 冻结（预建+show 一帧预热修）。
-status: done
+status: active
 source: D:\Agent_project\Petpet
 updated: 2026-09-30
 ---
 
-# 2026-09-30 摇醒卡顿根治（SpeechBubble DWM 冻结）
+# 2026-09-30 摇醒卡顿根治SpeechBubbleDWM冻结
 
 > [!summary] Summary
 > 用户「摇醒卡在原地不跟鼠标」。第一轮修 wake 函数的 37ms 同步阻塞（deferred），仍卡——深层根因=SpeechBubble 首次 show 的 DWM 合成冻结 ~1.7s。预建+show 一帧预热根治。全量零失败。
@@ -40,4 +40,4 @@ PetWindow 构造尾部：
 
 ## 关联笔记
 
-- [[开发记录/2026-09-28 按钮反馈纯缩放反馈统一与四角锁定真根因]]：DWM 衰减型开销首次定位。
+- [[开发记录/2026-09-29 高频路径全景基准]]：DWM 衰减型开销首次定位（原链接篇名笔误且注错对象）。
